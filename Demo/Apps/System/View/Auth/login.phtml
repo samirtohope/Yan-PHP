@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>New Admin Login</title>
+<style type="text/css">
+
+.user {
+	height: 0px;
+	width: 0px;
+	position: absolute;
+	top: 250px;
+	overflow: visible;
+	text-align: center;
+}
+.user .box {
+	width:260px;
+	position:absolute;
+    top:-20px;
+    left:-130px;
+    z-index:-1;
+    opacity: 0;
+}
+.user .avatar {
+	width: 100px;
+	position:absolute;
+	left:-50px;
+}
+.avatar .inner {
+	width: 100px;
+	height: 100px;
+	display: table-cell;
+	vertical-align: middle;
+}
+.box .inner {
+    background:#F5F5F5;
+    padding: 120px 25px 15px;
+	border: 1px solid #E5E5E5;
+    box-shadow: 0 1px 5px #CCCCCC;
+    border-radius:5px;
+}
+img {
+	background-color:#fff;
+	border-radius:8px;
+	padding:8px;
+	box-shadow:0 0 6px #333;
+	cursor:pointer;
+	width:70px;
+	height:70px;
+}
+img:hover, .user.active img {
+	box-shadow:0 0 6px #06c;
+}
+label {
+	display: block;
+    margin: 0 0 0.4em;
+    position:relative;
+}
+label>span {
+	position:absolute;
+	font-family:Helvetica, Arial, sans-serif;
+	top:5px;
+	left:21px;
+	color:#BFBFBF;
+	cursor:text;
+}
+input[type="email"], input[type="password"], input[type="text"], input[type="url"] {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    display: inline-block;
+    height: 29px;
+    margin: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+input[type="email"]:hover, input[type="password"]:hover, input[type="text"]:hover, input[type="url"]:hover {
+    border-color: #A0A0A0 #B9B9B9 #B9B9B9;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+}
+input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus, input[type="url"]:focus {
+    border: 1px solid #4D90FE;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+    outline: none;
+}
+label input {
+	font-size: 15px;
+    height: 32px;
+    width: 92%;
+}
+</style>
+<script type="text/javascript">
+if (!window.navigator.geolocation) {
+	alert('您的浏览器版本太低，请先升级');
+}
+
+localStorage.setItem('photo', '<?php echo $photo; ?>');
+var TRANSFORM = (function(){
+	var div = document.createElement('div'), style = div.style;
+	var trans = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
+	var p;
+	while (p = trans.shift()) {
+		if (style[p] !== undefined) {
+			return p;
+		}
+	}
+	return 'transform';
+})();
+function rotate(elem, val) {
+	var m = val.toString().match(/^(-?\d*(\.\d+)?)(.+)?$/);
+	if (m) {
+		var rotateUnits = m[3] || 'deg';
+		elem.style[TRANSFORM] = elem.style[TRANSFORM].replace(/rotate\([^)]*\)/, '') + 'rotate(' + m[1] + rotateUnits + ')';
+	}
+}
+
+function scale(elem, val) {
+	elem.style[TRANSFORM] = elem.style[TRANSFORM].replace(/scale\([^)]*\)/, '') + 'scale(' + val + ')';
+}
+
+function stepX(step, left, right, steps){
+	if (step == 0) return left;
+	if ((step/=steps)==1) return left+right;
+	var p = steps*.2, s = p/4;
+	return (right * Math.pow(2, -10 * step) * Math.sin((step * steps - s) * (2 * Math.PI) / p) + right + left);
+}
+function shake(elem) {
+	var playTime = 900, steps = playTime / 10, step = 0;
+	function run() {
+		var val = elem.style[TRANSFORM];
+		elem.style[TRANSFORM] = val.replace(/translateX\([^)]*\)/, '') + 'translateX('+stepX(step, -50, 50, steps)+'px)';
+		if (step++ < steps) {
+			setTimeout(run, 10);
+		}
+	}
+	run();
+}
+
+function curCSS(elem, name) {
+	var computedStyle = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+	return computedStyle && computedStyle.getPropertyValue(name);
+}
+
+var Units = {
+	width:'px',
+	height:'px',
+	top:'px',
+	left:'px',
+	opacity:''
+}
+
+function animate(elem, props, speed, callback){
+	speed == undefined && (speed = 200);
+	var step = parseInt(speed/10),
+		style = elem.style,
+		timerid = null;
+	for (var name in props) {
+		props[name] = item(name, props[name], step);
+	}
+	function item(name, end, step){
+		var now = parseFloat(curCSS(elem, name)) || 0;
+		var unit = (end - now) / step;
+		return {now:now,unit:unit,end:end};
+	}
+	function update(name, item) {
+		item.now = item.now + item.unit;
+		style[name] = item.now + Units[name];
+	}
+	function end(name, item) {
+		style[name] = item.end + Units[name];
+	}
+	timerid = setInterval(function(){
+		if (--step < 1) {
+			stop();
+		} else {
+			for (var name in props) {
+				update(name, props[name]);
+			}
+		}
+	}, 10);
+	function stop() {
+		if (!timerid) return;
+		clearInterval(timerid);
+		timerid = null;
+		for (var name in props) {
+			end(name, props[name]);
+		}
+		typeof callback == 'function' && callback.call(elem);
+	}
+	this.stop = stop;
+}
+
+function test(user) {
+	user.className += ' active';
+	new animate(user, {
+		top:200,
+		left:document.documentElement.clientWidth / 2
+	}, 200, function(){
+		user.style.left = '50%';
+		new animate(user.getElementsByClassName('box')[0], {opacity:1}, null, function(){
+			// shake(user);
+		});
+	});
+}
+
+window.onhashchange = function(){
+	console.info(location.hash);
+}
+</script>
+	</head>
+	<body>
+	<div class="user" style="left:100px">
+		<div class="avatar" onclick="test(this.parentNode)">
+			<div class="inner"><img src="<?php echo $photo; ?>" /></div>
+		</div>
+		<div class="box">
+			<div class="inner">
+				<form action="/System/Auth/login" method="POST">
+				<label>
+					<input placeholder="帐号" type="email" name="email" />
+				</label>
+				<label>
+					<input placeholder="密码" type="password" name="password" />
+				</label>
+					<input type="submit" value="submit" />
+				</form>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>

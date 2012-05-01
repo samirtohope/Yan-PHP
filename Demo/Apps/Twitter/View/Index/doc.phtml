@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title><?=$title?></title>
+		<link href="<?=$basePath?>/Assets/main.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<div class="bd">
+	<div class="content">
+		<div class="infobar clearfix">
+			<div class="toc">
+				<h3>Table of Contents</h3>
+				<ul>
+					<li><a class="reference internal" href="#">Recipes</a><ul>
+						<li><a class="reference internal" href="#making-a-layout-conditional">Making a Layout conditional</a></li>
+						<li><a class="reference internal" href="#making-an-include-dynamic">Making an Include dynamic</a></li>
+						<li><a class="reference internal" href="#overriding-a-template-that-also-extends-itself">Overriding a Template that also extends itself</a></li>
+						<li><a class="reference internal" href="#customizing-the-syntax">Customizing the Syntax</a></li>
+						<li><a class="reference internal" href="#using-dynamic-object-properties">Using dynamic Object Properties</a></li>
+						<li><a class="reference internal" href="#accessing-the-parent-context-in-nested-loops">Accessing the parent Context in Nested Loops</a></li>
+						<li><a class="reference internal" href="#defining-undefined-functions-and-filters-on-the-fly">Defining undefined Functions and Filters on the Fly</a></li>
+						<li><a class="reference internal" href="#validating-the-template-syntax">Validating the Template Syntax</a></li>
+						<li><a class="reference internal" href="#refreshing-modified-templates-when-apc-is-enabled-and-apc-stat-0">Refreshing modified Templates when APC is enabled and apc.stat = 0</a></li>
+						<li><a class="reference internal" href="#reusing-a-stateful-node-visitor">Reusing a stateful Node Visitor</a></li>
+					</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	<div>
+		<?=$text?>
+		<div class="section" id="recipes">
+			<h1>Recipes<a class="headerlink" href="#recipes" title="Permalink to this headline">¶</a></h1>
+			<div class="section" id="making-a-layout-conditional">
+				<h2>Making a Layout conditional<a class="headerlink" href="#making-a-layout-conditional" title="Permalink to this headline">¶</a></h2>
+				<p>Working with Ajax means that the same content is sometimes displayed as is,
+					and sometimes decorated with a layout. As Twig layout template names can be
+					any valid expression, you can pass a variable that evaluates to <tt class="docutils literal"><span class="pre">true</span></tt> when
+					the request is made via Ajax and choose the layout accordingly:</p>
+				<div class="highlight-jinja">
+					<div class="highlight">
+						<pre>
+							<span class="cp">{&#x25;</span> <span class="k">extends</span> <span class="nv">request.ajax</span> <span class="p">?</span> <span class="s2">"base_ajax.html"</span> <span class="o">:</span> <span class="s2">"base.html"</span> <span class="cp">&#x25;}</span><span class="x"></span>
+							<span class="cp">{&#x25;</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">&#x25;}</span><span class="x"></span>
+							<span class="x">    This is the content to be displayed.</span>
+							<span class="cp">{&#x25;</span> <span class="k">endblock</span> <span class="cp">&#x25;}</span><span class="x"></span>
+						</pre>
+					</div>
+				</div>
+			</div>
+			<div class="section" id="making-an-include-dynamic">
+				<h2>Making an Include dynamic<a class="headerlink" href="#making-an-include-dynamic" title="Permalink to this headline">¶</a></h2>
+				<p>When including a template, its name does not need to be a string. For
+					instance, the name can depend on the value of a variable:</p>
+				<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{&#x25;</span> <span class="k">include</span> <span class="nv">var</span> <span class="o">~</span> <span class="s1">'_foo.html'</span> <span class="cp">&#x25;}</span><span class="x"></span>
+		</pre></div>
+				</div>
+				<p>If <tt class="docutils literal"><span class="pre">var</span></tt> evaluates to <tt class="docutils literal"><span class="pre">index</span></tt>, the <tt class="docutils literal"><span class="pre">index_foo.html</span></tt> template will be
+					rendered.</p>
+				<p>As a matter of fact, the template name can be any valid expression, such as
+					the following:</p>
+				<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{&#x25;</span> <span class="k">include</span> <span class="nv">var</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">'index'</span><span class="o">)</span> <span class="o">~</span> <span class="s1">'_foo.html'</span> <span class="cp">&#x25;}</span><span class="x"></span>
+		</pre></div>
+				</div>
+			</div>
+	<div class="section" id="overriding-a-template-that-also-extends-itself">
+		<h2>Overriding a Template that also extends itself<a class="headerlink" href="#overriding-a-template-that-also-extends-itself" title="Permalink to this headline">¶</a></h2>
+		<p>A template can be customized in two different ways:</p>
+		<ul class="simple">
+			<li><em>Inheritance</em>: A template <em>extends</em> a parent template and overrides some
+				blocks;</li>
+			<li><em>Replacement</em>: If you use the filesystem loader, Twig loads the first
+				template it finds in a list of configured directories; a template found in a
+				directory <em>replaces</em> another one from a directory further in the list.</li>
+		</ul>
+		<p>But how do you combine both: <em>replace</em> a template that also extends itself
+			(aka a template in a directory further in the list)?</p>
+		<p>Let’s say that your templates are loaded from both <tt class="docutils literal"><span class="pre">.../templates/mysite</span></tt>
+			and <tt class="docutils literal"><span class="pre">.../templates/default</span></tt> in this order. The <tt class="docutils literal"><span class="pre">page.twig</span></tt> template,
+			stored in <tt class="docutils literal"><span class="pre">.../templates/default</span></tt> reads as follows:</p>
+		<div class="highlight-jinja"><div class="highlight"><pre><span class="c">{# page.twig #}</span><span class="x"></span>
+<span class="cp">{&#x25;</span> <span class="k">extends</span> <span class="s2">"layout.twig"</span> <span class="cp">&#x25;}</span><span class="x"></span>
+
+<span class="cp">{&#x25;</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">&#x25;}</span><span class="x"></span>
+<span class="cp">{&#x25;</span> <span class="k">endblock</span> <span class="cp">&#x25;}</span><span class="x"></span>
+</pre></div>
+		</div>
+		<p>You can replace this template by putting a file with the same name in
+			<tt class="docutils literal"><span class="pre">.../templates/mysite</span></tt>. And if you want to extend the original template, you
+			might be tempted to write the following:</p>
+		<div class="highlight-jinja"><div class="highlight"><pre><span class="c">{# page.twig in .../templates/mysite #}</span><span class="x"></span>
+<span class="cp">{&#x25;</span> <span class="k">extends</span> <span class="s2">"page.twig"</span> <span class="cp">&#x25;}</span><span class="x"> </span><span class="c">{# from .../templates/default #}</span><span class="x"></span>
+</pre></div>
+		</div>
+		<p>Of course, this will not work as Twig will always load the template from
+			<tt class="docutils literal"><span class="pre">.../templates/mysite</span></tt>.</p>
+		<p>It turns out it is possible to get this to work, by adding a directory right
+			at the end of your template directories, which is the parent of all of the
+			other directories: <tt class="docutils literal"><span class="pre">.../templates</span></tt> in our case. This has the effect of
+			making every template file within our system uniquely addressable. Most of the
+			time you will use the “normal” paths, but in the special case of wanting to
+			extend a template with an overriding version of itself we can reference its
+			parent’s full, unambiguous template path in the extends tag:</p>
+		<div class="highlight-jinja"><div class="highlight"><pre><span class="c">{# page.twig in .../templates/mysite #}</span><span class="x"></span>
+<span class="cp">{&#x25;</span> <span class="k">extends</span> <span class="s2">"default/page.twig"</span> <span class="cp">&#x25;}</span><span class="x"> </span><span class="c">{# from .../templates #}</span><span class="x"></span>
+</pre></div>
+		</div>
+		<div class="admonition note">
+			<p class="first admonition-title">Note</p>
+			<p class="last">This recipe was inspired by the following Django wiki page:
+				<a class="reference external" href="http://code.djangoproject.com/wiki/ExtendingTemplates">http://code.djangoproject.com/wiki/ExtendingTemplates</a></p>
+		</div>
+	</div>
+	<div class="section" id="customizing-the-syntax">
+		<h2>Customizing the Syntax<a class="headerlink" href="#customizing-the-syntax" title="Permalink to this headline">¶</a></h2>
+		<p>Twig allows some syntax customization for the block delimiters. It’s not
+			recommended to use this feature as templates will be tied with your custom
+			syntax. But for specific projects, it can make sense to change the defaults.</p>
+		<p>To change the block delimiters, you need to create your own lexer object:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="nv">$twig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Environment</span><span class="p">();</span>
+
+<span class="nv">$lexer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Lexer</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'tag_comment'</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'{#'</span><span class="p">,</span> <span class="s1">'#}'</span><span class="p">),</span>
+    <span class="s1">'tag_block'</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'{&#x25;'</span><span class="p">,</span> <span class="s1">'&#x25;}'</span><span class="p">),</span>
+    <span class="s1">'tag_variable'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'{&#x7B;'</span><span class="p">,</span> <span class="s1">'&#x7D;}'</span><span class="p">),</span>
+<span class="p">));</span>
+<span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">setLexer</span><span class="p">(</span><span class="nv">$lexer</span><span class="p">);</span>
+</pre></div>
+		</div>
+		<p>Here are some configuration example that simulates some other template engines
+			syntax:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="c1">// Ruby erb syntax</span>
+<span class="nv">$lexer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Lexer</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'tag_comment'</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'&lt;%#'</span><span class="p">,</span> <span class="s1">'%&gt;'</span><span class="p">),</span>
+    <span class="s1">'tag_block'</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'&lt;%'</span><span class="p">,</span> <span class="s1">'%&gt;'</span><span class="p">),</span>
+    <span class="s1">'tag_variable'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'&lt;%='</span><span class="p">,</span> <span class="s1">'%&gt;'</span><span class="p">),</span>
+<span class="p">));</span>
+
+<span class="c1">// SGML Comment Syntax</span>
+<span class="nv">$lexer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Lexer</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'tag_comment'</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'&lt;!--#'</span><span class="p">,</span> <span class="s1">'--&gt;'</span><span class="p">),</span>
+    <span class="s1">'tag_block'</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'&lt;!--'</span><span class="p">,</span> <span class="s1">'--&gt;'</span><span class="p">),</span>
+    <span class="s1">'tag_variable'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'${'</span><span class="p">,</span> <span class="s1">'}'</span><span class="p">),</span>
+<span class="p">));</span>
+
+<span class="c1">// Smarty like</span>
+<span class="nv">$lexer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Lexer</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'tag_comment'</span>  <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'{*'</span><span class="p">,</span> <span class="s1">'*}'</span><span class="p">),</span>
+    <span class="s1">'tag_block'</span>    <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'{'</span><span class="p">,</span> <span class="s1">'}'</span><span class="p">),</span>
+    <span class="s1">'tag_variable'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'{$'</span><span class="p">,</span> <span class="s1">'}'</span><span class="p">),</span>
+<span class="p">));</span>
+</pre></div>
+		</div>
+	</div>
+	<div class="section" id="using-dynamic-object-properties">
+		<h2>Using dynamic Object Properties<a class="headerlink" href="#using-dynamic-object-properties" title="Permalink to this headline">¶</a></h2>
+		<p>When Twig encounters a variable like <tt class="docutils literal"><span class="pre">article.title</span></tt>, it tries to find a
+			<tt class="docutils literal"><span class="pre">title</span></tt> public property in the <tt class="docutils literal"><span class="pre">article</span></tt> object.</p>
+		<p>It also works if the property does not exist but is rather defined dynamically
+			thanks to the magic <tt class="docutils literal"><span class="pre">__get()</span></tt> method; you just need to also implement the
+			<tt class="docutils literal"><span class="pre">__isset()</span></tt> magic method like shown in the following snippet of code:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Article</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__get</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">'title'</span> <span class="o">==</span> <span class="nv">$name</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="s1">'The title'</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// throw some kind of error</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__isset</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">'title'</span> <span class="o">==</span> <span class="nv">$name</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+		</div>
+	</div>
+	<div class="section" id="accessing-the-parent-context-in-nested-loops">
+		<h2>Accessing the parent Context in Nested Loops<a class="headerlink" href="#accessing-the-parent-context-in-nested-loops" title="Permalink to this headline">¶</a></h2>
+		<p>Sometimes, when using nested loops, you need to access the parent context. The
+			parent context is always accessible via the <tt class="docutils literal"><span class="pre">loop.parent</span></tt> variable. For
+			instance, if you have the following template data:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'topics'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'topic1'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'Message 1 of topic 1'</span><span class="p">,</span> <span class="s1">'Message 2 of topic 1'</span><span class="p">),</span>
+        <span class="s1">'topic2'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'Message 1 of topic 2'</span><span class="p">,</span> <span class="s1">'Message 2 of topic 2'</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">);</span>
+</pre></div>
+		</div>
+		<p>And the following template to display all messages in all topics:</p>
+		<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{&#x25;</span> <span class="k">for</span> <span class="nv">topic</span><span class="o">,</span> <span class="nv">messages</span> <span class="k">in</span> <span class="nv">topics</span> <span class="cp">&#x25;}</span><span class="x"></span>
+<span class="x">    * </span><span class="cp">{&#x7B;</span> <span class="nb">loop</span><span class="nv">.index</span> <span class="cp">&#x7D;}</span><span class="x">: </span><span class="cp">{&#x7B;</span> <span class="nv">topic</span> <span class="cp">&#x7D;}</span><span class="x"></span>
+<span class="x">  </span><span class="cp">{&#x25;</span> <span class="k">for</span> <span class="nv">message</span> <span class="k">in</span> <span class="nv">messages</span> <span class="cp">&#x25;}</span><span class="x"></span>
+<span class="x">      - </span><span class="cp">{&#x7B;</span> <span class="nb">loop</span><span class="nv">.parent.loop.index</span> <span class="cp">&#x7D;}</span><span class="x">.</span><span class="cp">{&#x7B;</span> <span class="nb">loop</span><span class="nv">.index</span> <span class="cp">&#x7D;}</span><span class="x">: </span><span class="cp">{&#x7B;</span> <span class="nv">message</span> <span class="cp">&#x7D;}</span><span class="x"></span>
+<span class="x">  </span><span class="cp">{&#x25;</span> <span class="k">endfor</span> <span class="cp">&#x25;}</span><span class="x"></span>
+<span class="cp">{&#x25;</span> <span class="k">endfor</span> <span class="cp">&#x25;}</span><span class="x"></span>
+</pre></div>
+		</div>
+		<p>The output will be similar to:</p>
+		<div class="highlight-text"><div class="highlight"><pre>* 1: topic1
+  - 1.1: The message 1 of topic 1
+  - 1.2: The message 2 of topic 1
+* 2: topic2
+  - 2.1: The message 1 of topic 2
+  - 2.2: The message 2 of topic 2
+</pre></div>
+		</div>
+		<p>In the inner loop, the <tt class="docutils literal"><span class="pre">loop.parent</span></tt> variable is used to access the outer
+			context. So, the index of the current <tt class="docutils literal"><span class="pre">topic</span></tt> defined in the outer for loop
+			is accessible via the <tt class="docutils literal"><span class="pre">loop.parent.loop.index</span></tt> variable.</p>
+	</div>
+	<div class="section" id="defining-undefined-functions-and-filters-on-the-fly">
+		<h2>Defining undefined Functions and Filters on the Fly<a class="headerlink" href="#defining-undefined-functions-and-filters-on-the-fly" title="Permalink to this headline">¶</a></h2>
+		<p>When a function (or a filter) is not defined, Twig defaults to throw a
+			<tt class="docutils literal"><span class="pre">Twig_Error_Syntax</span></tt> exception. However, it can also call a <a class="reference external" href="http://www.php.net/manual/en/function.is-callable.php">callback</a> (any
+			valid PHP callable) which should return a function (or a filter).</p>
+		<p>For filters, register callbacks with <tt class="docutils literal"><span class="pre">registerUndefinedFilterCallback()</span></tt>.
+			For functions, use <tt class="docutils literal"><span class="pre">registerUndefinedFunctionCallback()</span></tt>:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="c1">// auto-register all native PHP functions as Twig functions</span>
+<span class="c1">// don't try this at home as it's not secure at all!</span>
+<span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">registerUndefinedFunctionCallback</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">function_exists</span><span class="p">(</span><span class="nv">$name</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Twig_Function_Function</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+		</div>
+		<p>If the callable is not able to return a valid function (or filter), it must
+			return <tt class="docutils literal"><span class="pre">false</span></tt>.</p>
+		<p>If you register more than one callback, Twig will call them in turn until one
+			does not return <tt class="docutils literal"><span class="pre">false</span></tt>.</p>
+		<div class="admonition tip">
+			<p class="first admonition-title">Tip</p>
+			<p class="last">As the resolution of functions and filters is done during compilation,
+				there is no overhead when registering these callbacks.</p>
+		</div>
+	</div>
+	<div class="section" id="validating-the-template-syntax">
+		<h2>Validating the Template Syntax<a class="headerlink" href="#validating-the-template-syntax" title="Permalink to this headline">¶</a></h2>
+		<p>When template code is providing by a third-party (through a web interface for
+			instance), it might be interesting to validate the template syntax before
+			saving it. If the template code is stored in a <cite>$template</cite> variable, here is
+			how you can do it:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="k">try</span> <span class="p">{</span>
+    <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">parse</span><span class="p">(</span><span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">tokenize</span><span class="p">(</span><span class="nv">$template</span><span class="p">));</span>
+
+    <span class="c1">// the $template is valid</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Twig_Error_Syntax</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// $template contains one or more syntax errors</span>
+<span class="p">}</span>
+</pre></div>
+		</div>
+		<p>If you iterate over a set of files, you can pass the filename to the
+			<tt class="docutils literal"><span class="pre">tokenize()</span></tt> method to get the filename in the exception message:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="k">foreach</span> <span class="p">(</span><span class="nv">$files</span> <span class="k">as</span> <span class="nv">$file</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">parse</span><span class="p">(</span><span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">tokenize</span><span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="nv">$file</span><span class="p">));</span>
+
+        <span class="c1">// the $template is valid</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Twig_Error_Syntax</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// $template contains one or more syntax errors</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+		</div>
+		<div class="admonition note">
+			<p class="first admonition-title">Note</p>
+			<p class="last">This method won’t catch any sandbox policy violations because the policy
+				is enforced during template rendering (as Twig needs the context for some
+				checks like allowed methods on objects).</p>
+		</div>
+	</div>
+	<div class="section" id="refreshing-modified-templates-when-apc-is-enabled-and-apc-stat-0">
+		<h2>Refreshing modified Templates when APC is enabled and apc.stat = 0<a class="headerlink" href="#refreshing-modified-templates-when-apc-is-enabled-and-apc-stat-0" title="Permalink to this headline">¶</a></h2>
+		<p>When using APC with <tt class="docutils literal"><span class="pre">apc.stat</span></tt> set to <tt class="docutils literal"><span class="pre">0</span></tt> and Twig cache enabled, clearing
+			the template cache won’t update the APC cache. To get around this, one can
+			extend <tt class="docutils literal"><span class="pre">Twig_Environment</span></tt> and force the update of the APC cache when Twig
+			rewrites the cache:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Twig_Environment_APC</span> <span class="k">extends</span> <span class="nx">Twig_Environment</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">writeCacheFile</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$content</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">writeCacheFile</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$content</span><span class="p">);</span>
+
+        <span class="c1">// Compile cached file into bytecode cache</span>
+        <span class="nx">apc_compile_file</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+		</div>
+	</div>
+	<div class="section" id="reusing-a-stateful-node-visitor">
+		<h2>Reusing a stateful Node Visitor<a class="headerlink" href="#reusing-a-stateful-node-visitor" title="Permalink to this headline">¶</a></h2>
+		<p>When attaching a visitor to a <tt class="docutils literal"><span class="pre">Twig_Environment</span></tt> instance, Twig uses it to
+			visit <em>all</em> templates it compiles. If you need to keep some state information
+			around, you probably want to reset it when visiting a new template.</p>
+		<p>This can be easily achieved with the following code:</p>
+		<div class="highlight-php"><div class="highlight"><pre><span class="k">protected</span> <span class="nv">$someTemplateState</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="nf">enterNode</span><span class="p">(</span><span class="nx">Twig_NodeInterface</span> <span class="nv">$node</span><span class="p">,</span> <span class="nx">Twig_Environment</span> <span class="nv">$env</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$node</span> <span class="nx">instanceof</span> <span class="nx">Twig_Node_Module</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// reset the state as we are entering a new template</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">someTemplateState</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ...</span>
+
+    <span class="k">return</span> <span class="nv">$node</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+		</div>
+	</div>
+	</div>
+
+	</div>
+	</div>
+	<div class="ft">
+		<div class="content">
+
+		</div>
+	</div>
+	</div>
+
+	</body>
+</html>

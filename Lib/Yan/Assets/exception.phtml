@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+body {font-family:Arial, Helvetica, sans-serif;font-size:12px;}
+h1 {font-size:24px;font-weight:bold;color:#6699cc;}
+h2 {font-size:14px;font-weight:bold;margin:0px;padding:0px;margin-bottom:8px;}
+code, pre {color:#4444AA;font-size:12px;}
+pre {margin-top:0;margin-left:12px;border-left:2px solid #CCCCCC;padding-left:20px;}
+a {color: #3366CC;text-decoration:none;}
+a:hover {text-decoration:underline;}
+.error {word-break:break-all;word-wrap:break-word;background:#ffeeee;padding:10px;border:1px solid #ddcccc;}
+.error h2 {color:#FF3300;}
+.trace {font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;background-color:#FFFFCC;padding:10px;border:1px solid #FF9900;}
+.filedesc {margin-left:16px;color:#666666;}
+.line-num {font-size:12px;vertical-align:top;text-align:right;}
+.line-bold {font-weight:bold;color:white;background-color:red;}
+.source {font-size:12px;vertical-align:top;padding-left:10px;}
+</style>
+<script type="text/javascript">
+function filedesc(index) {
+    var el = document.getElementById('desc-'+index);
+    el.style.display = el.style.display == 'none' ? 'block' : 'none';
+}
+</script>
+</head>
+<body>
+<h1><?php echo $errstr; ?></h1>
+<div class="error">
+	<h2>错误原因:</h2>
+	<p><?php echo nl2br(str_replace(' ', '&nbsp;', htmlspecialchars($errinfo))); ?></p>
+	<p>
+		<strong>源程序:</strong>
+		<table cellspacing="0" cellpadding="0">
+			<?php foreach (excerpt($errfile, $errline) as $line=>$code):?>
+			<tr>
+				<td class="line-num<?php echo $line==$errline?' line-bold':''?>"><?php echo $line?></td>
+				<td class="source">
+					<code><?php echo nl2br(str_replace(array(' ',"\t"), array('&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;'), htmlspecialchars($code)));?></code>
+				</td>
+			</tr>
+			<?php endforeach;?>
+		</table>
+	</p>
+</div>
+<p><strong>详细:</strong></p>
+<div class="trace">
+	<?php foreach ($trace as $t): ?><div>
+		<strong>文件:</strong> <a href="javascript:filedesc('<?php echo $t['index'];?>');"><?php echo $t['file'];?> [<?php echo $t['line'];?>]</a>
+	</div>
+	<span>#<?php echo $t['index'];?> <?php echo $t['function'];?>(<?php echo implode(', ', $t['argd']);?>)</span>
+	<div id="desc-<?php echo $t['index'];?>" class="filedesc" style="display: none;">
+		<strong>参数:</strong>
+		<?php dump($t['args']);?>
+		<strong>源程序:</strong>
+		<table cellspacing="0" cellpadding="0">
+			<?php foreach (excerpt($t['file'], $t['line']) as $line=>$code):?>
+			<tr>
+				<td class="line-num<?php echo $line==$t['line']?' line-bold':''?>"><?php echo $line?></td>
+				<td class="source">
+					<code><?php echo nl2br(str_replace(array(' ',"\t"), array('&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;'), htmlspecialchars($code)));?></code>
+				</td>
+			</tr>
+			<?php endforeach;?>
+		</table>
+	</div>
+	<hr />
+	<?php endforeach;?>
+</div>
+</body>
+</html>

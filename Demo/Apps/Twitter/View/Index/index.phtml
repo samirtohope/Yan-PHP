@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{ title }}</title>
+<script type="text/javascript" src="/Assets/jquery.js"></script>
+</head>
+<body>
+<ul id="main">
+	{% for item in rowset %}
+	<li><strong>{{ item.createdby }}</strong>(<em>{{ item.created }}</em>)<a href="javascript:;">[删除]</a><p>{{ item.content }}</p></li>
+	{% endfor %}
+</ul>
+<form>
+	<textarea name="content"></textarea>
+	<input type="submit" value="Add" />
+</form>
+<script type="text/javascript">/*
+var ul = $('ul');
+function createItem(item) {
+	var li = $('<li><strong>'+item.createdby+'</strong>(<em>'+item.created+'</em>)<a href="javascript:;">[删除]</a><p>'+item.content+'</p></li>');
+	ul.append(li);
+	li.find('a').click(function(){
+		$.getJSON('/Twitter/Index/del?id='+item.id, function(json){
+			if (json.state) {
+				li.remove();
+			} else {
+				alert(json.message);
+			}
+		});
+	});
+}
+$.getJSON('/Twitter/Index/page', function(data){
+	$.each(data, function(){
+		createItem(this);
+	});
+});
+$('form').submit(function(e){
+	var data = {
+		'content':$('textarea', this).val()
+	};
+	$.ajax({
+		'url':'/Twitter/Index/add',
+		'dataType':'json',
+		'type':'POST',
+		'data':data,
+		'success':function(json){
+			if (json.state) {
+				createItem(json.data);
+			} else {
+				alert(json.message);
+			}
+		}
+	});
+	return false;
+});*/
+</script>
+</body>
+</html>
