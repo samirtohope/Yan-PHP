@@ -259,8 +259,12 @@ abstract class Yan_Controller
 
 			$text = ob_get_clean();
 			switch (true) {
-			case $return === self::NONE:
-				$this->_response->setBody('');
+			case is_int($return):
+				if (100 > $return || 500 < $return) {
+					$this->_response->setHttpResponseCode($return);
+				} else {
+					$this->_response->setBody($return === self::NONE ? '' : $return);
+				}
 				break;
 			case is_string($return):
 				$this->_response->setBody($return);
