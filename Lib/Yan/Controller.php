@@ -272,17 +272,17 @@ abstract class Yan_Controller
 				$this->_response->setBody(empty($_GET['jsoncallback']) ? $return : "{$_GET['jsoncallback']}($return)");
 				break;
 			case $this->_output instanceof Yan_Output_Abstract:
-				$this->_response->setBody($this->_output->getBody());
+				$this->_response->setBody($this->_output);
 				break;
 			case $return instanceof Yan_Output_Abstract:
-				$this->_response->setBody($return->getBody());
+				$this->_response->setBody($return);
 				break;
 			case $text !== '':
 				$this->_response->setBody($text);
 				break;
 			case $this->_hasDefaultView():
 				$this->_setView();
-				$this->_response->setBody($this->_output->getBody());
+				$this->_response->setBody($this->_output);
 				break;
 			}
 		}

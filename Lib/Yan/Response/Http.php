@@ -282,13 +282,13 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	}
 
 	/**
-	 * send the body contents, including all headers
-	 *
+	 * Output the body content
+	 * 
 	 * @return void
 	 */
-	public function send()
+	public function outputBody()
 	{
 		$this->header();
-		exit ($this->getBody());
+		parent::outputBody();
 	}
 }

@@ -51,9 +51,9 @@ abstract class Yan_Output_Abstract
 	}
 
 	/**
-	 * Return the body content
+	 * output the body content
 	 *
 	 * @return string
 	 */
-	abstract public function getBody();
+	abstract public function outputBody();
 }

@@ -64,17 +64,15 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 	}
 
 	/**
-	 * get body of captcha ouput
+	 * output body of captcha
 	 *
 	 * @return string
 	 */
-	public function getBody()
+	public function outputBody()
 	{
 		if (null != $this->_captcha) {
 			$this->_response->setHeader('Content-type', $this->_captcha->getContentType());
-			return $this->_captcha->render();
-		} else {
-			return '';
+			echo $this->_captcha->render();
 		}
 	}
 }

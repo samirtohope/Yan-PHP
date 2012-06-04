@@ -38,18 +38,18 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 	protected $_mimeType = null;
 
 	/**
-	 * wheather use client cache
-	 *
-	 * @var bool
-	 */
-	protected $_clientCache = false;
-
-	/**
 	 * file of to output
 	 *
 	 * @var string
 	 */
 	protected $_file = null;
+
+	/**
+	 * use X-SendFile module
+	 *
+	 * @var boolean
+	 */
+	protected $_XSendFile = false;
 
 	/**
 	 * set the file to output
@@ -104,27 +104,21 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 		return $this;
 	}
 
-	/**
-	 * turn on client cache
-	 *
-	 * @param bool $flag
-	 * @return Yan_Output_Attachment
-	 */
-	public function setClientCache($flag)
+	public function setXSendFile()
 	{
-		$this->_clientCache = (bool) $flag;
+		$this->_XSendFile = true;
 		return $this;
 	}
 
 	/**
-	 * return body of output
+	 * output body of attachment
 	 *
 	 * @return string
 	 */
-	public function getBody()
+	public function outputBody()
 	{
 		if (null == $this->_file) {
-			return '';
+			return;
 		}
 
 		$fileSize = filesize($this->_file);
@@ -139,18 +133,23 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 			$this->_mimeType = $this->_getMimeType($ext);
 		}
 
-
-		$this->_response->setHeader('Content-Type', $this->_mimeType)
-			 ->setHeader('Content-Disposition',
-				"attachment; filename={$fileName}; charset={$this->_fileNameCharset}")
-			 ->setHeader('Content-Length',$fileSize)
-			 ->setHeader('Cache-Control','public, must-revalidate, max-age=0')
-			 ->setHeader('Content-Transfer-Encoding','binary');
-		if ($this->_clientCache) {
-			$this->_response->setHeader('Pragma','cache');
+		
+		if (preg_match("/MSIE/", $_SERVER["HTTP_USER_AGENT"])) {
+			$disposition = 'attachment; filename="'.rawurlencode($fileName).'"';
+		} else {
+			$disposition = "attachment; filename=\"{$fileName}\"; charset={$this->_fileNameCharset}";
 		}
+		$this->_response->setHeader('Content-Type', $this->_mimeType)
+			 ->setHeader('Content-Disposition', $disposition)
+			 ->setHeader('Content-Length', $fileSize);
 
-		return file_get_contents($this->_file);
+		if ($this->_XSendFile
+			|| (function_exists('apache_get_modules') && in_array('mod_xsendfile', apache_get_modules())))
+		{
+			$this->_response->setHeader('X-Sendfile', realpath($this->_file));
+		} else {
+			readfile($this->_file);
+		}
 	}
 
 	/**

@@ -188,8 +188,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 		}
 		if (null != ($data = $cacher->read($this->getId()))) {
 			$this->_body = $data;
-			$this->_response->setBody($this->getBody());
-			$this->_response->send();
+			$this->_response->setBody($this)->send();
 		}
 
 		$this->_cacheAdapter = $cacher;
@@ -210,7 +209,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 		$now = time();
 		$guid = $this->getId();
 		if (isset($_COOKIE[$guid]) && ($_COOKIE[$guid] > $now - $cacheLife)) {
-			return $this->_response->setHttpResponseCode(304)->send();
+			return $this->_response->setBody(null)->setHttpResponseCode(304)->send();
 		}
 		$this->_response->setCookie($guid, $now, $now + 86400)
 			->setHeader('Last-Modified', gmdate('D,d M Y H:i:s', $now).' GMT')
@@ -224,7 +223,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 *
 	 * @return string
 	 */
-	public function getBody()
+	public function outputBody()
 	{
 		$this->_response->setHeader('Content-type',
 			"{$this->_contentType}; Charset={$this->_charset};");
@@ -239,7 +238,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 			$body = gzencode($body, 9,
 				$this->_compress == self::COMPRESS_GZIP ? FORCE_GZIP : FORCE_DEFLATE);
 		}
-		return $body;
+		echo $body;
 	}
 
 	/**
