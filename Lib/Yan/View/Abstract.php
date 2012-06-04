@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Abstract.php 17 2012-04-24 02:28:24Z kakalong $
  */
 
 /**
@@ -41,9 +40,9 @@ abstract class Yan_View_Abstract
 	 */
 	public function setOptions(array $options)
 	{
-		foreach ($options as $key=>$value) {
-			$method = 'set' . ucfirst ($key);
-			if (method_exists ($this, $method)) {
+		foreach ($options as $key => $value) {
+			$method = 'set' . ucfirst($key);
+			if (method_exists($this, $method)) {
 				// Setter exists; use it
 				$this->$method($value);
 			}
@@ -111,10 +110,10 @@ abstract class Yan_View_Abstract
 	public function assign($spec, $value = null)
 	{
 		if (is_string($spec)) {
-			$this->__set($spec,$value);
+			$this->__set($spec, $value);
 		} elseif (is_array($spec)) {
 			foreach ($spec as $k => $v) {
-				$this->__set($k,$v);
+				$this->__set($k, $v);
 			}
 		} else {
 			require_once 'Yan/View/Exception.php';

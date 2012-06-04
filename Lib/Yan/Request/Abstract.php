@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Abstract.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -134,9 +133,9 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * @param mixed $val
 	 * @return void
 	 */
-	public function offsetSet($key,$val)
+	public function offsetSet($key, $val)
 	{
-		$this->__set($key,$val);
+		$this->__set($key, $val);
 	}
 
 	/**
@@ -168,7 +167,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 */
 	public function setControllerKey($key)
 	{
-		$this->_controllerKey = (string) $key;
+		$this->_controllerKey = (string)$key;
 	}
 
 	/**
@@ -178,7 +177,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 */
 	public function setActionKey($key)
 	{
-		$this->_actionKey = (string) $key;
+		$this->_actionKey = (string)$key;
 		return $this;
 	}
 
@@ -189,7 +188,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 */
 	public function getControllerName()
 	{
-		if (! $this->_controller) {
+		if (!$this->_controller) {
 			$this->_controller = $this->__get($this->_controllerKey);
 		}
 		return $this->_controller;
@@ -212,7 +211,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 */
 	public function getActionName()
 	{
-		if (! $this->_action) {
+		if (!$this->_action) {
 			$this->_action = $this->__get($this->_actionKey);
 		}
 
@@ -236,9 +235,9 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getParam($key = null,$default=null)
+	public function getParam($key = null, $default = null)
 	{
-		if (null===$key) {
+		if (null === $key) {
 			return $this->_params;
 		}
 		return isset($this->_params[$key]) ? $this->_params[$key] : $default;
@@ -252,7 +251,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 */
 	public function setParams(array $array)
 	{
-		$this->_params = $this->_params + (array) $array;
+		$this->_params = $this->_params + (array)$array;
 
 		foreach ($this->_params as $key => $value) {
 			if (null === $value) {

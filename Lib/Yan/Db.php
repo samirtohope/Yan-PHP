@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Db.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -28,9 +27,9 @@ abstract class Yan_Db
 	/**
 	 * Use the INT_TYPE, BIGINT_TYPE, and FLOAT_TYPE with the quote() method.
 	 */
-	const INT_TYPE    = 0;
+	const INT_TYPE = 0;
 	const BIGINT_TYPE = 1;
-	const FLOAT_TYPE  = 2;
+	const FLOAT_TYPE = 2;
 
 	const ATTR_AUTOCOMMIT = 0;
 	const ATTR_CASE = 8;
@@ -144,10 +143,10 @@ abstract class Yan_Db
 		 * Convert object argument to array
 		 */
 		if (is_object($config)) {
-			if(method_exists($config, 'toArray')){
+			if (method_exists($config, 'toArray')) {
 				$config = $config->toArray();
-			}else{
-				$config = (array) $config;
+			} else {
+				$config = (array)$config;
 			}
 		}
 		/*
@@ -179,7 +178,7 @@ abstract class Yan_Db
 		/*
 		 * Verify that the object created is a descendent of the abstract adapter type.
 		 */
-		if (! $dbAdapter instanceof Yan_Db_Adapter) {
+		if (!$dbAdapter instanceof Yan_Db_Adapter) {
 			require_once 'Yan/Db/Exception.php';
 			throw new Yan_Db_Exception("Adapter class '$adapterName' does not extend Yan_Db_Adapter");
 		}
@@ -204,7 +203,7 @@ abstract class Yan_Db
 		if (is_string($db)) {
 			$db = Yan::get($db);
 		}
-		if (! $db instanceof Yan_Db_Adapter) {
+		if (!$db instanceof Yan_Db_Adapter) {
 			require_once 'Yan/Db/Exception.php';
 			throw new Yan_Db_Exception(
 				'Argument must be of type Yan_Db_Adapter, or a Registry key where a Yan_Db_Adapter object is stored'
@@ -221,8 +220,8 @@ abstract class Yan_Db
 	public static function getDefaultAdapter()
 	{
 		return self::$_defaultDb
-				? self::$_defaultDb
-				: self::$_lastDb;
+			? self::$_defaultDb
+			: self::$_lastDb;
 	}
 
 	/**
@@ -240,7 +239,7 @@ abstract class Yan_Db
 		if (is_string($cache)) {
 			$cache = Yan::get($cache);
 		}
-		if (! $cache instanceof Yan_Cache_Abstract) {
+		if (!$cache instanceof Yan_Cache_Abstract) {
 			require_once 'Yan/Db/Exception.php';
 			throw new Yan_Db_Exception(
 				'Argument must be of type Yan_Cache_Abstract, or a Registry key where a Yan_Cache_Abstract object is stored'

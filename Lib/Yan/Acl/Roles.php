@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Roles.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 /**
@@ -106,7 +105,7 @@ class Yan_Acl_Roles implements SeekableIterator, Countable, ArrayAccess
 
 	public function seek($position)
 	{
-		$position = (int) $position;
+		$position = (int)$position;
 		if ($position < 0 || $position >= $this->_count) {
 			require_once 'Yan/Acl/Exception.php';
 			throw new Yan_Acl_Exception("Illegal index $position");
@@ -117,7 +116,7 @@ class Yan_Acl_Roles implements SeekableIterator, Countable, ArrayAccess
 
 	public function offsetExists($offset)
 	{
-		return isset($this->_data[(int) $offset]);
+		return isset($this->_data[(int)$offset]);
 	}
 
 	/**
@@ -133,10 +132,12 @@ class Yan_Acl_Roles implements SeekableIterator, Countable, ArrayAccess
 	}
 
 	public function offsetSet($offset, $value)
-	{}
+	{
+	}
 
 	public function offsetUnset($offset)
-	{}
+	{
+	}
 
 	protected function _initRole($pos)
 	{

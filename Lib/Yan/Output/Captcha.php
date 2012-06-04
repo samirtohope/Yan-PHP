@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Captcha.php 20 2012-04-28 05:55:14Z kakalong $
  */
 
 require_once 'Yan/Output/Abstract.php';
@@ -36,7 +35,7 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 			Yan::loadClass($captcha);
 			$captcha = new $captcha();
 		} elseif (is_array($captcha)) {
-			if (! array_key_exists('class', $captcha)) {
+			if (!array_key_exists('class', $captcha)) {
 				require_once 'Yan/Output/Exception.php';
 				throw new Yan_Output_Exception('View class not provided in options');
 			}
@@ -45,7 +44,7 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 			Yan::loadClass($class);
 			$captcha = new $class($captcha);
 		}
-		if (! $captcha instanceof Yan_Captcha) {
+		if (!$captcha instanceof Yan_Captcha) {
 			require_once 'Yan/Output/Exception.php';
 			throw new Yan_Output_Exception('Not valid type of captcha instance.');
 		}

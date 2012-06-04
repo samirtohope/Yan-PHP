@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Captcha.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 /**
@@ -23,7 +22,7 @@ abstract class Yan_Captcha_Abstract
 		if (is_array($options)) {
 			$this->setOptions($options);
 		} else if ($options instanceof Yan_Config) {
-		   $this->setOptions($options->toArray());
+			$this->setOptions($options->toArray());
 		}
 	}
 
@@ -35,9 +34,9 @@ abstract class Yan_Captcha_Abstract
 	 */
 	public function setOptions(array $options)
 	{
-		foreach ($options as $key=>$value) {
-			$method = 'set' . ucfirst ($key);
-			if (method_exists ($this, $method)) {
+		foreach ($options as $key => $value) {
+			$method = 'set' . ucfirst($key);
+			if (method_exists($this, $method)) {
 				// Setter exists; use it
 				$this->$method($value);
 			}

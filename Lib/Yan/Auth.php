@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Auth.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -27,7 +26,8 @@ class Yan_Auth
 	 * Singleton pattern implementation makes "new" unavailable
 	 */
 	protected function __construct()
-	{}
+	{
+	}
 
 	/**
 	 * Returns an instance of Yan_Auth

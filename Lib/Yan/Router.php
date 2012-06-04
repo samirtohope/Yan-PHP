@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Router.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -61,7 +60,7 @@ class Yan_Router
 	public function route(Yan_Request_Abstract $request)
 	{
 		foreach (array_reverse($this->_routes) as $name => $route) {
-			if (($params = $route->match($request)) != false ) {
+			if (($params = $route->match($request)) != false) {
 				$request->setParams($params);
 				$this->_matchedRoute = $name;
 				break;

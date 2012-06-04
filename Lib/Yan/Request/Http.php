@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Http.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 require_once 'Yan/Request/Abstract.php';
@@ -53,7 +52,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 				require_once 'Yan/Uri.php';
 				$uri = new Yan_Uri($uri);
 			}
-			$path  = $uri->getPath();
+			$path = $uri->getPath();
 			$query = $uri->getQuery();
 			if (!empty($query)) {
 				$path .= '?' . $query;
@@ -157,7 +156,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 			}
 			return $this;
 		}
-		$_GET[(string) $spec] = $value;
+		$_GET[(string)$spec] = $value;
 		return $this;
 	}
 
@@ -170,7 +169,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * @param mixed $default Default value to use if key not found
 	 * @return mixed Returns null if key does not exist
 	 */
-	public function getPost($key = null,$default = null)
+	public function getPost($key = null, $default = null)
 	{
 		if (null === $key) {
 			return $_POST;
@@ -197,7 +196,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 			}
 			return $this;
 		}
-		$_POST[(string) $spec] = $value;
+		$_POST[(string)$spec] = $value;
 		return $this;
 	}
 
@@ -210,7 +209,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * @param mixed $default Default value to use if key not found
 	 * @return mixed Returns null if key does not exist
 	 */
-	public function getCookie($key = null,$default = null)
+	public function getCookie($key = null, $default = null)
 	{
 		if (null === $key) {
 			return $_COOKIE;
@@ -257,7 +256,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 */
 	public function getEnv($key = null, $default = null)
 	{
-		if (null===$key) {
+		if (null === $key) {
 			return $_ENV;
 		}
 		return isset($_ENV[$key]) ? $_ENV[$key] : $default;
@@ -279,8 +278,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 			}
 			// IIS7 with URL Rewrite: make sure we get the unencoded url (double slash problem)
 			elseif (isset($_SERVER['IIS_WasUrlRewritten']) && $_SERVER['IIS_WasUrlRewritten'] == '1'
-				&& isset($_SERVER['UNENCODED_URL']) && $_SERVER['UNENCODED_URL'] != '')
-			{
+				&& isset($_SERVER['UNENCODED_URL']) && $_SERVER['UNENCODED_URL'] != ''
+			) {
 				$requestUri = $_SERVER['UNENCODED_URL'];
 			} elseif (isset($_SERVER['REQUEST_URI'])) {
 				$requestUri = $_SERVER['REQUEST_URI'];
@@ -338,8 +337,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	{
 		if ($basePath === null) {
 			$filename = (isset($_SERVER['SCRIPT_FILENAME']))
-					  ? basename($_SERVER['SCRIPT_FILENAME'])
-					  : '';
+				? basename($_SERVER['SCRIPT_FILENAME'])
+				: '';
 			$baseUrl = $this->getBaseUrl();
 			if (empty($baseUrl)) {
 				$this->_basePath = '';
@@ -392,17 +391,17 @@ class Yan_Request_Http extends Yan_Request_Abstract
 			} elseif (isset($_SERVER['PHP_SELF']) && basename($_SERVER['PHP_SELF']) === $filename) {
 				$baseUrl = $_SERVER['PHP_SELF'];
 			} elseif (isset($_SERVER['ORIG_SCRIPT_NAME'])
-				&& basename($_SERVER['ORIG_SCRIPT_NAME']) === $filename)
-			{
+				&& basename($_SERVER['ORIG_SCRIPT_NAME']) === $filename
+			) {
 				// 1and1 shared hosting compatibility
 				$baseUrl = $_SERVER['ORIG_SCRIPT_NAME'];
 			} else {
 				// Backtrack up the script_filename to find the portion matching
-				$path    = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
-				$file    = isset($_SERVER['SCRIPT_FILENAME']) ? trim($_SERVER['SCRIPT_FILENAME'], '/') : '';
-				$segs    = array_reverse(explode('/', $file));
-				$index   = 0;
-				$last    = count($segs);
+				$path = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
+				$file = isset($_SERVER['SCRIPT_FILENAME']) ? trim($_SERVER['SCRIPT_FILENAME'], '/') : '';
+				$segs = array_reverse(explode('/', $file));
+				$index = 0;
+				$last = count($segs);
 				$baseUrl = '';
 				do {
 					$baseUrl = '/' . $segs[$index] . $baseUrl;
@@ -443,8 +442,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 			// If using mod_rewrite or ISAPI_Rewrite strip the script filename
 			// out of baseUrl. $pos !== 0 makes sure it is not matching a value
 			// from PATH_INFO or QUERY_STRING
-			if (strlen($requestUri) >= strlen($baseUrl) && ($pos = strpos($requestUri, $baseUrl)))
-			{
+			if (strlen($requestUri) >= strlen($baseUrl) && ($pos = strpos($requestUri, $baseUrl))) {
 				$baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));
 			}
 		}
@@ -490,7 +488,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 			}
 		}
 
-		$this->_pathInfo = (string) $pathInfo;
+		$this->_pathInfo = (string)$pathInfo;
 		return $this;
 	}
 
@@ -592,7 +590,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 		}
 
 		if (!(($scheme == 'http' && $port == 80) || ($scheme == 'https' && $port == 443))) {
-			$name .= ':'.$port;
+			$name .= ':' . $port;
 		}
 
 		return $name;

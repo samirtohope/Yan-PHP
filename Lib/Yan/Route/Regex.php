@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Regex.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Route/Interface.php';
@@ -29,16 +28,17 @@ class Yan_Route_Regex implements Yan_Route_Interface
 			require_once 'Yan/Route/Exception.php';
 			throw new Yan_Route_Exception('Yan_Route_Regex need options "rule"');
 		}
-		$this->_regex    = (string) $config['rule'];
+		$this->_regex = (string)$config['rule'];
 		$this->_defaults = isset($config['defaults'])
-			? $this->_getMappedValues((array) $config['defaults'])
+			? $this->_getMappedValues((array)$config['defaults'])
 			: array();
-		$this->_map      = isset($config['map']) ? (array) $config['map'] : array();
-		$this->_reverse  = isset($config['reverse']) ? $config['reverse'] : null;
-		$this->_hashost  = !empty($config['hashost']);
+		$this->_map = isset($config['map']) ? (array)$config['map'] : array();
+		$this->_reverse = isset($config['reverse']) ? $config['reverse'] : null;
+		$this->_hashost = !empty($config['hashost']);
 	}
 
-	public function match(Yan_Request_Abstract $request) {
+	public function match(Yan_Request_Abstract $request)
+	{
 		if ($this->_hashost) {
 			$path = $request->getHttpHost() . $request->getBasePath() . $request->getPathInfo();
 			$path = trim(urldecode($path), Yan_Route_Interface::URI_DELI);
@@ -50,23 +50,24 @@ class Yan_Route_Regex implements Yan_Route_Interface
 
 		$res = preg_match($regex, $path, $values);
 
-		if (! $res) {
+		if (!$res) {
 			return false;
 		}
 
 		unset($values[0]);
 
 		$values = $this->_getMappedValues($values);
-		$return   = $values + $this->_defaults;
+		$return = $values + $this->_defaults;
 		return $return;
 	}
 
-	protected function _getMappedValues($values) {
+	protected function _getMappedValues($values)
+	{
 		if (count($this->_map) == 0) {
 			return $values;
 		}
 		$return = array();
-		foreach ($values as $key=>$value) {
+		foreach ($values as $key => $value) {
 			if (is_int($key)) {
 				if (array_key_exists($key, $this->_map)) {
 					$index = $this->_map[$key];

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Adapter.php 18 2012-04-26 10:49:57Z kakalong $
  */
 
 /**
@@ -71,20 +70,20 @@ abstract class Yan_Db_Adapter
 	 * @var array Associative array of datatypes to values 0, 1, or 2.
 	 */
 	protected $_numericDataTypes = array(
-		Yan_Db::INT_TYPE    => Yan_Db::INT_TYPE,
+		Yan_Db::INT_TYPE => Yan_Db::INT_TYPE,
 		Yan_Db::BIGINT_TYPE => Yan_Db::BIGINT_TYPE,
-		Yan_Db::FLOAT_TYPE  => Yan_Db::FLOAT_TYPE
+		Yan_Db::FLOAT_TYPE => Yan_Db::FLOAT_TYPE
 	);
 
 	protected $_options = array(
-		'host'        => true,
-		'port'        => false,
-		'password'    => true,
-		'username'    => true,
-		'charset'     => false,
-		'dbname'      => true,
-		'prefix'      => false,
-		'persistent'  => false,
+		'host' => true,
+		'port' => false,
+		'password' => true,
+		'username' => true,
+		'charset' => false,
+		'dbname' => true,
+		'prefix' => false,
+		'persistent' => false,
 		'driver_options' => false
 	);
 
@@ -121,8 +120,7 @@ abstract class Yan_Db_Adapter
 			/*
 			 * Convert object argument to a plain array.
 			 */
-			if (is_object($config) && method_exists($config, 'toArray'))
-			{
+			if (is_object($config) && method_exists($config, 'toArray')) {
 				$config = $config->toArray();
 			} else {
 				require_once 'Yan/Db/Adapter/Exception.php';
@@ -131,13 +129,13 @@ abstract class Yan_Db_Adapter
 		}
 
 		if (isset($config[Yan_Db::CASE_FOLDING])) {
-			$case = (int) $config[Yan_Db::CASE_FOLDING];
+			$case = (int)$config[Yan_Db::CASE_FOLDING];
 			switch ($case) {
-				case Yan_Db::CASE_LOWER:
-				case Yan_Db::CASE_UPPER:
-				case Yan_Db::CASE_NATURAL:
-					$this->_caseFolding = $case;
-					break;
+			case Yan_Db::CASE_LOWER:
+			case Yan_Db::CASE_UPPER:
+			case Yan_Db::CASE_NATURAL:
+				$this->_caseFolding = $case;
+				break;
 			}
 		}
 
@@ -149,13 +147,13 @@ abstract class Yan_Db_Adapter
 					$mode = constant($constant);
 				}
 			}
-			$this->setFetchMode((int) $mode);
+			$this->setFetchMode((int)$mode);
 		}
 
 		foreach ($this->_options as $key => $optional) {
 			if (isset($config[$key])) {
 				$this->_config[$key] = $config[$key];
-			} elseif($optional) {
+			} elseif ($optional) {
 				require_once 'Yan/Db/Adapter/Exception.php';
 				throw new Yan_Db_Adapter_Exception(
 					"Configuration array must have a key for '$key' that names the database instance"
@@ -232,7 +230,7 @@ abstract class Yan_Db_Adapter
 	 */
 	public function isConnected()
 	{
-		return ((bool) ($this->_connection instanceof PDO));
+		return ((bool)($this->_connection instanceof PDO));
 	}
 
 	/**
@@ -488,7 +486,7 @@ abstract class Yan_Db_Adapter
 				$vals[] = $val->__toString();
 				unset($bind[$col]);
 			} else {
-				$vals[] = ':'.$col;
+				$vals[] = ':' . $col;
 			}
 		}
 
@@ -498,8 +496,8 @@ abstract class Yan_Db_Adapter
 
 		// build the statement
 		$sql = "INSERT INTO $table"
-			 . ' (' . implode(', ', $cols) . ') '
-			 . 'VALUES (' . implode(', ', $vals) . ')';
+			. ' (' . implode(', ', $cols) . ') '
+			. 'VALUES (' . implode(', ', $vals) . ')';
 		// execute the statement and return the number of affected rows
 		$stmt = $this->query($sql, $bind);
 		$result = $stmt->rowCount();
@@ -522,7 +520,7 @@ abstract class Yan_Db_Adapter
 				$val = $val->__toString();
 				unset($bind[$col]);
 			} else {
-				$val = ':'.$col;
+				$val = ':' . $col;
 			}
 			$set[] = $this->quoteIdentifier($col, true) . ' = ' . $val;
 		}
@@ -536,8 +534,8 @@ abstract class Yan_Db_Adapter
 		 * Build the UPDATE statement
 		 */
 		$sql = "UPDATE $table"
-			 . ' SET ' . implode(', ', $set)
-			 . (($where) ? " WHERE $where" : '');
+			. ' SET ' . implode(', ', $set)
+			. (($where) ? " WHERE $where" : '');
 
 		/**
 		 * Execute the statement and return the number of affected rows
@@ -578,7 +576,7 @@ abstract class Yan_Db_Adapter
 	public function whereExpr($where, $join = ' AND ')
 	{
 		if (!is_array($where)) {
-			return (string) $where;
+			return (string)$where;
 		}
 		if (empty($where)) {
 			return '';
@@ -592,7 +590,7 @@ abstract class Yan_Db_Adapter
 					continue;
 				}
 			}
-			$term = '('.$this->cond($cond, $term).')';
+			$term = '(' . $this->cond($cond, $term) . ')';
 		}
 		return implode($join, $where);
 	}
@@ -600,18 +598,18 @@ abstract class Yan_Db_Adapter
 	public function cond($expr, $value = null, $type = null)
 	{
 		if ($value === null || !is_string($expr)) {
-			return (string) $expr;
+			return (string)$expr;
 		}
 		if (!$expr) {
 			return '';
 		}
 		if (($pos = strpos($expr, '?')) !== false) {
 			if (is_array($value)) {
-				for($i=0,$l=count($value);$i<$l;$i++){
+				for ($i = 0, $l = count($value); $i < $l; $i++) {
 					$val = $this->quote($value[$i], $type);
 					$expr = substr_replace($expr, $val, $pos, 1);
 					$pos = strpos($expr, '?', $pos + strlen($val));
-					if(!$pos) break;
+					if (!$pos) break;
 				}
 				return $expr;
 			} else {
@@ -619,10 +617,10 @@ abstract class Yan_Db_Adapter
 			}
 		}
 		$column = str_replace($this->getQuoteIdentifierSymbol(), '', $expr);
-		if (preg_match('/[^\w\.]/',$column)) {
+		if (preg_match('/[^\w\.]/', $column)) {
 			return $expr;
 		}
-		$column = $this->_quoteIdentifierAs($column,null,true);
+		$column = $this->_quoteIdentifierAs($column, null, true);
 		if (is_array($value)) {
 			if (!$value) {
 				return '';
@@ -630,11 +628,11 @@ abstract class Yan_Db_Adapter
 			foreach ($value as &$a) {
 				$a = $this->quote($a, $type);
 			}
-			$value = ' IN ('.implode(', ', $value).')';
+			$value = ' IN (' . implode(', ', $value) . ')';
 		} else {
-			$value = ' = '.$this->quote($value, $type);
+			$value = ' = ' . $this->quote($value, $type);
 		}
-		return $column.$value;
+		return $column . $value;
 	}
 
 	/**
@@ -684,14 +682,14 @@ abstract class Yan_Db_Adapter
 		if ($type !== null && array_key_exists($type = strtoupper($type), $this->_numericDataTypes)) {
 			$quotedValue = '0';
 			switch ($this->_numericDataTypes[$type]) {
-				case Yan_Db::INT_TYPE: // 32-bit integer
-					$quotedValue = (string) intval($value);
-					break;
-				case Yan_Db::BIGINT_TYPE: // 64-bit integer
-					// ANSI SQL-style hex literals (e.g. x'[\dA-F]+')
-					// are not supported here, because these are string
-					// literals, not numeric literals.
-					if (preg_match('/^(
+			case Yan_Db::INT_TYPE: // 32-bit integer
+				$quotedValue = (string)intval($value);
+				break;
+			case Yan_Db::BIGINT_TYPE: // 64-bit integer
+				// ANSI SQL-style hex literals (e.g. x'[\dA-F]+')
+				// are not supported here, because these are string
+				// literals, not numeric literals.
+				if (preg_match('/^(
 						  [+-]?                  # optional sign
 						  (?:
 							0[Xx][\da-fA-F]+     # ODBC-style hexadecimal
@@ -699,12 +697,13 @@ abstract class Yan_Db_Adapter
 							(?:[eE][+-]?\d+)?    # optional exponent on decimals or octals
 						  )
 						)/x',
-						(string) $value, $matches)) {
-						$quotedValue = $matches[1];
-					}
-					break;
-				case Yan_Db::FLOAT_TYPE: // float or decimal
-					$quotedValue = sprintf('%F', $value);
+					(string)$value, $matches)
+				) {
+					$quotedValue = $matches[1];
+				}
+				break;
+			case Yan_Db::FLOAT_TYPE: // float or decimal
+				$quotedValue = sprintf('%F', $value);
 			}
 			return $quotedValue;
 		}
@@ -768,7 +767,7 @@ abstract class Yan_Db_Adapter
 	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
 	 * @return string The quoted identifier.
 	 */
-	public function quoteIdentifier($ident, $auto=false)
+	public function quoteIdentifier($ident, $auto = false)
 	{
 		return $this->_quoteIdentifierAs($ident, null, $auto);
 	}
@@ -781,7 +780,7 @@ abstract class Yan_Db_Adapter
 	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
 	 * @return string The quoted identifier and alias.
 	 */
-	public function quoteColumnAs($ident, $alias, $auto=false)
+	public function quoteColumnAs($ident, $alias, $auto = false)
 	{
 		return $this->_quoteIdentifierAs($ident, $alias, $auto);
 	}
@@ -804,7 +803,7 @@ abstract class Yan_Db_Adapter
 			}
 			$schema = null;
 			$table = $ident[0];
-			if(isset($ident[1])){
+			if (isset($ident[1])) {
 				$schema = $table;
 				$table = $ident[1];
 			}
@@ -815,7 +814,7 @@ abstract class Yan_Db_Adapter
 			if ($table instanceof Yan_Db_Expr) {
 				$quoted .= $table->__toString();
 			} else {
-				$table = $this->_config['prefix'].$table;
+				$table = $this->_config['prefix'] . $table;
 				if ($alias == $table) {
 					$alias = null;
 				}
@@ -877,7 +876,7 @@ abstract class Yan_Db_Adapter
 	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
 	 * @return string        The quoted identifier and alias.
 	 */
-	protected function _quoteIdentifier($value, $auto=false)
+	protected function _quoteIdentifier($value, $auto = false)
 	{
 		if ($auto === false || $this->_autoQuoteIdentifiers === true) {
 			$q = $this->getQuoteIdentifierSymbol();
@@ -949,18 +948,18 @@ abstract class Yan_Db_Adapter
 	public function setFetchMode($mode)
 	{
 		switch ($mode) {
-			case Yan_Db::FETCH_LAZY:
-			case Yan_Db::FETCH_ASSOC:
-			case Yan_Db::FETCH_NUM:
-			case Yan_Db::FETCH_BOTH:
-			case Yan_Db::FETCH_NAMED:
-			case Yan_Db::FETCH_OBJ:
-				$this->_fetchMode = $mode;
-				break;
-			default:
-				require_once 'Yan/Db/Adapter/Exception.php';
-				throw new Yan_Db_Adapter_Exception("Invalid fetch mode '$mode' specified");
-				break;
+		case Yan_Db::FETCH_LAZY:
+		case Yan_Db::FETCH_ASSOC:
+		case Yan_Db::FETCH_NUM:
+		case Yan_Db::FETCH_BOTH:
+		case Yan_Db::FETCH_NAMED:
+		case Yan_Db::FETCH_OBJ:
+			$this->_fetchMode = $mode;
+			break;
+		default:
+			require_once 'Yan/Db/Adapter/Exception.php';
+			throw new Yan_Db_Adapter_Exception("Invalid fetch mode '$mode' specified");
+			break;
 		}
 	}
 
@@ -977,7 +976,7 @@ abstract class Yan_Db_Adapter
 	 */
 	public function errorInfo()
 	{
-		return $this->isConnected() ? $this->_connection->errorInfo() : array(0=>Yan_Db::ERR_NONE);
+		return $this->isConnected() ? $this->_connection->errorInfo() : array(0 => Yan_Db::ERR_NONE);
 	}
 
 	/**
@@ -996,16 +995,16 @@ abstract class Yan_Db_Adapter
 	 * The value of each array element is an associative array
 	 * with the following keys:
 	 *
-	 * COLUMN_NAME	=> string; column name
-	 * COLUMN_POS	=> number; ordinal position of column in table
-	 * DATA_TYPE	=> string; SQL datatype name of column
-	 * DEFAULT		=> string; default expression of column, null if none
-	 * NULLABLE		=> boolean; true if column can have nulls
-	 * LENGTH		=> number; length of CHAR/VARCHAR
-	 * UNSIGNED		=> boolean; unsigned property of an integer type
-	 * PRIMARY		=> boolean; true if column is part of the primary key
-	 * PRIMARY_POS	=> integer; position of column in primary key
-	 * IDENTITY		=> integer; true if column isautoIncrement
+	 * COLUMN_NAME    => string; column name
+	 * COLUMN_POS    => number; ordinal position of column in table
+	 * DATA_TYPE    => string; SQL datatype name of column
+	 * DEFAULT        => string; default expression of column, null if none
+	 * NULLABLE        => boolean; true if column can have nulls
+	 * LENGTH        => number; length of CHAR/VARCHAR
+	 * UNSIGNED        => boolean; unsigned property of an integer type
+	 * PRIMARY        => boolean; true if column is part of the primary key
+	 * PRIMARY_POS    => integer; position of column in primary key
+	 * IDENTITY        => integer; true if column isautoIncrement
 	 *
 	 * @param string $quotedTable
 	 *

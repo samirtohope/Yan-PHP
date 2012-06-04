@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Log.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -44,7 +43,8 @@ class Yan_Log
 	 * Class constructor.  Create a new Log
 	 */
 	protected function __construct()
-	{}
+	{
+	}
 
 	/**
 	 * get a singleton log object
@@ -79,7 +79,7 @@ class Yan_Log
 		$this->_writers[] = $writer;
 		$str = str_pad(' Yan START ', 68, '*', STR_PAD_BOTH);
 		$writer->append($this->_event($str, self::LOG));
-		$writer->append($this->_event('REQUEST_URI:'.$_SERVER['PHP_SELF'], self::LOG));
+		$writer->append($this->_event('REQUEST_URI:' . $_SERVER['PHP_SELF'], self::LOG));
 	}
 
 	/**
@@ -90,7 +90,7 @@ class Yan_Log
 	 */
 	public function append($msg, $priority)
 	{
-		if (! isset($this->_type[$priority])) {
+		if (!isset($this->_type[$priority])) {
 			require_once 'Yan/Log/Exception.php';
 			throw new Yan_Log_Exception('Bad log priority');
 		}
@@ -124,7 +124,8 @@ class Yan_Log
 		foreach ($this->_writers as $writer) {
 			try {
 				$writer->write();
-			} catch (Exception $e) {}
+			} catch (Exception $e) {
+			}
 		}
 	}
 }

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Cache.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 require_once 'Yan/Cache/Abstract.php';
@@ -44,10 +43,10 @@ abstract class Yan_Cache
 		 * Convert object argument to array
 		 */
 		if (is_object($config)) {
-			if (method_exists($config,'toArray')) {
+			if (method_exists($config, 'toArray')) {
 				$config = $config->toArray();
 			} else {
-				$config = (array) $config;
+				$config = (array)$config;
 			}
 		}
 		/*
@@ -61,7 +60,7 @@ abstract class Yan_Cache
 		/*
 		 * Form full adapter class name
 		 */
-		$adapterClass = Yan::loadClass('Yan_Cache_'.strtolower($adapter));
+		$adapterClass = Yan::loadClass('Yan_Cache_' . strtolower($adapter));
 
 		/*
 		 * Create an instance of the adapter class.
@@ -72,7 +71,7 @@ abstract class Yan_Cache
 		/*
 		 * Verify that the object created is a descendent of the abstract adapter type.
 		 */
-		if (! $adapter instanceof Yan_Cache_Abstract) {
+		if (!$adapter instanceof Yan_Cache_Abstract) {
 			require_once 'Yan/Cache/Exception.php';
 			throw new Yan_Cache_Exception("Adapter class '$adapterClass' does not extend Yan_Cache_Abstract");
 		}

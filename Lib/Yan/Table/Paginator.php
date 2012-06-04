@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Paginator.php 20 2012-04-28 05:55:14Z kakalong $
  */
 
 /**
@@ -24,10 +23,10 @@ class Yan_Table_Paginator implements Countable
 	public function __construct(array $options = null)
 	{
 		if ($options != null) {
-			$setups = array('pageSize','pageRange','currentPage');
+			$setups = array('pageSize', 'pageRange', 'currentPage');
 			foreach ($setups as $set) {
-				if (array_key_exists($set,$options)) {
-					$this->{'set'.ucfirst($set)}($options[$set]);
+				if (array_key_exists($set, $options)) {
+					$this->{'set' . ucfirst($set)}($options[$set]);
 				}
 			}
 		}
@@ -35,7 +34,7 @@ class Yan_Table_Paginator implements Countable
 
 	public function setPageSize($val)
 	{
-		if (($val = abs((int) $val)) > 0) {
+		if (($val = abs((int)$val)) > 0) {
 			$this->_pageSize = $val;
 		}
 		return $this;
@@ -43,7 +42,7 @@ class Yan_Table_Paginator implements Countable
 
 	public function setPageRange($val)
 	{
-		if (($val = abs((int) $val)) > 0) {
+		if (($val = abs((int)$val)) > 0) {
 			$this->_pageRange = $val;
 		}
 		return $this;
@@ -51,7 +50,7 @@ class Yan_Table_Paginator implements Countable
 
 	public function setCurrentPage($val)
 	{
-		if (($val = abs((int) $val)) > 0) {
+		if (($val = abs((int)$val)) > 0) {
 			$this->_currentPage = $val;
 		}
 		return $this;
@@ -74,7 +73,7 @@ class Yan_Table_Paginator implements Countable
 
 	public function init($recordCount)
 	{
-		$this->_recordCount = (int) $recordCount;
+		$this->_recordCount = (int)$recordCount;
 		return $this;
 	}
 
@@ -85,7 +84,7 @@ class Yan_Table_Paginator implements Countable
 	 */
 	public function count()
 	{
-		if (! $this->_pageCount) {
+		if (!$this->_pageCount) {
 			$this->_pageCount = ceil($this->getRecordCount() / $this->getPageSize());
 		}
 
@@ -94,16 +93,16 @@ class Yan_Table_Paginator implements Countable
 
 	public function getPages()
 	{
-		$pageCount   = $this->count();
+		$pageCount = $this->count();
 		$currentPage = $this->getCurrentPage();
 
 		$pages = new stdClass();
 		$pages->recordCount = $this->getRecordCount();
 		$pages->pageCount = $pageCount;
-		$pages->pageSize  = $this->getPageSize();
-		$pages->first     = 1;
-		$pages->current   = $currentPage;
-		$pages->last      = $pageCount;
+		$pages->pageSize = $this->getPageSize();
+		$pages->first = 1;
+		$pages->current = $currentPage;
+		$pages->last = $pageCount;
 
 		// Previous and next
 		if ($currentPage > 1) {
@@ -116,5 +115,6 @@ class Yan_Table_Paginator implements Countable
 	}
 
 	public function render()
-	{}
+	{
+	}
 }

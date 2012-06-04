@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Record.php 20 2012-04-28 05:55:14Z kakalong $
  */
 
 /**
@@ -14,14 +13,14 @@
  */
 class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 {
-	const ATTR_COLUMN   = 0;
-	const ATTR_MESSAGE  = 1;
-	const ATTR_TYPE     = 2;
+	const ATTR_COLUMN = 0;
+	const ATTR_MESSAGE = 1;
+	const ATTR_TYPE = 2;
 
-	const ON_UPDATE     = 1;
-	const ON_INSERT     = 2;
-	const ON_EMPTY      = 4;
-	const ON_BOTH       = 7;
+	const ON_UPDATE = 1;
+	const ON_INSERT = 2;
+	const ON_EMPTY = 4;
+	const ON_BOTH = 7;
 
 	/**
 	 * @var Yan_Table
@@ -119,7 +118,8 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 * initilize of table
 	 */
 	protected function _init()
-	{}
+	{
+	}
 
 	/**
 	 * access values contained in record
@@ -129,7 +129,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 */
 	public function __get($column)
 	{
-		$accessor = '_get'.$this->_toCamelFormat($column);
+		$accessor = '_get' . $this->_toCamelFormat($column);
 		if (method_exists($this, $accessor)) {
 			return $this->$accessor();
 		}
@@ -147,7 +147,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 */
 	public function __set($column, $value)
 	{
-		$mutator = '_set'.$this->_toCamelFormat($column);
+		$mutator = '_set' . $this->_toCamelFormat($column);
 		if (method_exists($this, $mutator)) {
 			$this->$mutator($value);
 		} elseif (array_key_exists($column, $this->_columns)) {
@@ -273,7 +273,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 
 		$newPkData = $pkData;
 		if (!is_array($newPkData)) {
-			$primary = (array) $this->_primary;
+			$primary = (array)$this->_primary;
 			$newPkData = array(current($primary) => $newPkData);
 		}
 
@@ -377,8 +377,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 			return $this->_data;
 		}
 		$data = $this->_data;
-		foreach ($this->_cleanData as $key=>$val)
-		{
+		foreach ($this->_cleanData as $key => $val) {
 			if ($val == $data[$key]) {
 				unset($data[$key]);
 			}
@@ -394,8 +393,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 */
 	public function isModified($column)
 	{
-		if (empty($this->_cleanData) || !array_key_exists($column, $this->_cleanData))
-		{
+		if (empty($this->_cleanData) || !array_key_exists($column, $this->_cleanData)) {
 			return array_key_exists($column, $this->_data);
 		}
 		return $this->_cleanData[$column] != $this->_data[$column];
@@ -464,8 +462,8 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 			// apply _fillColumn OR _fillColumnOnUpdate _fillColumnOnInsert
 			$func = '_fill' . $this->_toCamelFormat($column);
 			if (method_exists($this, $func)
-				|| method_exists($this, ($func = $func . $when)))
-			{
+				|| method_exists($this, ($func = $func . $when))
+			) {
 				$this->__set($column, $this->$func($on));
 			}
 			// use defaultSource to fill
@@ -481,15 +479,15 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 
 		// fill empty column
 		$columns = $on == self::ON_UPDATE ? $this->_data : $this->_columns;
-		foreach ($columns as $column=>$v) {
+		foreach ($columns as $column => $v) {
 			if (isset($this->_data[$column]) && !$this->_isNull($this->_data[$column])) {
 				continue;
 			}
 			// apply _fillColumn OR _fillColumnOnEmpty
 			$func = '_fill' . $this->_toCamelFormat($column);
 			if (method_exists($this, $func)
-				|| method_exists($this, ($func = $func . 'OnEmpty')))
-			{
+				|| method_exists($this, ($func = $func . 'OnEmpty'))
+			) {
 				$this->__set($column, $this->$func($on));
 			}
 			// use defaultSource to fill
@@ -514,9 +512,9 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	protected function _addError($column, $msg, $type = null)
 	{
 		$this->_errors[] = array(
-			self::ATTR_COLUMN  => $column,
+			self::ATTR_COLUMN => $column,
 			self::ATTR_MESSAGE => $msg,
-			self::ATTR_TYPE    => $type
+			self::ATTR_TYPE => $type
 		);
 	}
 
@@ -571,8 +569,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 				$class = $name . 'Validator';
 				Yan::loadClass($class);
 				$rf = new ReflectionClass($class);
-				if (!$rf->isSubclassOf('Yan_Table_Validator_Interface'))
-				{
+				if (!$rf->isSubclassOf('Yan_Table_Validator_Interface')) {
 					throw new Exception('catch');
 				}
 			} catch (Exception $e) {
@@ -615,7 +612,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 			if ($value instanceof Yan_Db_Expr) {
 				continue;
 			} else if (is_object($value)) {
-				$value = (string) $value;
+				$value = (string)$value;
 			}
 			// apply validators
 			foreach (array($on, self::ON_BOTH) as $o) {
@@ -702,7 +699,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 */
 	public function getIterator()
 	{
-		return new ArrayIterator((array) $this->_data);
+		return new ArrayIterator((array)$this->_data);
 	}
 
 	/**
@@ -713,7 +710,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 */
 	protected function _fire($event, $on)
 	{
-		$call = '_'.$event.ucfirst($on);
+		$call = '_' . $event . ucfirst($on);
 		if (method_exists($this, $call)) {
 			$this->$call();
 		}

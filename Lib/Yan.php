@@ -3,14 +3,13 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Yan.php 16 2012-04-23 14:32:49Z kakalong $
  */
 
 /*  remember framework start time  */
 define('START_MICROTIME', microtime(true));
 
 /*  current unix timestamp  */
-define('START_TIME', isset($_SERVER['REQUEST_TIME']) ? (int) $_SERVER['REQUEST_TIME'] : time());
+define('START_TIME', isset($_SERVER['REQUEST_TIME']) ? (int)$_SERVER['REQUEST_TIME'] : time());
 
 /* compatible 5.3 below */
 defined('E_DEPRECATED') or define('E_DEPRECATED', 8192);
@@ -26,20 +25,20 @@ defined('E_DEPRECATED') or define('E_DEPRECATED', 8192);
 function dump($var, $label = null, $return = false)
 {
 	// format the label
-	$label = ($label===null) ? '' : rtrim($label) . ' ';
+	$label = ($label === null) ? '' : rtrim($label) . ' ';
 
-	$output = print_r($var,true);
+	$output = print_r($var, true);
 
 	if (PHP_SAPI == 'cli') {
 		$output = PHP_EOL . $label
-				. PHP_EOL . $output
-				. PHP_EOL;
+			. PHP_EOL . $output
+			. PHP_EOL;
 	} else {
 		$output = htmlspecialchars($output, ENT_QUOTES);
 		$output = '<pre>'
-				. $label
-				. $output
-				. '</pre>';
+			. $label
+			. $output
+			. '</pre>';
 	}
 
 	if ($return) {
@@ -56,17 +55,16 @@ function dump($var, $label = null, $return = false)
 function console($message)
 {
 	static $fb = null;
-	if ($fb == null)
-	{
+	if ($fb == null) {
 		require_once 'Helper/FirePHP/FirePHP.class.php';
 		$fb = FirePHP::getInstance(true);
 	}
-    $fb->info($message);
+	$fb->info($message);
 }
 
 function excerpt($file, $line)
 {
-	if ( !(file_exists($file) && is_file($file)) ) {
+	if (!(file_exists($file) && is_file($file))) {
 		return array();
 	}
 	$data = file($file);
@@ -92,7 +90,7 @@ function T($table)
 
 /**
  * A quick function to make a Yan_Db_Expr
- * 
+ *
  * @param string $expr
  * @return Yan_Db_Expr
  */
@@ -124,11 +122,10 @@ abstract class Yan
 		$name = ucwords(str_replace('_', ' ', $name));
 		$name = str_replace(' ', '_', $name);
 		$file = str_replace('_', '/', $name) . '.php';
-		if (class_exists($name, false) || interface_exists($name, false))
-		{
+		if (class_exists($name, false) || interface_exists($name, false)) {
 			return $name;
 		}
-		if (! empty($dirs) && (is_array($dirs) || is_string($dirs))) {
+		if (!empty($dirs) && (is_array($dirs) || is_string($dirs))) {
 			if (is_array($dirs)) {
 				$dirs = implode(PATH_SEPARATOR, $dirs);
 			}
@@ -139,8 +136,7 @@ abstract class Yan
 		} else {
 			include_once $file;
 		}
-		if ( !class_exists($name, false) && !interface_exists($name, false) )
-		{
+		if (!class_exists($name, false) && !interface_exists($name, false)) {
 			require_once 'Yan/Exception.php';
 			throw new Yan_Exception(
 				"File '$file' does not exist or class '$name' was not found in the file"
@@ -169,7 +165,7 @@ abstract class Yan
 	 */
 	public static function get($index)
 	{
-		if(!array_key_exists($index, self::$_registry)){
+		if (!array_key_exists($index, self::$_registry)) {
 			require_once 'Yan/Exception.php';
 			throw new Yan_Exception("No entry is registered for key '$index'");
 		}
@@ -206,17 +202,18 @@ abstract class Yan
 			$name = ucwords(str_replace('_', ' ', $name));
 			$name = str_replace(' ', '_', $name);
 			include_once str_replace('_', '/', $name) . '.php';
-		} catch (Exception $e) {}
+		} catch (Exception $e) {
+		}
 	}
 
 	public static function __exception_handler($e)
 	{
-		$error	= get_class($e);
-		$errstr	= $e->getMessage();
-		$errno	= $e->getCode();
-		$errfile= $e->getFile();
-		$errline= $e->getLine();
-		$trace	= $e->getTrace();
+		$error = get_class($e);
+		$errstr = $e->getMessage();
+		$errno = $e->getCode();
+		$errfile = $e->getFile();
+		$errline = $e->getLine();
+		$trace = $e->getTrace();
 		if ($e instanceof ErrorException) {
 			array_slice($trace, 0, 2);
 		}
@@ -235,23 +232,23 @@ abstract class Yan
 			if (is_array($point['args']) && count($point['args']) > 0) {
 				foreach ($point['args'] as $arg) {
 					switch (gettype($arg)) {
-						case 'array':
-							$argd[] = 'array(' . count($arg) . ')';
-							break;
-						case 'resource':
-							$argd[] = gettype($arg);
-							break;
-						case 'object':
-							$argd[] = get_class($arg);
-							break;
-						case 'string':
-							if (strlen($arg) > 30) {
-								$arg = substr($arg, 0, 27) . ' ...';
-							}
-							$argd[] = "'{$arg}'";
-							break;
-						default:
-							$argd[] = $arg;
+					case 'array':
+						$argd[] = 'array(' . count($arg) . ')';
+						break;
+					case 'resource':
+						$argd[] = gettype($arg);
+						break;
+					case 'object':
+						$argd[] = get_class($arg);
+						break;
+					case 'string':
+						if (strlen($arg) > 30) {
+							$arg = substr($arg, 0, 27) . ' ...';
+						}
+						$argd[] = "'{$arg}'";
+						break;
+					default:
+						$argd[] = $arg;
 					}
 				}
 			}
@@ -261,7 +258,8 @@ abstract class Yan
 		try {
 			require_once 'Yan/Log.php';
 			Yan_Log::log("{$errstr} in {$errfile}:{$errline}", Yan_Log::ERROR);
-		} catch (Exception $e){}
+		} catch (Exception $e) {
+		}
 		while (ob_get_level() > 0) {
 			ob_end_clean();
 		}
@@ -272,11 +270,14 @@ abstract class Yan
 	public static function __error_handler($errno, $errstr, $errfile, $errline)
 	{
 		switch ($errno) {
-			case E_NOTICE: case E_STRICT: case E_DEPRECATED:
-				try {
-					require_once 'Yan/Log.php';
-					Yan_Log::log("{$errstr} in {$errfile}:{$errline}", Yan_Log::NOTICE);
-				} catch (Exception $e){}
+		case E_NOTICE:
+		case E_STRICT:
+		case E_DEPRECATED:
+			try {
+				require_once 'Yan/Log.php';
+				Yan_Log::log("{$errstr} in {$errfile}:{$errline}", Yan_Log::NOTICE);
+			} catch (Exception $e) {
+			}
 			return;
 		}
 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: DbTable.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Auth/Adapter/Interface.php';
@@ -69,22 +68,26 @@ class Yan_Auth_Adapter_DbTable implements Yan_Auth_Adapter_Interface
 		$this->_credential = $credential;
 	}
 
-	public function setTableName($tableName) {
+	public function setTableName($tableName)
+	{
 		$this->_tableName = $tableName;
 		return $this;
 	}
 
-	public function setIdentityColumn($identityColumn) {
+	public function setIdentityColumn($identityColumn)
+	{
 		$this->_identityColumn = $identityColumn;
 		return $this;
 	}
 
-	public function setCredentialColumn($credentialColumn) {
+	public function setCredentialColumn($credentialColumn)
+	{
 		$this->_credentialColumn = $credentialColumn;
 		return $this;
 	}
 
-	public function setNeedFields($fields) {
+	public function setNeedFields($fields)
+	{
 		$this->_fields = $fields;
 		return $this;
 	}
@@ -120,15 +123,15 @@ class Yan_Auth_Adapter_DbTable implements Yan_Auth_Adapter_Interface
 				'(CASE WHEN '
 					. $this->_db->quoteIdentifier($this->_credentialColumn, true)
 					. ' = ' . $this->_db->quote($this->_credential)
-				. ' THEN 1 ELSE 0 END) AS '
-				. $this->_db->quoteIdentifier('top_auth_credential_match')
+					. ' THEN 1 ELSE 0 END) AS '
+					. $this->_db->quoteIdentifier('top_auth_credential_match')
 			);
 			$select->from($this->_tableName, $credentialExpression)
 				->columns($this->_fields)
 				->where(
-					$this->_db->quoteIdentifier($this->_identityColumn, true)
+				$this->_db->quoteIdentifier($this->_identityColumn, true)
 					. ' = ' . $this->_db->quote($this->_identity)
-				);
+			);
 			try {
 				$resultIdentities = $select->query()->fetchAll(Yan_Db::FETCH_ASSOC);
 			} catch (Exception $e) {

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Image.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 require_once 'Yan/Captcha/Abstract.php';
@@ -16,9 +15,9 @@ require_once 'Yan/Captcha/Abstract.php';
  */
 class Yan_Captcha_Image extends Yan_Captcha_Abstract
 {
-	protected static $VN = array("a", "e", "i", "o", "u", "y","2","3","4","5","6","7","8","9");
-	protected static $CN =  array("b","c","d","f","g","h","j","k","m","n","p","q","r",
-		"s","t","u","v","w","x","z","2","3","4","5","6","7","8","9");
+	protected static $VN = array("a", "e", "i", "o", "u", "y", "2", "3", "4", "5", "6", "7", "8", "9");
+	protected static $CN = array("b", "c", "d", "f", "g", "h", "j", "k", "m", "n", "p", "q", "r",
+		"s", "t", "u", "v", "w", "x", "z", "2", "3", "4", "5", "6", "7", "8", "9");
 
 	/**
 	 * Session
@@ -51,7 +50,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	protected $_wordlen = 5;
 
 	/** Width of the image */
-	protected $_width  = 200;
+	protected $_width = 200;
 
 	/** Height of the image */
 	protected $_height = 70;
@@ -63,9 +62,9 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 
 	/** Foreground colors in RGB-array */
 	protected $_colors = array(
-		array(27,78,181), // blue
-		array(22,163,35), // green
-		array(214,36,7),  // red
+		array(27, 78, 181), // blue
+		array(22, 163, 35), // green
+		array(214, 36, 7), // red
 	);
 
 	/** Shadow color in RGB-array or null */
@@ -82,8 +81,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	protected $_fonts = array();
 
 	/** Wave configuracion in X and Y axes */
-	protected $_waveX = array('period'=>11,'amplitude'=>5);
-	protected $_waveY = array('period'=>12,'amplitude'=>14);
+	protected $_waveX = array('period' => 11, 'amplitude' => 5);
+	protected $_waveY = array('period' => 12, 'amplitude' => 14);
 
 	/** letter rotation clockwise */
 	protected $_maxRotation = 8;
@@ -96,21 +95,25 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 
 	protected $_contentType = 'image/png';
 
-	public function setSession(array & $session) {
+	public function setSession(array & $session)
+	{
 		$this->_session = & $session;
 		return $this;
 	}
 
-	public function setName($name) {
+	public function setName($name)
+	{
 		$this->_name = $name;
 		return $this;
 	}
 
-	public function getName() {
+	public function getName()
+	{
 		return $this->_name;
 	}
 
-	public function getContentType(){
+	public function getContentType()
+	{
 		return $this->_contentType;
 	}
 
@@ -119,7 +122,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 *
 	 * @return integer
 	 */
-	public function getWordlen() {
+	public function getWordlen()
+	{
 		return $this->_wordlen;
 	}
 
@@ -141,12 +145,14 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * $parram $font array('spacing' => -3, 'minSize' => 27, 'maxSize' => 30, 'file' => 'AntykwaBold.ttf')
 	 * @return Yan_Captcha_Image
 	 */
-	public function addFont(array $font) {
+	public function addFont(array $font)
+	{
 		$this->_fonts[] = $font;
 		return $this;
 	}
 
-	public function setFonts(array $fonts) {
+	public function setFonts(array $fonts)
+	{
 		$this->_fonts = $fonts;
 		return $this;
 	}
@@ -157,7 +163,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * @param $color array RGB (red,green,blue)
 	 * @return Yan_Captcha_Image
 	 */
-	public function addFgColor($color) {
+	public function addFgColor($color)
+	{
 		$this->_colors[] = $this->_getColor($color);
 		return $this;
 	}
@@ -168,7 +175,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * @param $color array RGB (red,green,blue)
 	 * @return Yan_Captcha_Image
 	 */
-	public function setBgColor($color) {
+	public function setBgColor($color)
+	{
 		$this->_bgColor = $this->_getColor($color);
 		return $this;
 	}
@@ -179,18 +187,20 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * @param $color array RGB (red,green,blue) or #ffffff
 	 * @return Yan_Captcha_Image
 	 */
-	public function setShadowColor($color) {
+	public function setShadowColor($color)
+	{
 		$this->_shadowColor = $this->_getColor($color);
 		return $this;
 	}
 
-	protected function _getColor($color) {
+	protected function _getColor($color)
+	{
 		if (is_array($color)) {
 			return $color;
 		}
 
-		if (preg_match('/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i',(string)$color,$m)) {
-			return array($m[1],$m[2],$m[3]);
+		if (preg_match('/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i', (string)$color, $m)) {
+			return array($m[1], $m[2], $m[3]);
 		}
 		return null;
 	}
@@ -201,7 +211,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * $param $wave array('x'=>array('period'=>int,'amplitude'=>int),y=>array('period'=>int,'amplitude'=>int))
 	 * @return Yan_Captcha_Image
 	 */
-	public function setWave(array $wave) {
+	public function setWave(array $wave)
+	{
 		if (isset($wave['x'])) {
 			$this->_waveX = $wave['x'];
 		}
@@ -217,26 +228,26 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * @param $flag boolean
 	 * @return Yan_Captcha_Image
 	 */
-	public function setBlur($flag=true) {
-		$this->_blur = (bool) $flag;
+	public function setBlur($flag = true)
+	{
+		$this->_blur = (bool)$flag;
 		return $this;
 	}
 
-	public function setFormat($format){
+	public function setFormat($format)
+	{
 		$format = strtolower($format);
 		$auto = $format == 'auto';
 		$supported = imagetypes();
-		if (($auto || $format=='png') && ($supported & IMG_PNG)){
+		if (($auto || $format == 'png') && ($supported & IMG_PNG)) {
 			$this->_format = 'png';
 			$this->_contentType = 'image/png';
 		}
-		elseif(($auto||$format=='jpeg'||$format=='jpg')&&($supported & IMG_JPG))
-		{
+		elseif (($auto || $format == 'jpeg' || $format == 'jpg') && ($supported & IMG_JPG)) {
 			$this->_format = 'jpeg';
 			$this->_contentType = 'image/jpeg';
 		}
-		elseif(($auto||$format=='gif') && ($supported & IMG_GIF))
-		{
+		elseif (($auto || $format == 'gif') && ($supported & IMG_GIF)) {
 			$this->_format = 'gif';
 			$this->_contentType = 'image/gif';
 		}
@@ -269,7 +280,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 
 	/**
 	 * output captcha
-	 * 
+	 *
 	 * @param boolean $return
 	 * @return stream output if set $return true
 	 */
@@ -277,7 +288,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	{
 		$this->_generate();
 		$img = $this->_generateImage();
-		$func = 'image'.$this->_format;
+		$func = 'image' . $this->_format;
 		if ($return) {
 			ob_start();
 		}
@@ -295,16 +306,16 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 */
 	protected function _generate()
 	{
-		$word       = '';
-		$wordLen    = $this->getWordlen();
-		$vowels     = self::$VN;
+		$word = '';
+		$wordLen = $this->getWordlen();
+		$vowels = self::$VN;
 		$consonants = self::$CN;
 
-		for ($i=0; $i < $wordLen; $i = $i + 2) {
+		for ($i = 0; $i < $wordLen; $i = $i + 2) {
 			// generate word with mix of vowels and consonants
 			$consonant = $consonants[array_rand($consonants)];
-			$vowel     = $vowels[array_rand($vowels)];
-			$word     .= $consonant . $vowel;
+			$vowel = $vowels[array_rand($vowels)];
+			$word .= $consonant . $vowel;
 		}
 
 		if (strlen($word) > $wordLen) {
@@ -328,15 +339,13 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 		imagefilledrectangle($img, 0, 0, $this->_width * $scale, $this->_height * $scale, $bgColor);
 
 		// Foreground color
-		$fgColor = $this->_allocateColor($img, $this->_colors[mt_rand(0, count($this->_colors)-1)]);
+		$fgColor = $this->_allocateColor($img, $this->_colors[mt_rand(0, count($this->_colors) - 1)]);
 
 		// Shadow color
 		$shadowColor = null;
-		if (! empty($this->_shadowColor)) {
+		if (!empty($this->_shadowColor)) {
 			$shadowColor = $this->_allocateColor($img, $this->_shadowColor);
 		}
-
-
 
 
 		/** Text insertion */
@@ -346,58 +355,54 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 			require_once 'Yan/Captcha/Exception.php';
 			throw new Yan_Captcha_Exception('No font file to use!');
 		}
-		$fontcfg  = $this->_fonts[array_rand($this->_fonts)];
+		$fontcfg = $this->_fonts[array_rand($this->_fonts)];
 
 		// Full path of font file
 		$fontfile = $fontcfg['file'];
 
 		// Text generation (char by char)
-		$x      = 20 * $scale;
-		$y      = round(($this->_height*27/40)*$scale);
+		$x = 20 * $scale;
+		$y = round(($this->_height * 27 / 40) * $scale);
 		$length = strlen($text);
-		for ($i=0; $i<$length; $i++) {
-			$degree   = rand($this->_maxRotation*-1, $this->_maxRotation);
+		for ($i = 0; $i < $length; $i++) {
+			$degree = rand($this->_maxRotation * -1, $this->_maxRotation);
 			$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize']) * $scale;
-			$letter   = substr($text, $i, 1);
+			$letter = substr($text, $i, 1);
 
 			if ($shadowColor) {
 				$coords = imagettftext($img, $fontsize, $degree,
-					$x+$scale, $y+$scale,
+					$x + $scale, $y + $scale,
 					$shadowColor, $fontfile, $letter);
 			}
 			$coords = imagettftext($img, $fontsize, $degree,
 				$x, $y,
 				$fgColor, $fontfile, $letter);
-			$x += ($coords[2]-$x) + ($fontcfg['spacing']*$scale);
+			$x += ($coords[2] - $x) + ($fontcfg['spacing'] * $scale);
 		}
-
-
-
 
 
 		/** Transformations */
 
 		// X-axis wave generation
-		$xp = $scale * $this->_waveX['period'] * rand(1,3);
+		$xp = $scale * $this->_waveX['period'] * rand(1, 3);
 		$k = rand(0, 100);
 		for ($i = 0; $i < ($this->_width * $scale); $i++) {
 			imagecopy($img, $img,
-				$i-1, sin($k+$i/$xp) * ($scale * $this->_waveX['amplitude']),
+				$i - 1, sin($k + $i / $xp) * ($scale * $this->_waveX['amplitude']),
 				$i, 0, 1, $this->_height * $scale);
 		}
 
 		// Y-axis wave generation
 		$k = rand(0, 100);
-		$yp = $scale * $this->_waveY['period'] * rand(1,2);
+		$yp = $scale * $this->_waveY['period'] * rand(1, 2);
 		for ($i = 0; $i < ($this->_height * $scale); $i++) {
 			imagecopy($img, $img,
-				sin($k+$i/$yp) * ($scale * $this->_waveY['amplitude']), $i-1,
+				sin($k + $i / $yp) * ($scale * $this->_waveY['amplitude']), $i - 1,
 				0, $i, $this->_width * $scale, 1);
 		}
 		if ($this->_blur && function_exists('imagefilter')) {
 			imagefilter($img, IMG_FILTER_GAUSSIAN_BLUR);
 		}
-
 
 
 		/* Reduce the image to the final size */
@@ -411,7 +416,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 		return $imResampled;
 	}
 
-	protected function _allocateColor($img, array $color) {
+	protected function _allocateColor($img, array $color)
+	{
 		return imagecolorallocate($img, $color[0], $color[1], $color[2]);
 	}
 }

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Writer.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 /**
@@ -29,7 +28,8 @@ abstract class Yan_Log_Writer
 	 * @return void
 	 */
 	public function append($event)
-	{}
+	{
+	}
 
 	/**
 	 * write cached array to log file and shutdown
@@ -37,5 +37,6 @@ abstract class Yan_Log_Writer
 	 * @return void
 	 */
 	public function write()
-	{}
+	{
+	}
 }

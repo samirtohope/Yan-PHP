@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Route.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Route/Interface.php';
@@ -35,15 +34,16 @@ class Yan_Route_Route implements Yan_Route_Interface
 	 */
 	protected $_staticCount = 0;
 
-	public function __construct(array $config) {
-		$rule                = isset($config['rule']) ? trim($config['rule'], Yan_Route_Interface::URI_DELI) : '';
-		$this->_defaults     = isset($config['defaults']) ? (array) $config['defaults'] : array();
-		$this->_requirements = isset($config['reqs']) ? (array) $config['reqs'] : array();
-		$this->_hashost      = !empty($config['hashost']);
+	public function __construct(array $config)
+	{
+		$rule = isset($config['rule']) ? trim($config['rule'], Yan_Route_Interface::URI_DELI) : '';
+		$this->_defaults = isset($config['defaults']) ? (array)$config['defaults'] : array();
+		$this->_requirements = isset($config['reqs']) ? (array)$config['reqs'] : array();
+		$this->_hashost = !empty($config['hashost']);
 
-		if(strlen($rule)){
+		if (strlen($rule)) {
 			foreach (explode(Yan_Route_Interface::URI_DELI, $rule) as $pos => $part) {
-				if (substr($part,0,1)==Yan_Route_Interface::URL_KEY) {
+				if (substr($part, 0, 1) == Yan_Route_Interface::URL_KEY) {
 					$name = substr($part, 1);
 					$this->_parts[$pos] = (isset($this->_requirements[$name]) ? $this->_requirements[$name] : null);
 					$this->_keys[$pos] = $name;
@@ -58,7 +58,8 @@ class Yan_Route_Route implements Yan_Route_Interface
 		}
 	}
 
-	public function match(Yan_Request_Abstract $request) {
+	public function match(Yan_Request_Abstract $request)
+	{
 		if ($this->_hashost) {
 			$path = $request->getHttpHost() . $request->getBasePath() . $request->getPathInfo();
 		} else {
@@ -77,11 +78,10 @@ class Yan_Route_Route implements Yan_Route_Interface
 				$part = $this->_parts[$pos];
 				if ($part == '*') {
 					$count = count($path);
-					for($i = $pos; $i < $count; $i+=2) {
+					for ($i = $pos; $i < $count; $i += 2) {
 						$var = urldecode($path[$i]);
-						if (!isset($extras[$var]) && !isset($this->_defaults[$var]) && !isset($values[$var]))
-						{
-							$extras[$var] = (isset($path[$i+1])) ? urldecode($path[$i+1]) : null;
+						if (!isset($extras[$var]) && !isset($this->_defaults[$var]) && !isset($values[$var])) {
+							$extras[$var] = (isset($path[$i + 1])) ? urldecode($path[$i + 1]) : null;
 						}
 					}
 					break;
@@ -93,8 +93,7 @@ class Yan_Route_Route implements Yan_Route_Interface
 					return false;
 				}
 				// If it's a variable with requirement, match a regex. If not - everything matches
-				if ($part !== null && !preg_match(Yan_Route_Interface::REGEX_DELI . $part . Yan_Route_Interface::REGEX_DELI . 'iu', $pathPart))
-				{
+				if ($part !== null && !preg_match(Yan_Route_Interface::REGEX_DELI . $part . Yan_Route_Interface::REGEX_DELI . 'iu', $pathPart)) {
 					return false;
 				}
 

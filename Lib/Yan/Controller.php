@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Controller.php 20 2012-04-28 05:55:14Z kakalong $
  */
 
 /**
@@ -60,7 +59,8 @@ abstract class Yan_Controller
 	 * init the controller
 	 */
 	protected function _init()
-	{}
+	{
+	}
 
 	/**
 	 * Init a output object
@@ -71,13 +71,11 @@ abstract class Yan_Controller
 	 */
 	protected function _setOutput($output, array $options = array())
 	{
-		if ($this->_output instanceof Yan_Output_Abstract)
-		{
+		if ($this->_output instanceof Yan_Output_Abstract) {
 			return $this->_output->setOptions($options);
 		}
 
-		if ($output instanceof Yan_Output_Abstract)
-		{
+		if ($output instanceof Yan_Output_Abstract) {
 			$output->setOptions($options);
 			return $this->_output = $output;
 		}
@@ -112,7 +110,7 @@ abstract class Yan_Controller
 		/*
 		 * Verify that the object created is a descendent of the abstract adapter type.
 		 */
-		if (! $output instanceof Yan_Output_Abstract) {
+		if (!$output instanceof Yan_Output_Abstract) {
 			require_once 'Yan/Controller/Exception.php';
 			throw new Yan_Controller_Exception("Class '$adapterName' does not extend Yan_Output_Abstract");
 		}
@@ -127,8 +125,7 @@ abstract class Yan_Controller
 	 */
 	protected function _setView($view = null)
 	{
-		if (isset($this->_output) && !($this->_output instanceof Yan_Output_View))
-		{
+		if (isset($this->_output) && !($this->_output instanceof Yan_Output_View)) {
 			require_once 'Yan/Controller/Exception.php';
 			throw new Yan_Controller_Exception('Current type of Output not support Yan_View');
 		}
@@ -137,8 +134,8 @@ abstract class Yan_Controller
 			$options['view'] = $view;
 		} else {
 			$options['view'] = array(
-				'class'=>'Yan_View_Simple',
-				'templateBase' => APP_PATH.'/View',
+				'class' => 'Yan_View_Simple',
+				'templateBase' => APP_PATH . '/View',
 				'script' => $this->_getViewScript(
 					$this->_request->getActionName(),
 					$this->_request->getControllerName())
@@ -204,8 +201,8 @@ abstract class Yan_Controller
 	 */
 	protected function _hasDefaultView()
 	{
-		$script = $this->_getViewScript( $this->_request->getActionName(),
-			$this->_request->getControllerName() );
+		$script = $this->_getViewScript($this->_request->getActionName(),
+			$this->_request->getControllerName());
 		return is_file(APP_PATH . '/View/' . $script);
 	}
 
@@ -253,16 +250,16 @@ abstract class Yan_Controller
 				$return = $this->$action();
 			} catch (Exception $e) {
 				while (ob_get_level() > $obLevel) {
-                	ob_end_clean();
-                }
+					ob_end_clean();
+				}
 				throw $e;
 			}
 
 			while (ob_get_level() - $obLevel > 1) {
-            	ob_end_flush();
-            }
+				ob_end_flush();
+			}
 			$text = ob_get_clean();
-			
+
 			switch (true) {
 			case is_int($return):
 				if (100 > $return || 599 < $return) {

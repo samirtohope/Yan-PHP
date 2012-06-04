@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Mysql.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Db/Adapter.php';
@@ -30,22 +29,22 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * @var array Associative array of datatypes to values 0, 1, or 2.
 	 */
 	protected $_numericDataTypes = array(
-		Yan_Db::INT_TYPE       => Yan_Db::INT_TYPE,
-		Yan_Db::BIGINT_TYPE    => Yan_Db::BIGINT_TYPE,
-		Yan_Db::FLOAT_TYPE     => Yan_Db::FLOAT_TYPE,
-		'INT'              => Yan_Db::INT_TYPE,
-		'INTEGER'          => Yan_Db::INT_TYPE,
-		'MEDIUMINT'        => Yan_Db::INT_TYPE,
-		'SMALLINT'         => Yan_Db::INT_TYPE,
-		'TINYINT'          => Yan_Db::INT_TYPE,
-		'BIGINT'           => Yan_Db::BIGINT_TYPE,
-		'SERIAL'           => Yan_Db::BIGINT_TYPE,
-		'DEC'              => Yan_Db::FLOAT_TYPE,
-		'DECIMAL'          => Yan_Db::FLOAT_TYPE,
-		'DOUBLE'           => Yan_Db::FLOAT_TYPE,
+		Yan_Db::INT_TYPE => Yan_Db::INT_TYPE,
+		Yan_Db::BIGINT_TYPE => Yan_Db::BIGINT_TYPE,
+		Yan_Db::FLOAT_TYPE => Yan_Db::FLOAT_TYPE,
+		'INT' => Yan_Db::INT_TYPE,
+		'INTEGER' => Yan_Db::INT_TYPE,
+		'MEDIUMINT' => Yan_Db::INT_TYPE,
+		'SMALLINT' => Yan_Db::INT_TYPE,
+		'TINYINT' => Yan_Db::INT_TYPE,
+		'BIGINT' => Yan_Db::BIGINT_TYPE,
+		'SERIAL' => Yan_Db::BIGINT_TYPE,
+		'DEC' => Yan_Db::FLOAT_TYPE,
+		'DECIMAL' => Yan_Db::FLOAT_TYPE,
+		'DOUBLE' => Yan_Db::FLOAT_TYPE,
 		'DOUBLE PRECISION' => Yan_Db::FLOAT_TYPE,
-		'FIXED'            => Yan_Db::FLOAT_TYPE,
-		'FLOAT'            => Yan_Db::FLOAT_TYPE
+		'FIXED' => Yan_Db::FLOAT_TYPE,
+		'FLOAT' => Yan_Db::FLOAT_TYPE
 	);
 
 	protected $_driver = 'mysql';
@@ -75,23 +74,23 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * The value of each array element is an associative array
 	 * with the following keys:
 	 *
-	 * COLUMN_NAME	=> string; column name
-	 * COLUMN_POS	=> number; ordinal position of column in table
-	 * DATA_TYPE	=> string; SQL datatype name of column
-	 * DEFAULT		=> string; default expression of column, null if none
-	 * NULLABLE		=> boolean; true if column can have nulls
-	 * LENGTH		=> number; length of CHAR/VARCHAR
-	 * UNSIGNED		=> boolean; unsigned property of an integer type
-	 * PRIMARY		=> boolean; true if column is part of the primary key
-	 * PRIMARY_POS	=> integer; position of column in primary key
-	 * IDENTITY		=> integer; true if column isautoIncrement
+	 * COLUMN_NAME    => string; column name
+	 * COLUMN_POS    => number; ordinal position of column in table
+	 * DATA_TYPE    => string; SQL datatype name of column
+	 * DEFAULT        => string; default expression of column, null if none
+	 * NULLABLE        => boolean; true if column can have nulls
+	 * LENGTH        => number; length of CHAR/VARCHAR
+	 * UNSIGNED        => boolean; unsigned property of an integer type
+	 * PRIMARY        => boolean; true if column is part of the primary key
+	 * PRIMARY_POS    => integer; position of column in primary key
+	 * IDENTITY        => integer; true if column isautoIncrement
 	 *
 	 * @param string $table
 	 *
 	 * @return array
 	 */
-	 public function describeTable($table, $schema = null, $hasQuoted = false)
-	 {
+	public function describeTable($table, $schema = null, $hasQuoted = false)
+	{
 		if (!$hasQuoted) {
 			$table = $this->quoteTableAs($schema ? "$schema.$table" : $table, null, true);
 		}
@@ -99,12 +98,12 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 
 		$rowset = $stmt->fetchAll(Yan_Db::FETCH_NUM);
 
-		$field   = 0;
-		$type    = 1;
-		$null    = 2;
-		$key     = 3;
+		$field = 0;
+		$type = 1;
+		$null = 2;
+		$key = 3;
 		$default = 4;
-		$extra   = 5;
+		$extra = 5;
 
 		$desc = array();
 		$i = 1;
@@ -121,8 +120,8 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 			} else if (preg_match('/^(decimal|float)/', $row[$type], $matches)) {
 				$row[$type] = $matches[1];
 			} else if (preg_match('/^((?:big|medium|small|tiny)?int)\(\d+\)/',
-				$row[$type], $matches))
-			{
+				$row[$type], $matches)
+			) {
 				$row[$type] = $matches[1];
 			}
 			if (strtoupper($row[$key]) == 'PRI') {
@@ -137,16 +136,16 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 			}
 			$columnName = $row[$field];
 			$desc[$columnName] = array(
-				'COLUMN_NAME'	=> $columnName,
-				'COLUMN_POS'	=> $i,
-				'DATA_TYPE'		=> $row[$type],
-				'DEFAULT'		=> $row[$default],
-				'NULLABLE'		=> (bool) ($row[$null] == 'YES'),
-				'LENGTH'		=> $length,
-				'UNSIGNED'		=> $unsigned,
-				'PRIMARY'		=> $primary,
-				'PRIMARY_POS'	=> $primaryPos,
-				'IDENTITY'		=> $identity
+				'COLUMN_NAME' => $columnName,
+				'COLUMN_POS' => $i,
+				'DATA_TYPE' => $row[$type],
+				'DEFAULT' => $row[$default],
+				'NULLABLE' => (bool)($row[$null] == 'YES'),
+				'LENGTH' => $length,
+				'UNSIGNED' => $unsigned,
+				'PRIMARY' => $primary,
+				'PRIMARY_POS' => $primaryPos,
+				'IDENTITY' => $identity
 			);
 			++$i;
 		}

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Select.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 require_once 'Yan/Db/Select.php';
@@ -89,9 +88,9 @@ class Yan_Table_Select extends Yan_Db_Select
 			$order = $this->getPart(self::ORDER);
 			$columns = $this->getPart(self::COLUMNS);
 			$this->reset(self::ORDER)
-				 ->reset(self::COLUMNS)
-				 ->reset(self::LIMIT_COUNT)
-				 ->reset(self::LIMIT_OFFSET);
+				->reset(self::COLUMNS)
+				->reset(self::LIMIT_COUNT)
+				->reset(self::LIMIT_OFFSET);
 
 			$c_expr = new Yan_Db_Expr('COUNT(*)');
 			$forms = $this->getPart(self::FROM);
@@ -103,7 +102,7 @@ class Yan_Table_Select extends Yan_Db_Select
 				$this->columns($c_expr);
 				$stmt = $this->query();
 			}
-			$count = (int) $stmt->fetchColumn();
+			$count = (int)$stmt->fetchColumn();
 			$this->setPart(self::ORDER, $order);
 			$this->setPart(self::COLUMNS, $columns);
 			if ($count) {

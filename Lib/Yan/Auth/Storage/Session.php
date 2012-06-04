@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Session.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Auth/Storage/Interface.php';
@@ -31,7 +30,7 @@ class Yan_Auth_Storage_Session implements Yan_Auth_Storage_Interface
 	public function __construct($namespace = 'Yan_Auth', $member = 'storage')
 	{
 		Yan_Session::start();
-		if (! isset($_SESSION[$namespace])) {
+		if (!isset($_SESSION[$namespace])) {
 			$_SESSION[$namespace] = array();
 		}
 		$this->_session = & $_SESSION[$namespace];

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Interface.php 7 2012-04-06 07:50:26Z kakalong $
  */
 
 /**

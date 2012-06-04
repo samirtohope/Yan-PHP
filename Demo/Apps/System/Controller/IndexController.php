@@ -17,6 +17,6 @@ class IndexController extends New_Admin_Controller
 	 */
 	public function menu()
 	{
-		
+
 	}
 }

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Attachment.php 20 2012-04-28 05:55:14Z kakalong $
  */
 
 require_once 'Yan/Output/Abstract.php';
@@ -117,12 +116,12 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 			? rawurlencode($this->_fileName) : htmlspecialchars($this->_fileName);
 
 		$this->_response->setHeader('Content-Type', $this->_mimeType)
-			 ->setHeader('Content-Disposition', 'attachment; filename="'.$fileName.'"')
-			 ->setHeader('Content-Length', $fileSize);
+			->setHeader('Content-Disposition', 'attachment; filename="' . $fileName . '"')
+			->setHeader('Content-Length', $fileSize);
 
 		if ($this->_XSendFile
-			|| (function_exists('apache_get_modules') && in_array('mod_xsendfile', apache_get_modules())))
-		{
+			|| (function_exists('apache_get_modules') && in_array('mod_xsendfile', apache_get_modules()))
+		) {
 			$this->_response->setHeader('X-Sendfile', realpath($this->_file));
 		} else {
 			readfile($this->_file);
@@ -274,6 +273,6 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 			"movie" => "video/x-sgi-movie",
 			"ice" => "x-conference-xcooltalk"
 		);
-		return array_key_exists($ext,$mimetypes) ? $mimetypes[$ext] : "application/octet-stream";
+		return array_key_exists($ext, $mimetypes) ? $mimetypes[$ext] : "application/octet-stream";
 	}
 }

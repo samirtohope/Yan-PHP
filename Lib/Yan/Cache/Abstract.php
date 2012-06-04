@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Abstract.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 /**
@@ -17,19 +16,20 @@ abstract class Yan_Cache_Abstract
 
 	protected $_options = array(
 		'lifetime' => false,
-		'prefix'   => false
+		'prefix' => false
 	);
 
 	protected $_config = array(
-		'prefix'   => 'cache',
+		'prefix' => 'cache',
 		'lifetime' => 3600
 	);
 
-	public function __construct($config = array()) {
+	public function __construct($config = array())
+	{
 		/*
 		 * Verify that adapter parameters are in an array.
 		 */
-		if (! is_array($config)) {
+		if (!is_array($config)) {
 			/*
 			 * Convert object argument to a plain array.
 			 */
@@ -46,7 +46,7 @@ abstract class Yan_Cache_Abstract
 		foreach ($this->_options as $key => $optional) {
 			if (array_key_exists($key, $config)) {
 				$this->_config[$key] = $config[$key];
-			} elseif($optional) {
+			} elseif ($optional) {
 				require_once 'Yan/Cache/Exception.php';
 				throw new Yan_Cache_Exception(
 					"Configuration array must have a key for '$key' that names the database instance"

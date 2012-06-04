@@ -12,24 +12,24 @@ return array(
 	'log' => array(
 		'Yan_Log_Writer_FireBug'
 	),
-	'controllerSuffix'=> 'Controller',
+	'controllerSuffix' => 'Controller',
 	'controllerKey' => 'c',
 	'actionKey' => 'a',
 	'db' => array(
 		'adapter' => 'Mysql',
-		'params'  => include ROOT_PATH.'/Config/Database.php',
+		'params' => include ROOT_PATH . '/Config/Database.php',
 		'cache' => array(
 			'adapter' => 'Array',
 			'options' => array(
 				'duration' => 0,
-				'cacheDir' => ROOT_PATH.'/Data/Cache/Db',
+				'cacheDir' => ROOT_PATH . '/Data/Cache/Db',
 				'dirDepth' => 0
 			)
 		)
 	),
 	'session' => array(
 		'options' => array(
-			'save_path' => ROOT_PATH.'/Data/Session'
+			'save_path' => ROOT_PATH . '/Data/Session'
 		)
 	)
 );

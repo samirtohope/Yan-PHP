@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Abstract.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 /**
@@ -40,8 +39,8 @@ abstract class Yan_Output_Abstract
 	 */
 	public function setOptions(array $options)
 	{
-		foreach ($options as $key=>$value) {
-			$method = 'set' . ucfirst ($key);
+		foreach ($options as $key => $value) {
+			$method = 'set' . ucfirst($key);
 			if (method_exists($this, $method)) {
 				// Setter exists; use it
 				$this->$method($value);

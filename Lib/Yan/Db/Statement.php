@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id$
  */
 
 /**
@@ -13,18 +12,23 @@
  * @package    Yan_Db
  * @subpackage Statement
  */
-class Yan_Db_Statement
+class Yan_Db_Statement implements IteratorAggregate
 {
 	/**
 	 * @var Yan_Db_Adapter
 	 */
 	protected $_adapter;
-	
+
 	/**
 	 * @var PDOStatement The driver level statement object/resource
 	 */
 	protected $_stmt;
-	
+
+	/**
+	 * @var int
+	 */
+	protected $_fetchMode = PDO::FETCH_ASSOC;
+
 	/**
 	 * Constructor for a statement.
 	 *
@@ -36,11 +40,11 @@ class Yan_Db_Statement
 		try {
 			$this->_stmt = $adapter->getConnection()->prepare($sql);
 		} catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Bind a column of the statement result set to a PHP variable.
 	 *
@@ -51,20 +55,20 @@ class Yan_Db_Statement
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */
-	public function bindColumn($column , &$param, $type=null)
+	public function bindColumn($column, &$param, $type = null)
 	{
 		try {
-	        if ($type === null) {
-	            return $this->_stmt->bindColumn($column, $param);
-	        } else {
-	            return $this->_stmt->bindColumn($column, $param, $type);
-	        }
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+			if ($type === null) {
+				return $this->_stmt->bindColumn($column, $param);
+			} else {
+				return $this->_stmt->bindColumn($column, $param, $type);
+			}
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Binds a parameter to the specified variable name.
 	 *
@@ -79,24 +83,24 @@ class Yan_Db_Statement
 	public function bindParam($parameter, &$variable, $type = null, $length = null, $options = null)
 	{
 		try {
-		    if ($type === null) {
-		        if (is_bool($variable)) {
-		            $type = PDO::PARAM_BOOL;
-		        } elseif ($variable === null) {
-		            $type = PDO::PARAM_NULL;
-		        } elseif (is_integer($variable)) {
-		            $type = PDO::PARAM_INT;
-		        } else {
-		            $type = PDO::PARAM_STR;
-		        }
-		    }
-		    return $this->_stmt->bindParam($parameter, $variable, $type, $length, $options);
+			if ($type === null) {
+				if (is_bool($variable)) {
+					$type = PDO::PARAM_BOOL;
+				} elseif ($variable === null) {
+					$type = PDO::PARAM_NULL;
+				} elseif (is_integer($variable)) {
+					$type = PDO::PARAM_INT;
+				} else {
+					$type = PDO::PARAM_STR;
+				}
+			}
+			return $this->_stmt->bindParam($parameter, $variable, $type, $length, $options);
 		} catch (PDOException $e) {
-		    require_once 'Yan/Db/Statement/Exception.php';
-		    throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
 		}
 	}
-	
+
 	/**
 	 * Binds a value to a parameter.
 	 *
@@ -108,24 +112,24 @@ class Yan_Db_Statement
 	 */
 	public function bindValue($parameter, $value, $type = null)
 	{
-	    if (is_string($parameter) && $parameter[0] != ':') {
-	        $parameter = ":$parameter";
-	    }
-	
-	    $this->_bindParam[$parameter] = $value;
-	
-	    try {
-	        if ($type === null) {
-	            return $this->_stmt->bindValue($parameter, $value);
-	        } else {
-	            return $this->_stmt->bindValue($parameter, $value, $type);
-	        }
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		if (is_string($parameter) && $parameter[0] != ':') {
+			$parameter = ":$parameter";
+		}
+
+		$this->_bindParam[$parameter] = $value;
+
+		try {
+			if ($type === null) {
+				return $this->_stmt->bindValue($parameter, $value);
+			} else {
+				return $this->_stmt->bindValue($parameter, $value, $type);
+			}
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Closes the cursor, allowing the statement to be executed again.
 	 *
@@ -134,14 +138,14 @@ class Yan_Db_Statement
 	 */
 	public function closeCursor()
 	{
-	    try {
-	        return $this->_stmt->closeCursor();
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->closeCursor();
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Returns the number of columns in the result set.
 	 * Returns null if the statement has no result set metadata.
@@ -151,14 +155,14 @@ class Yan_Db_Statement
 	 */
 	public function columnCount()
 	{
-	    try {
-	        return $this->_stmt->columnCount();
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode(), $e);
-	    }
+		try {
+			return $this->_stmt->columnCount();
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode(), $e);
+		}
 	}
-	
+
 	/**
 	 * Retrieves the error code, if any, associated with the last operation on
 	 * the statement handle.
@@ -168,14 +172,14 @@ class Yan_Db_Statement
 	 */
 	public function errorCode()
 	{
-	    try {
-	        return $this->_stmt->errorCode();
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->errorCode();
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Retrieves an array of error information, if any, associated with the
 	 * last operation on the statement handle.
@@ -185,14 +189,14 @@ class Yan_Db_Statement
 	 */
 	public function errorInfo()
 	{
-	    try {
-	        return $this->_stmt->errorInfo();
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->errorInfo();
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Executes a prepared statement.
 	 *
@@ -202,18 +206,18 @@ class Yan_Db_Statement
 	 */
 	public function execute(array $params = null)
 	{
-	    try {
-	        if ($params !== null) {
-	            return $this->_stmt->execute($params);
-	        } else {
-	            return $this->_stmt->execute();
-	        }
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), (int) $e->getCode());
-	    }
+		try {
+			if ($params !== null) {
+				return $this->_stmt->execute($params);
+			} else {
+				return $this->_stmt->execute();
+			}
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), (int)$e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Fetches a row from the result set.
 	 *
@@ -225,17 +229,17 @@ class Yan_Db_Statement
 	 */
 	public function fetch($style = null, $cursor = null, $offset = null)
 	{
-	    if ($style === null) {
-	        $style = $this->_fetchMode;
-	    }
-	    try {
-	        return $this->_stmt->fetch($style, $cursor, $offset);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		if ($style === null) {
+			$style = $this->_fetchMode;
+		}
+		try {
+			return $this->_stmt->fetch($style, $cursor, $offset);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Required by IteratorAggregate interface
 	 *
@@ -243,9 +247,9 @@ class Yan_Db_Statement
 	 */
 	public function getIterator()
 	{
-	    return new IteratorIterator($this->_stmt);
+		return new IteratorIterator($this->_stmt);
 	}
-	
+
 	/**
 	 * Returns an array containing all of the result set rows.
 	 *
@@ -256,24 +260,24 @@ class Yan_Db_Statement
 	 */
 	public function fetchAll($style = null, $col = null)
 	{
-	    if ($style === null) {
-	        $style = $this->_fetchMode;
-	    }
-	    try {
-	        if ($style == PDO::FETCH_COLUMN) {
-	            if ($col === null) {
-	                $col = 0;
-	            }
-	            return $this->_stmt->fetchAll($style, $col);
-	        } else {
-	            return $this->_stmt->fetchAll($style);
-	        }
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		if ($style === null) {
+			$style = $this->_fetchMode;
+		}
+		try {
+			if ($style == PDO::FETCH_COLUMN) {
+				if ($col === null) {
+					$col = 0;
+				}
+				return $this->_stmt->fetchAll($style, $col);
+			} else {
+				return $this->_stmt->fetchAll($style);
+			}
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Returns a single column from the next row of a result set.
 	 *
@@ -283,14 +287,14 @@ class Yan_Db_Statement
 	 */
 	public function fetchColumn($col = 0)
 	{
-	    try {
-	        return $this->_stmt->fetchColumn($col);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->fetchColumn($col);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Fetches the next row and returns it as an object.
 	 *
@@ -301,14 +305,14 @@ class Yan_Db_Statement
 	 */
 	public function fetchObject($class = 'stdClass', array $config = array())
 	{
-	    try {
-	        return $this->_stmt->fetchObject($class, $config);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->fetchObject($class, $config);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Retrieve a statement attribute.
 	 *
@@ -318,14 +322,14 @@ class Yan_Db_Statement
 	 */
 	public function getAttribute($key)
 	{
-	    try {
-	        return $this->_stmt->getAttribute($key);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->getAttribute($key);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Returns metadata for a column in a result set.
 	 *
@@ -335,14 +339,14 @@ class Yan_Db_Statement
 	 */
 	public function getColumnMeta($column)
 	{
-	    try {
-	        return $this->_stmt->getColumnMeta($column);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->getColumnMeta($column);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Retrieves the next rowset (result set) for a SQL statement that has
 	 * multiple result sets.  An example is a stored procedure that returns
@@ -353,14 +357,14 @@ class Yan_Db_Statement
 	 */
 	public function nextRowset()
 	{
-	    try {
-	        return $this->_stmt->nextRowset();
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->nextRowset();
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Returns the number of rows affected by the execution of the
 	 * last INSERT, DELETE, or UPDATE statement executed by this
@@ -371,14 +375,14 @@ class Yan_Db_Statement
 	 */
 	public function rowCount()
 	{
-	    try {
-	        return $this->_stmt->rowCount();
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->rowCount();
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Set a statement attribute.
 	 *
@@ -389,14 +393,14 @@ class Yan_Db_Statement
 	 */
 	public function setAttribute($key, $val)
 	{
-	    try {
-	        return $this->_stmt->setAttribute($key, $val);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		try {
+			return $this->_stmt->setAttribute($key, $val);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
-	
+
 	/**
 	 * Set the default fetch mode for this statement.
 	 *
@@ -406,12 +410,12 @@ class Yan_Db_Statement
 	 */
 	public function setFetchMode($mode)
 	{
-	    $this->_fetchMode = $mode;
-	    try {
-	        return $this->_stmt->setFetchMode($mode);
-	    } catch (PDOException $e) {
-	        require_once 'Yan/Db/Statement/Exception.php';
-	        throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
-	    }
+		$this->_fetchMode = $mode;
+		try {
+			return $this->_stmt->setFetchMode($mode);
+		} catch (PDOException $e) {
+			require_once 'Yan/Db/Statement/Exception.php';
+			throw new Yan_Db_Statement_Exception($e->getMessage(), $e->getCode());
+		}
 	}
 }

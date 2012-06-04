@@ -8,24 +8,25 @@ class AdminRecord extends Yan_Table_Record
 			->setDefaultValue('roleid', 1, self::ON_INSERT)
 			->setDefaultValue('departmentid', 1, self::ON_INSERT);
 	}
-	
+
 	protected function _getName()
 	{
-		return 'My name is '.$this->_data['name'];
+		return 'My name is ' . $this->_data['name'];
 	}
-	
+
 	protected function _fillUpdatedOnUpdate()
 	{
 		return time();
 	}
+
 	protected function _fillCreatedOnInsert()
 	{
 		return time();
 	}
+
 	protected function _validateEmail($value)
 	{
-		if (!$this->_isNull($value) && !preg_match('/\w+@\w+(?:\.\w+)+/'))
-		{
+		if (!$this->_isNull($value) && !preg_match('/\w+@\w+(?:\.\w+)+/')) {
 			return '不匹配邮件地址';
 		}
 	}

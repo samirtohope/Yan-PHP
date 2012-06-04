@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: View.php 20 2012-04-28 05:55:14Z kakalong $
  */
 
 require_once 'Yan/Output/Abstract.php';
@@ -82,7 +81,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 			Yan::loadClass($view);
 			$view = new $view();
 		} elseif (is_array($view)) {
-			if (! array_key_exists('class', $view)) {
+			if (!array_key_exists('class', $view)) {
 				require_once 'Yan/Output/Exception.php';
 				throw new Yan_Output_Exception('View class not provided in options');
 			}
@@ -91,7 +90,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 			Yan::loadClass($class);
 			$view = new $class($view);
 		}
-		if (! $view instanceof Yan_View_Abstract) {
+		if (!$view instanceof Yan_View_Abstract) {
 			require_once 'Yan/Output/Exception.php';
 			throw new Yan_Output_Exception('Not valid type of view instance.');
 		}
@@ -168,12 +167,13 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * @return Yan_Output_View
 	 * @throws Yan_Output_Exception
 	 */
-	public function setServerCache($cacher) {
+	public function setServerCache($cacher)
+	{
 		if (is_string($cacher)) {
 			Yan::loadClass($cacher);
 			$cacher = new $cacher();
 		} elseif (is_array($cacher)) {
-			if (! array_key_exists('class', $cacher)) {
+			if (!array_key_exists('class', $cacher)) {
 				require_once 'Yan/Output/Exception.php';
 				throw new Yan_Output_Exception('Cache class not provided in options');
 			}
@@ -182,7 +182,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 			Yan::loadClass($class);
 			$cacher = new $class($cacher);
 		}
-		if (! $cacher instanceof Yan_Cache_Abstract) {
+		if (!$cacher instanceof Yan_Cache_Abstract) {
 			require_once 'Yan/Output/Exception.php';
 			throw new Yan_Output_Exception('Not valid type of CacheAdapter instance.');
 		}
@@ -201,8 +201,9 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * @param int $cacheLife
 	 * @return Yan_Output_View
 	 */
-	public function setClientCache($cacheLife = null) {
-		$cacheLife = (int) $cacheLife;
+	public function setClientCache($cacheLife = null)
+	{
+		$cacheLife = (int)$cacheLife;
 		if ($cacheLife < 5) {
 			return $this;
 		}
@@ -212,9 +213,9 @@ class Yan_Output_View extends Yan_Output_Abstract
 			return $this->_response->setBody(null)->setHttpResponseCode(304)->send();
 		}
 		$this->_response->setCookie($guid, $now, $now + 86400)
-			->setHeader('Last-Modified', gmdate('D,d M Y H:i:s', $now).' GMT')
-			->setHeader('Expires', gmdate('D, d M Y H:i:s', $now + $cacheLife).' GMT')
-			->setHeader('Cache-Control', 'public,max-age='.$cacheLife);
+			->setHeader('Last-Modified', gmdate('D,d M Y H:i:s', $now) . ' GMT')
+			->setHeader('Expires', gmdate('D, d M Y H:i:s', $now + $cacheLife) . ' GMT')
+			->setHeader('Cache-Control', 'public,max-age=' . $cacheLife);
 		return $this;
 	}
 

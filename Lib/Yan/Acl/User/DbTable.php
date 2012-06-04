@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: DbTable.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Acl/User/Interface.php';
@@ -101,7 +100,7 @@ class Yan_Acl_User_DbTable implements Yan_Acl_User_Interface
 		$select = new Yan_Db_Select($this->_db);
 		$select->from($this->_tableName, $this->_roleColumn)->where(
 			$this->_db->quoteIdentifier($this->_userColumn, true)
-			. ' = ' . $this->_db->quote($this->_user));
+				. ' = ' . $this->_db->quote($this->_user));
 		try {
 			$data = $select->query()->fetchAll(Yan_Db::FETCH_NUM);
 		} catch (Exception $e) {

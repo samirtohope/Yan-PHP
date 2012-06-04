@@ -3,15 +3,14 @@
  * Blog project
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Catalog.php 26 2011-11-02 17:52:11Z kakalong $
  */
 
 class New_Admin_Acl_Resource_Catalog implements Yan_Acl_Resource_Interface
 {
 	protected $_ispublic = false;
-	
+
 	protected $_stmt = null;
-	
+
 	public function __construct(Yan_Db_Adapter $db, $siteid)
 	{
 		$this->_ispublic = false;
@@ -20,12 +19,12 @@ class New_Admin_Acl_Resource_Catalog implements Yan_Acl_Resource_Interface
 			->where('catid', $siteid)->where('roleid=?')
 			->prepare(Yan_Db::FETCH_NUM);
 	}
-	
+
 	public function isPublic()
 	{
 		return $this->_ispublic;
 	}
-	
+
 	public function isAllowRole($roleid)
 	{
 		$this->_stmt->execute(array($roleid));

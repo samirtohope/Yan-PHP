@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Session.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -45,31 +44,31 @@ abstract class Yan_Session
 	 * @var array
 	 */
 	protected static $_defaultOptions = array(
-		'save_path'                 => null,
-		'name'                      => null, /* this should be set to a unique value for each application */
-		'save_handler'              => null,
+		'save_path' => null,
+		'name' => null, /* this should be set to a unique value for each application */
+		'save_handler' => null,
 		//'auto_start'                => null, /* intentionally excluded (see manual) */
-		'gc_probability'            => null,
-		'gc_divisor'                => null,
-		'gc_maxlifetime'            => null,
-		'serialize_handler'         => null,
-		'cookie_lifetime'           => null,
-		'cookie_path'               => null,
-		'cookie_domain'             => null,
-		'cookie_secure'             => null,
-		'cookie_httponly'           => null,
-		'use_cookies'               => null,
-		'use_only_cookies'          => 'on',
-		'referer_check'             => null,
-		'entropy_file'              => null,
-		'entropy_length'            => null,
-		'cache_limiter'             => null,
-		'cache_expire'              => null,
-		'use_trans_sid'             => null,
-		'bug_compat_42'             => null,
-		'bug_compat_warn'           => null,
-		'hash_function'             => null,
-		'hash_bits_per_character'   => null
+		'gc_probability' => null,
+		'gc_divisor' => null,
+		'gc_maxlifetime' => null,
+		'serialize_handler' => null,
+		'cookie_lifetime' => null,
+		'cookie_path' => null,
+		'cookie_domain' => null,
+		'cookie_secure' => null,
+		'cookie_httponly' => null,
+		'use_cookies' => null,
+		'use_only_cookies' => 'on',
+		'referer_check' => null,
+		'entropy_file' => null,
+		'entropy_length' => null,
+		'cache_limiter' => null,
+		'cache_expire' => null,
+		'use_trans_sid' => null,
+		'bug_compat_42' => null,
+		'bug_compat_warn' => null,
+		'hash_function' => null,
+		'hash_bits_per_character' => null
 	);
 
 	/**
@@ -139,9 +138,9 @@ abstract class Yan_Session
 	 */
 	public static function sessionExists()
 	{
-		if ((bool) ini_get('session.use_cookies') == true && isset($_COOKIE[session_name()])) {
+		if ((bool)ini_get('session.use_cookies') == true && isset($_COOKIE[session_name()])) {
 			return true;
-		} elseif ((bool) ini_get('session.use_only_cookies') == false && isset($_REQUEST[session_name()])) {
+		} elseif ((bool)ini_get('session.use_only_cookies') == false && isset($_REQUEST[session_name()])) {
 			return true;
 		}
 
@@ -184,7 +183,7 @@ abstract class Yan_Session
 		if (headers_sent($filename, $linenum)) {
 			require_once 'Yan/Session/Exception.php';
 			throw new Yan_Session_Exception("Session must be started before any output has been sent to the browser;"
-			   . " output started in {$filename}/{$linenum}");
+				. " output started in {$filename}/{$linenum}");
 		}
 
 		if (defined('SID')) {
@@ -229,7 +228,7 @@ abstract class Yan_Session
 		$filename = $linenum = null;
 		if (headers_sent($filename, $linenum)) {
 			require_once 'Yan/Session/Exception.php';
-			throw new Yan_Session_Exception("You must call ".__CLASS__.'::'.__FUNCTION__.
+			throw new Yan_Session_Exception("You must call " . __CLASS__ . '::' . __FUNCTION__ .
 				"() before any output has been sent to the browser; output started in {$filename}/{$linenum}");
 		}
 
@@ -285,7 +284,7 @@ abstract class Yan_Session
 				$cookie_params['path'],
 				$cookie_params['domain'],
 				$cookie_params['secure']
-				);
+			);
 		}
 	}
 }

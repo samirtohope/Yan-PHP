@@ -3,12 +3,11 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Acl.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
  * Yan_Acl
- * 
+ *
  * @category Yan
  * @package Yan_Acl
  */

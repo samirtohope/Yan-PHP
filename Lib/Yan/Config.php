@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Config.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -38,7 +37,7 @@ class Yan_Config implements ArrayAccess
 		return isset($this->_config[$index]);
 	}
 
-	public function __set($index,$val)
+	public function __set($index, $val)
 	{
 		$this->_config[$index] = $val;
 		$this->_count = count($this->_config);
@@ -115,7 +114,7 @@ class Yan_Config implements ArrayAccess
 			return $this->merge(include $filename);
 		}
 		try {
-			$parser = Yan::loadClass('Yan_Config_'.$ext);
+			$parser = Yan::loadClass('Yan_Config_' . $ext);
 		} catch (Exception $e) {
 			require_once 'Yan/Config/Exception.php';
 			throw new Yan_Config_Exception(
@@ -161,11 +160,10 @@ class Yan_Config implements ArrayAccess
 	{
 		foreach ($source as $key => $item) {
 			if (is_array($item)) {
-				if (array_key_exists($key, $target) && is_array($target[$key]))
-				{
+				if (array_key_exists($key, $target) && is_array($target[$key])) {
 					$this->_arrayDeepMerge($target[$key], $item);
 				} else {
-					array_walk_recursive($item, array($this,'_replace'));
+					array_walk_recursive($item, array($this, '_replace'));
 					$target[$key] = $item;
 				}
 			} else {
@@ -177,7 +175,7 @@ class Yan_Config implements ArrayAccess
 	private function _replace(&$item)
 	{
 		if (is_string($item)) {
-			$item = preg_replace('/%([\w\:]+)%/e','$this->_macroReplace("\1")', $item);
+			$item = preg_replace('/%([\w\:]+)%/e', '$this->_macroReplace("\1")', $item);
 		}
 		return $item;
 	}

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Rowset.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -135,7 +134,7 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 	 */
 	public function seek($position)
 	{
-		$position = (int) $position;
+		$position = (int)$position;
 		if ($position < 0 || $position >= $this->_count) {
 			require_once 'Yan/Table/Rowset/Exception.php';
 			throw new Yan_Table_Rowset_Exception("Illegal index $position");
@@ -152,7 +151,7 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 	 */
 	public function offsetExists($offset)
 	{
-		return isset($this->_data[(int) $offset]);
+		return isset($this->_data[(int)$offset]);
 	}
 
 	/**
@@ -171,13 +170,15 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 	 * Required by the interface ArrayAccess
 	 */
 	public function offsetSet($offset, $value)
-	{}
+	{
+	}
 
 	/**
 	 * Required by the interface ArrayAccess
 	 */
 	public function offsetUnset($offset)
-	{}
+	{
+	}
 
 	/**
 	 * export plain array

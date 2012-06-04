@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Ini.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Config.php';
@@ -16,7 +15,8 @@ require_once 'Yan/Config.php';
  */
 class Yan_Config_Ini extends Yan_Config
 {
-	public function __construct($file = null) {
+	public function __construct($file = null)
+	{
 		$this->merge(self::parse($file));
 	}
 
@@ -24,7 +24,8 @@ class Yan_Config_Ini extends Yan_Config
 	 * @param string $filename
 	 * @return array
 	 */
-	public static function parse($filename) {
+	public static function parse($filename)
+	{
 		try {
 			$loaded = parse_ini_file($filename, true);
 		} catch (Exception $e) {
@@ -33,9 +34,8 @@ class Yan_Config_Ini extends Yan_Config
 		}
 
 		$iniArray = array();
-		foreach ($loaded as $section => $data)
-		{
-			if (! is_array($data)) {
+		foreach ($loaded as $section => $data) {
+			if (!is_array($data)) {
 				$iniArray = array_merge_recursive($iniArray, self::_processKey(array(), $section, $data));
 			} else {
 				$config = array();

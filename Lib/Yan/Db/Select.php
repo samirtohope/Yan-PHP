@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Select.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Db/Adapter.php';
@@ -19,42 +18,42 @@ require_once 'Yan/Db/Expr.php';
 class Yan_Db_Select
 {
 
-	const DISTINCT       = 'distinct';
-	const COLUMNS        = 'columns';
-	const FROM           = 'from';
-	const UNION          = 'union';
-	const WHERE          = 'where';
-	const GROUP          = 'group';
-	const HAVING         = 'having';
-	const ORDER          = 'order';
-	const LIMIT_COUNT    = 'limitcount';
-	const LIMIT_OFFSET   = 'limitoffset';
-	const FOR_UPDATE     = 'forupdate';
+	const DISTINCT = 'distinct';
+	const COLUMNS = 'columns';
+	const FROM = 'from';
+	const UNION = 'union';
+	const WHERE = 'where';
+	const GROUP = 'group';
+	const HAVING = 'having';
+	const ORDER = 'order';
+	const LIMIT_COUNT = 'limitcount';
+	const LIMIT_OFFSET = 'limitoffset';
+	const FOR_UPDATE = 'forupdate';
 
-	const INNER_JOIN     = 'inner join';
-	const LEFT_JOIN      = 'left join';
-	const RIGHT_JOIN     = 'right join';
-	const FULL_JOIN      = 'full join';
-	const CROSS_JOIN     = 'cross join';
-	const NATURAL_JOIN   = 'natural join';
+	const INNER_JOIN = 'inner join';
+	const LEFT_JOIN = 'left join';
+	const RIGHT_JOIN = 'right join';
+	const FULL_JOIN = 'full join';
+	const CROSS_JOIN = 'cross join';
+	const NATURAL_JOIN = 'natural join';
 
-	const SQL_WILDCARD   = '*';
-	const SQL_SELECT     = 'SELECT';
-	const SQL_UNION      = 'UNION';
-	const SQL_UNION_ALL  = 'UNION ALL';
-	const SQL_FROM       = 'FROM';
-	const SQL_WHERE      = 'WHERE';
-	const SQL_DISTINCT   = 'DISTINCT';
-	const SQL_GROUP_BY   = 'GROUP BY';
-	const SQL_ORDER_BY   = 'ORDER BY';
-	const SQL_HAVING     = 'HAVING';
+	const SQL_WILDCARD = '*';
+	const SQL_SELECT = 'SELECT';
+	const SQL_UNION = 'UNION';
+	const SQL_UNION_ALL = 'UNION ALL';
+	const SQL_FROM = 'FROM';
+	const SQL_WHERE = 'WHERE';
+	const SQL_DISTINCT = 'DISTINCT';
+	const SQL_GROUP_BY = 'GROUP BY';
+	const SQL_ORDER_BY = 'ORDER BY';
+	const SQL_HAVING = 'HAVING';
 	const SQL_FOR_UPDATE = 'FOR UPDATE';
-	const SQL_AND        = 'AND';
-	const SQL_AS         = 'AS';
-	const SQL_OR         = 'OR';
-	const SQL_ON         = 'ON';
-	const SQL_ASC        = 'ASC';
-	const SQL_DESC       = 'DESC';
+	const SQL_AND = 'AND';
+	const SQL_AS = 'AS';
+	const SQL_OR = 'OR';
+	const SQL_ON = 'ON';
+	const SQL_ASC = 'ASC';
+	const SQL_DESC = 'DESC';
 
 	/**
 	 * The initial values for the $_parts array.
@@ -64,17 +63,17 @@ class Yan_Db_Select
 	 * @var array
 	 */
 	protected static $_partsInit = array(
-		self::DISTINCT     => false,
-		self::COLUMNS      => array(),
-		self::UNION        => array(),
-		self::FROM         => array(),
-		self::WHERE        => array(),
-		self::GROUP        => array(),
-		self::HAVING       => array(),
-		self::ORDER        => array(),
-		self::LIMIT_COUNT  => null,
+		self::DISTINCT => false,
+		self::COLUMNS => array(),
+		self::UNION => array(),
+		self::FROM => array(),
+		self::WHERE => array(),
+		self::GROUP => array(),
+		self::HAVING => array(),
+		self::ORDER => array(),
+		self::LIMIT_COUNT => null,
 		self::LIMIT_OFFSET => null,
-		self::FOR_UPDATE   => false
+		self::FOR_UPDATE => false
 	);
 
 	/**
@@ -83,11 +82,11 @@ class Yan_Db_Select
 	 * @var array
 	 */
 	protected static $_joinTypes = array(
-		self::INNER_JOIN   => true,
-		self::LEFT_JOIN    => true,
-		self::RIGHT_JOIN   => true,
-		self::FULL_JOIN    => true,
-		self::CROSS_JOIN   => true,
+		self::INNER_JOIN => true,
+		self::LEFT_JOIN => true,
+		self::RIGHT_JOIN => true,
+		self::FULL_JOIN => true,
+		self::CROSS_JOIN => true,
 		self::NATURAL_JOIN => true
 	);
 
@@ -123,7 +122,8 @@ class Yan_Db_Select
 	 */
 	protected $_adapter;
 
-	public function __construct(Yan_Db_Adapter $adapter) {
+	public function __construct(Yan_Db_Adapter $adapter)
+	{
 		$this->_adapter = $adapter;
 		$this->_parts = self::$_partsInit;
 	}
@@ -220,7 +220,8 @@ class Yan_Db_Select
 	 * @return mixed
 	 * @throws Yan_Db_Exception
 	 */
-	public function getPart($part) {
+	public function getPart($part)
+	{
 		if (!array_key_exists($part, $this->_parts)) {
 			require_once 'Yan/Db/Exception.php';
 			throw new Yan_Db_Exception("Invalid Select part '$part'");
@@ -228,7 +229,8 @@ class Yan_Db_Select
 		return $this->_parts[$part];
 	}
 
-	public function setPart($part, $val) {
+	public function setPart($part, $val)
+	{
 		if (!array_key_exists($part, $this->_parts)) {
 			require_once 'Yan/Db/Exception.php';
 			throw new Yan_Db_Exception("Invalid Select part '$part'");
@@ -236,14 +238,16 @@ class Yan_Db_Select
 		$this->_parts[$part] = $val;
 	}
 
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->assemble();
 	}
 
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function distinct() {
+	public function distinct()
+	{
 		$this->_parts[self::DISTINCT] = true;
 		return $this;
 	}
@@ -251,7 +255,8 @@ class Yan_Db_Select
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function forUpdate() {
+	public function forUpdate()
+	{
 		$this->_parts[self::FOR_UPDATE] = true;
 		return $this;
 	}
@@ -259,7 +264,8 @@ class Yan_Db_Select
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function from($table, $cols = '*') {
+	public function from($table, $cols = '*')
+	{
 		return $this->join(self::INNER_JOIN, $table, null, $cols);
 	}
 
@@ -268,8 +274,7 @@ class Yan_Db_Select
 	 */
 	public function columns($cols = '*', $correlationName = null)
 	{
-		if ($correlationName === null && count($this->_parts[self::FROM]))
-		{
+		if ($correlationName === null && count($this->_parts[self::FROM])) {
 			$aliases = array_keys($this->_parts[self::FROM]);
 			$correlationName = current($aliases);
 		}
@@ -293,13 +298,13 @@ class Yan_Db_Select
 			require_once 'Yan/Db/Exception.php';
 			throw new Yan_Db_Exception("Invalid join type '$type'");
 		}
-		list($table,$schema,$alias) = $this->_parseTable($table);
-		if(!empty($alias)){
+		list($table, $schema, $alias) = $this->_parseTable($table);
+		if (!empty($alias)) {
 			$this->_parts[self::FROM][$alias] = array(
-				'joinType'	=> $type,
-				'tableName'	=> $table,
-				'schema'	=> $schema,
-				'joinCond'	=> $on
+				'joinType' => $type,
+				'tableName' => $table,
+				'schema' => $schema,
+				'joinCond' => $on
 			);
 		}
 		$this->_tableCols($alias, $columns);
@@ -309,16 +314,18 @@ class Yan_Db_Select
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function limit($count=30,$offset=0) {
-		$this->_parts[self::LIMIT_COUNT]  = (int) $count;
-		$this->_parts[self::LIMIT_OFFSET] = (int) $offset;
+	public function limit($count = 30, $offset = 0)
+	{
+		$this->_parts[self::LIMIT_COUNT] = (int)$count;
+		$this->_parts[self::LIMIT_OFFSET] = (int)$offset;
 		return $this;
 	}
 
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function top($length=30) {
+	public function top($length = 30)
+	{
 		return $this->limit($length);
 	}
 
@@ -332,7 +339,7 @@ class Yan_Db_Select
 		}
 
 		foreach ($spec as $val) {
-			if (preg_match('/\(.*\)/', (string) $val)) {
+			if (preg_match('/\(.*\)/', (string)$val)) {
 				$val = new Yan_Db_Expr($val);
 			}
 			$this->_parts[self::GROUP][] = $val;
@@ -351,7 +358,7 @@ class Yan_Db_Select
 		}
 		if ($this->_parts[self::HAVING]) {
 			$this->_parts[self::HAVING][] = ($or ? self::SQL_OR : self::SQL_AND) . " ($cond)";
-		}else{
+		} else {
 			$this->_parts[self::HAVING][] = "($cond)";
 		}
 	}
@@ -359,22 +366,22 @@ class Yan_Db_Select
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function order($expr) {
-		if (! is_array($expr)) {
-			$expr = explode(',',$expr);
+	public function order($expr)
+	{
+		if (!is_array($expr)) {
+			$expr = explode(',', $expr);
 		}
 		foreach ($expr as $val) {
 			if ($val instanceof Yan_Db_Expr) {
 				$this->_parts[self::ORDER][] = $val;
 			} else {
-				if(!($val = trim($val))) {
+				if (!($val = trim($val))) {
 					continue;
 				}
 				$direction = self::SQL_ASC;
-				if (preg_match('/^([a-z][\w\.]*)\s*(' . self::SQL_ASC . '|' . self::SQL_DESC . ')?$/i', $val, $m))
-				{
+				if (preg_match('/^([a-z][\w\.]*)\s*(' . self::SQL_ASC . '|' . self::SQL_DESC . ')?$/i', $val, $m)) {
 					$val = $m[1];
-					if(isset($m[2])){
+					if (isset($m[2])) {
 						$direction = $m[2];
 					}
 				}
@@ -390,7 +397,8 @@ class Yan_Db_Select
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function where($where, $value = null, $type = null) {
+	public function where($where, $value = null, $type = null)
+	{
 		$this->_where($where, $value, $type);
 		return $this;
 	}
@@ -398,7 +406,8 @@ class Yan_Db_Select
 	/**
 	 * @return Yan_Db_Select
 	 */
-	public function orWhere($where, $value = null, $type = null) {
+	public function orWhere($where, $value = null, $type = null)
+	{
 		$this->_where($where, $value, $type, true);
 		return $this;
 	}
@@ -407,11 +416,11 @@ class Yan_Db_Select
 	{
 		if (is_array($where)) {
 			$condition = array();
-			foreach($where as $expr => $v){
+			foreach ($where as $expr => $v) {
 				$c = $this->_adapter->cond($expr, $v, $type);
-				if(strlen($c)) $condition[] = $c;
+				if (strlen($c)) $condition[] = $c;
 			}
-			$condition = implode(' '.self::SQL_AND.' ', $condition);
+			$condition = implode(' ' . self::SQL_AND . ' ', $condition);
 		} else {
 			$condition = $this->_adapter->cond($where, $value, $type);
 		}
@@ -441,7 +450,8 @@ class Yan_Db_Select
 		return $sql;
 	}
 
-	protected function _parseTable($table) {
+	protected function _parseTable($table)
+	{
 		if (is_array($table)) {
 			return $table;
 		}
@@ -454,8 +464,7 @@ class Yan_Db_Select
 			);
 		}
 		$alias = null;
-		if (preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $table, $m))
-		{
+		if (preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $table, $m)) {
 			$table = $m[1];
 			$alias = $m[2];
 		}
@@ -470,7 +479,8 @@ class Yan_Db_Select
 		return array($table, $schema, $alias);
 	}
 
-	protected function _tableCols($correlationName, $columns) {
+	protected function _tableCols($correlationName, $columns)
+	{
 		if ($columns instanceof Yan_Db_Expr) {
 			$this->_parts[self::COLUMNS][] = array(
 				$correlationName,
@@ -490,7 +500,7 @@ class Yan_Db_Select
 		foreach (array_filter($columns) as $alias => $col) {
 			$currentCorrelationName = $correlationName;
 			if (is_string($col)) {
-				if (! ($col = trim($col))) {
+				if (!($col = trim($col))) {
 					continue;
 				}
 				if (preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $col, $m)) {
@@ -512,14 +522,15 @@ class Yan_Db_Select
 		}
 	}
 
-	protected function _uniqueAlias($name) {
+	protected function _uniqueAlias($name)
+	{
 		$c = $name;
-		for ($i = 2; array_key_exists($c, $this->_parts[self::FROM]); ++$i)
-		{
+		for ($i = 2; array_key_exists($c, $this->_parts[self::FROM]); ++$i) {
 			$c = $name . '_' . $i;
 		}
 		return $c;
 	}
+
 	/**
 	 * Return a quoted table name
 	 *
@@ -547,7 +558,8 @@ class Yan_Db_Select
 		return $sql;
 	}
 
-	protected function _renderColumns($sql){
+	protected function _renderColumns($sql)
+	{
 		if (!count($this->_parts[self::COLUMNS])) {
 			return null;
 		}
@@ -590,11 +602,11 @@ class Yan_Db_Select
 			$tmp = '';
 
 			// Add join clause (if applicable)
-			if (! empty($from)) {
+			if (!empty($from)) {
 				$tmp .= ' ' . strtoupper($table['joinType']) . ' ';
 			}
 
-			$tmp .= $this->_getQuotedTable(array($table['schema'],$table['tableName']), $correlationName);
+			$tmp .= $this->_getQuotedTable(array($table['schema'], $table['tableName']), $correlationName);
 
 			// Add join conditions (if applicable)
 			if (!empty($from) && !empty($table['joinCond'])) {
@@ -622,7 +634,7 @@ class Yan_Db_Select
 	protected function _renderWhere($sql)
 	{
 		if ($this->_parts[self::FROM] && $this->_parts[self::WHERE]) {
-			$sql .= ' ' . self::SQL_WHERE . ' ' .  implode(' ', $this->_parts[self::WHERE]);
+			$sql .= ' ' . self::SQL_WHERE . ' ' . implode(' ', $this->_parts[self::WHERE]);
 		}
 
 		return $sql;
@@ -697,13 +709,13 @@ class Yan_Db_Select
 		$offset = 0;
 
 		if (!empty($this->_parts[self::LIMIT_OFFSET])) {
-			$offset = (int) $this->_parts[self::LIMIT_OFFSET];
+			$offset = (int)$this->_parts[self::LIMIT_OFFSET];
 			// This should reduce to the max integer PHP can support
 			$count = intval(9223372036854775807);
 		}
 
 		if (!empty($this->_parts[self::LIMIT_COUNT])) {
-			$count = (int) $this->_parts[self::LIMIT_COUNT];
+			$count = (int)$this->_parts[self::LIMIT_COUNT];
 		}
 
 		/*

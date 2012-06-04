@@ -29,7 +29,8 @@ class IndexController extends Yan_Controller
 	 * 自动探测模版(ControllerName/actionName.suffix)输出
 	 */
 	public function tpltest()
-	{}
+	{
+	}
 
 	/**
 	 * 自动模版输出，赋值变量
@@ -45,9 +46,9 @@ class IndexController extends Yan_Controller
 	public function tpltest3()
 	{
 		$this->_setView(array(
-			'class'=>'Yan_View_Twig',
-			'compiledBase'=>ROOT_PATH.'/Data/Cache/Template',
-			'templateBase'=>APP_PATH.'/View'
+			'class' => 'Yan_View_Twig',
+			'compiledBase' => ROOT_PATH . '/Data/Cache/Template',
+			'templateBase' => APP_PATH . '/View'
 		));
 		// 赋值方法一
 		$this->assign('title', 'Twig Template Engine Test');
@@ -62,13 +63,13 @@ class IndexController extends Yan_Controller
 	{
 		$this->_setOutput('view', array(
 			'view' => array(
-				'class'=>'Yan_View_Simple',
-				'templateBase' => APP_PATH.'/View'
+				'class' => 'Yan_View_Simple',
+				'templateBase' => APP_PATH . '/View'
 			),
-			'contentType'=>'text/html',
-			'charset'=>'utf-8',
-			'serverCache'=>array(
-				'class'=>'Yan_Cache_Memcached'
+			'contentType' => 'text/html',
+			'charset' => 'utf-8',
+			'serverCache' => array(
+				'class' => 'Yan_Cache_Memcached'
 			)
 		));
 		$this->display($this->_request->getActionName(), $this->_request->getControllerName());
@@ -83,11 +84,11 @@ class IndexController extends Yan_Controller
 		$captcha = new Yan_Captcha_Image(array(
 			'name' => 'valicode',
 			'format' => 'png',
-			'fonts'=>array(
+			'fonts' => array(
 				array('spacing' => -2, 'minSize' => 26, 'maxSize' => 30,
-					'file' => APP_PATH.'/Assets/Fonts/Ding-DongDaddyO.ttf')
+					'file' => APP_PATH . '/Assets/Fonts/Ding-DongDaddyO.ttf')
 			),
-			'height'=>50
+			'height' => 50
 		));
 		// 创建 Output 适配器
 		$output = new Yan_Output_Captcha($this->_response);
@@ -104,9 +105,9 @@ class IndexController extends Yan_Controller
 	public function output3()
 	{
 		$output = new Yan_Output_Attachment($this->_response, array(
-			'fileName'=>'文件.txt',
-			'fileNameCharset'=>'utf-8',
-			'mimeType'=>'text/plain'
+			'fileName' => '文件.txt',
+			'fileNameCharset' => 'utf-8',
+			'mimeType' => 'text/plain'
 		));
 		$output->setFile('/home/my/demo.txt');
 		return $output;
@@ -178,7 +179,7 @@ class IndexController extends Yan_Controller
 		// or
 		$select = new Yan_Table_Select($table);
 		$select->columns('*')->limit(30, 0)->where('useid', 1)
-			->where(array('email'=>'me@xx.com', "username LIKE '%?%'"=>'名字'));
+			->where(array('email' => 'me@xx.com', "username LIKE '%?%'" => '名字'));
 
 		/**
 		 * @var Yan_Table_Rowset
@@ -186,7 +187,7 @@ class IndexController extends Yan_Controller
 		$rowset = $table->fetchRowset($select);
 
 		// 遍历记录
-		foreach ($rowset as $record/* Yan_Table_Record */) {
+		foreach ($rowset as $record /* Yan_Table_Record */) {
 			// 获得 raw array
 			$record->toArray();
 		}

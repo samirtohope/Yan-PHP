@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Abstract.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -27,7 +26,7 @@ abstract class Yan_Response_Abstract
 		if (is_object($content) && method_exists($content, 'outputBody')) {
 			$this->_body = $content;
 		} else {
-			$this->_body = (string) $content;
+			$this->_body = (string)$content;
 		}
 		return $this;
 	}
@@ -44,7 +43,7 @@ abstract class Yan_Response_Abstract
 
 	/**
 	 * Output the body content
-	 * 
+	 *
 	 * @return void
 	 */
 	public function outputBody()
@@ -57,16 +56,16 @@ abstract class Yan_Response_Abstract
 	}
 
 	/**
-     * Magic __toString functionality
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        ob_start();
-        $this->outputBody();
-        return ob_get_clean();
-    }
+	 * Magic __toString functionality
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		ob_start();
+		$this->outputBody();
+		return ob_get_clean();
+	}
 
 	/**
 	 * send response and exit

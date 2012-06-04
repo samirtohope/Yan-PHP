@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: SaveHandler.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 /**

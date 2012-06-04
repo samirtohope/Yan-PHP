@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Simple.php 16 2012-04-23 14:32:49Z kakalong $
  */
 
 require_once 'Yan/View/Abstract.php';

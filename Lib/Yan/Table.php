@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Table.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 /**
@@ -15,16 +14,16 @@
 class Yan_Table
 {
 
-	const ADAPTER          = 'adapter';
-	const SCHEMA           = 'schema';
-	const NAME             = 'name';
-	const QUOTED_NAME      = 'quotedName';
-	const ALIAS_NAME       = 'aliasName';
-	const PRIMARY          = 'primary';
-	const COLUMNS          = 'columns';
-	const METADATA         = 'metadata';
-	const METADATA_CACHE   = 'metadataCache';
-	const RECORD_CLASS     = 'recordClass';
+	const ADAPTER = 'adapter';
+	const SCHEMA = 'schema';
+	const NAME = 'name';
+	const QUOTED_NAME = 'quotedName';
+	const ALIAS_NAME = 'aliasName';
+	const PRIMARY = 'primary';
+	const COLUMNS = 'columns';
+	const METADATA = 'metadata';
+	const METADATA_CACHE = 'metadataCache';
+	const RECORD_CLASS = 'recordClass';
 
 	const DEFAULT_RECORD_CLASS = 'Yan_Table_Record';
 
@@ -133,7 +132,7 @@ class Yan_Table
 		);
 		foreach ($configKeys as $key) {
 			if (isset($config[$key])) {
-				$var = '_'.$key;
+				$var = '_' . $key;
 				$this->$var = $config[$key];
 			}
 		}
@@ -153,10 +152,10 @@ class Yan_Table
 			return new Yan_Table($table);
 		}
 		try {
-			$class = $table.'Table';
+			$class = $table . 'Table';
 			Yan::loadClass($class);
 			$instance = new $class();
-			if (! $instance instanceof Yan_Table) {
+			if (!$instance instanceof Yan_Table) {
 				throw new Exception('catch');
 			}
 			return $instance;
@@ -166,7 +165,8 @@ class Yan_Table
 	}
 
 	public function init()
-	{}
+	{
+	}
 
 	public function __toString()
 	{
@@ -192,14 +192,15 @@ class Yan_Table
 	 * @param  $key The specific info part to return OPTIONAL
 	 * @return mixed
 	 */
-	public function info($key = null) {
+	public function info($key = null)
+	{
 		$info = array(
-			self::SCHEMA       => $this->_schema,
-			self::NAME         => $this->_name,
-			self::QUOTED_NAME  => $this->_quotedName,
-			self::ALIAS_NAME   => $this->_aliasName,
-			self::COLUMNS      => $this->_columns,
-			self::PRIMARY      => $this->_primary,
+			self::SCHEMA => $this->_schema,
+			self::NAME => $this->_name,
+			self::QUOTED_NAME => $this->_quotedName,
+			self::ALIAS_NAME => $this->_aliasName,
+			self::COLUMNS => $this->_columns,
+			self::PRIMARY => $this->_primary,
 			self::RECORD_CLASS => $this->_recordClass
 		);
 
@@ -230,8 +231,8 @@ class Yan_Table
 		// filter null primary value
 		if (array_key_exists($pkI, $data) &&
 			($data[$pkI] === null || $data[$pkI] === '' || is_bool($data[$pkI])
-			 || (is_array($data[$pkI]) && empty($data[$pkI]))))
-		{
+				|| (is_array($data[$pkI]) && empty($data[$pkI])))
+		) {
 			unset($data[$pkI]);
 		}
 
@@ -272,7 +273,7 @@ class Yan_Table
 		foreach ($pkData as $column => $value) {
 			$type = $this->_metadata[$column]['DATA_TYPE'];
 			$columnName = $this->_adapter->quoteIdentifier($column, true);
-			$where[] = "{$columnName} = ".$this->_adapter->quote($value,$type);
+			$where[] = "{$columnName} = " . $this->_adapter->quote($value, $type);
 		}
 		return implode(' AND ', $where);
 	}
@@ -318,7 +319,7 @@ class Yan_Table
 
 		$termc = 0;
 		$pkValues = array();
-		for ($pos=0; $pos<$keyc; $pos++) {
+		for ($pos = 0; $pos < $keyc; $pos++) {
 			$arg = $args[$pos];
 			if (!is_array($arg)) {
 				$arg = array($arg);
@@ -328,7 +329,7 @@ class Yan_Table
 			} else if (count($arg) != $termc) {
 				throw new Yan_Table_Exception('Missing value(s) for the primary key');
 			}
-			for ($i=0; $i<$termc; $i++) {
+			for ($i = 0; $i < $termc; $i++) {
 				$pkValues[$i][$primary[$pos]] = $arg[$i];
 			}
 		}
@@ -406,8 +407,8 @@ class Yan_Table
 	public function page($where, $order = null, $page = 1, $size = 20)
 	{
 		$pagination = new Yan_Table_Paginator(array(
-			'pageSize'=>$size,
-			'currentPage'=>$page
+			'pageSize' => $size,
+			'currentPage' => $page
 		));
 		$data = $this->select()->page($pagination)->fetchAll($this->_where($where), $order);
 		return array(
@@ -463,7 +464,7 @@ class Yan_Table
 
 	protected function _setupName()
 	{
-		$this->_name = (string) $this->_name;
+		$this->_name = (string)$this->_name;
 		if (preg_match('/^(.+)\s+as\s+(.+)$/i', $this->_name, $m)) {
 			$this->_name = $m[1];
 			$this->_aliasName = $m[2];
@@ -473,13 +474,13 @@ class Yan_Table
 			list($this->_schema, $this->_name) = explode('.', $this->_name);
 		}
 
-		if (! strlen($this->_name)) {
+		if (!strlen($this->_name)) {
 			throw new Yan_Table_Exception('Needs Table name');
 		}
-		if (! $this->_quotedName) {
+		if (!$this->_quotedName) {
 			$this->_quotedName = $this->_adapter->quoteTableAs(array($this->_schema, $this->_name), null, true);
 		}
-		if (! $this->_aliasName) {
+		if (!$this->_aliasName) {
 			$this->_aliasName = $this->_name;
 		}
 	}
@@ -487,8 +488,8 @@ class Yan_Table
 	protected function _setupRecordClass()
 	{
 		$detect = 0;
-		if (! $this->_recordClass) {
-			$this->_recordClass = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_name))).'Record';
+		if (!$this->_recordClass) {
+			$this->_recordClass = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_name))) . 'Record';
 			$detect = 1;
 		}
 		try {
@@ -521,8 +522,7 @@ class Yan_Table
 		$metadata = $this->_adapter->describeTable($this->_quotedName, null, true);
 		// Assign the metadata to $this
 		$this->_metadata = $metadata;
-		if ($this->_metadataCache && !$this->_metadataCache->write($cacheId, $metadata))
-		{
+		if ($this->_metadataCache && !$this->_metadataCache->write($cacheId, $metadata)) {
 			throw new Yan_Table_Exception('Failed saving metadata to metadataCache');
 		}
 		return true;
@@ -557,9 +557,9 @@ class Yan_Table
 			array_unshift($this->_primary, null);
 			unset($this->_primary[0]);
 		}
-		if (! array_intersect((array) $this->_primary, $this->_columns) == (array) $this->_primary) {
+		if (!array_intersect((array)$this->_primary, $this->_columns) == (array)$this->_primary) {
 			throw new Yan_Table_Exception("Primary key column(s) ("
-				. implode(',', (array) $this->_primary)
+				. implode(',', (array)$this->_primary)
 				. ") are not columns in this table ("
 				. implode(',', $this->_columns)
 				. ")");

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Yaml.php 15 2012-04-23 11:33:00Z kakalong $
  */
 
 require_once 'Yan/Config.php';
@@ -27,9 +26,11 @@ class Yan_Config_Yaml extends Yan_Config
 	 */
 	protected static $_parser = null;
 
-	public function __construct($file = null) {
+	public function __construct($file = null)
+	{
 		$this->merge(self::parse($file));
 	}
+
 	public static function parse($filename)
 	{
 		try {
@@ -39,8 +40,7 @@ class Yan_Config_Yaml extends Yan_Config
 			throw new Yan_Config_Exception("Cannot load Yaml file '$filename'");
 		}
 
-		if (self::$_parser == null)
-		{
+		if (self::$_parser == null) {
 			self::$_parser = new sfYamlParser();
 		}
 

@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Application.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 require_once 'Yan/Controller.php';
@@ -165,7 +164,7 @@ class Yan_Application
 				$writer = Yan::loadClass($writer);
 				$writer = new $writer();
 			} elseif (is_array($writer)) {
-				if (! array_key_exists('class',$writer)) {
+				if (!array_key_exists('class', $writer)) {
 					require_once 'Yan/Application/Exception.php';
 					throw new Yan_Application_Exception('Log writer class not provided in options');
 				}
@@ -174,8 +173,7 @@ class Yan_Application
 				if (empty($args)) {
 					$writer = new $class();
 				} else {
-					if (is_array($args) && (array_keys($args) === range(0, count($args) - 1)))
-					{
+					if (is_array($args) && (array_keys($args) === range(0, count($args) - 1))) {
 						$rf = new ReflectionClass($class);
 						$writer = $rf->newInstanceArgs($args);
 					} else {
@@ -196,11 +194,11 @@ class Yan_Application
 	 */
 	public function setDb(array $options)
 	{
-		if (! empty($options['adapter'])) {
+		if (!empty($options['adapter'])) {
 			$db = Yan_Db::factory($options['adapter'], $options['params']);
 			Yan_Db::setDefaultAdapter($db);
 		}
-		if (! empty($options['cache'])) {
+		if (!empty($options['cache'])) {
 			$cache = Yan_Cache::factory($options['cache']['adapter'], $options['cache']['options']);
 			Yan_Db::setCacheAdapter($cache);
 		}
@@ -215,7 +213,7 @@ class Yan_Application
 	 */
 	public function setSession(array $options)
 	{
-		if (! empty($options['saveHandler'])) {
+		if (!empty($options['saveHandler'])) {
 			$saveHandler = $options['saveHandler'];
 			if (is_array($saveHandler)) {
 				if (!array_key_exists('class', $saveHandler)) {
@@ -236,7 +234,7 @@ class Yan_Application
 				throw new Yan_Application_Exception('Invalid session save handler');
 			}
 		}
-		if (! empty($options['options'])) {
+		if (!empty($options['options'])) {
 			require_once 'Yan/Session.php';
 			Yan_Session::setOptions($options['options']);
 		}
@@ -265,7 +263,7 @@ class Yan_Application
 	 */
 	public function setControllerKey($key)
 	{
-		$this->_controllerKey = (string) $key;
+		$this->_controllerKey = (string)$key;
 		return $this;
 	}
 
@@ -277,7 +275,7 @@ class Yan_Application
 	 */
 	public function setActionKey($key)
 	{
-		$this->_actionKey = (string) $key;
+		$this->_actionKey = (string)$key;
 		return $this;
 	}
 
@@ -359,7 +357,7 @@ class Yan_Application
 
 	public function setUseRouter($flag)
 	{
-		$this->_useRouter = (bool) $flag;
+		$this->_useRouter = (bool)$flag;
 	}
 
 	public function setRouter(Yan_Router $router)
@@ -429,7 +427,7 @@ class Yan_Application
 		);
 		foreach ($optional as $key) {
 			if (isset($options[$key])) {
-				$this->{'set'.ucfirst($key)}($options[$key]);
+				$this->{'set' . ucfirst($key)}($options[$key]);
 			}
 		}
 		return $this;
@@ -470,11 +468,11 @@ class Yan_Application
 		$controllerName = $this->getControllerName();
 		$actionName = $this->getActionName();
 
-		$className = $controllerName.$this->_controllerSuffix;
+		$className = $controllerName . $this->_controllerSuffix;
 		Yan::loadClass($className);
 		// instance controller
 		$controller = new $className($request, $response);
-		if (! $controller instanceof Yan_Controller) {
+		if (!$controller instanceof Yan_Controller) {
 			require_once 'Yan/Application/Exception.php';
 			throw new Yan_Application_Exception(
 				"Controller '$className' is not an instance of Yan_Controller"

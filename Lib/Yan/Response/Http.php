@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: Http.php 19 2012-04-28 02:42:04Z kakalong $
  */
 
 require_once 'Yan/Response/Abstract.php';
@@ -50,7 +49,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 */
 	protected function _normalizeHeader($name)
 	{
-		$filtered = str_replace(array('-', '_'), ' ', (string) $name);
+		$filtered = str_replace(array('-', '_'), ' ', (string)$name);
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);
 		return $filtered;
@@ -70,8 +69,8 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	public function setHeader($name, $value, $replace = false)
 	{
 		$this->canSendHeaders(true);
-		$name  = $this->_normalizeHeader($name);
-		$value = (string) $value;
+		$name = $this->_normalizeHeader($name);
+		$value = (string)$value;
 
 		if ($replace) {
 			foreach ($this->_headers as $key => $header) {
@@ -82,8 +81,8 @@ class Yan_Response_Http extends Yan_Response_Abstract
 		}
 
 		$this->_headers[] = array(
-			'name'    => $name,
-			'value'   => $value,
+			'name' => $name,
+			'value' => $value,
 			'replace' => $replace
 		);
 
@@ -95,26 +94,26 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 *
 	 * @return Yan_Response_Http
 	 */
-	public function setCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false,$httponly = false)
+	public function setCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httponly = false)
 	{
 		$this->canSendHeaders(true);
-		$value = $name.'='.((string) $value);
-		if(is_int($expire) && $expire) {
-			$value .= '; expires='.gmdate('D,d M Y H:i:s', $expire).' GMT';
+		$value = $name . '=' . ((string)$value);
+		if (is_int($expire) && $expire) {
+			$value .= '; expires=' . gmdate('D,d M Y H:i:s', $expire) . ' GMT';
 		}
-		if(!is_null($path)){
-			$value .= '; path='.((string) $path);
+		if (!is_null($path)) {
+			$value .= '; path=' . ((string)$path);
 		}
-		if(!is_null($domain)){
-			$value .= '; domain='.((string) $domain);
+		if (!is_null($domain)) {
+			$value .= '; domain=' . ((string)$domain);
 		}
-		if($secure){
+		if ($secure) {
 			$value .= '; secure';
 		}
-		if($httponly){
+		if ($httponly) {
 			$value .= '; httponly';
 		}
-		$this->setHeader('Set-Cookie',$value);
+		$this->setHeader('Set-Cookie', $value);
 		return $this;
 	}
 
@@ -132,7 +131,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	{
 		$this->canSendHeaders(true);
 		$this->setHeader('Location', $url, true)
-			 ->setHttpResponseCode($code);
+			->setHttpResponseCode($code);
 
 		return $this;
 	}
@@ -167,12 +166,13 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * @param string $value
 	 * @return Yan_Response_Http
 	 */
-	public function setRawHeader($value){
+	public function setRawHeader($value)
+	{
 		$this->canSendHeaders(true);
 		if ('Location' == substr($value, 0, 8)) {
 			$this->_isRedirect = true;
 		}
-		$this->_headersRaw[] = (string) $value;
+		$this->_headersRaw[] = (string)$value;
 		return $this;
 	}
 
@@ -283,7 +283,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 
 	/**
 	 * Output the body content
-	 * 
+	 *
 	 * @return void
 	 */
 	public function outputBody()

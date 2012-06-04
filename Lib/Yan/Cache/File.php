@@ -3,7 +3,6 @@
  * Yan Framework
  *
  * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
- * @version   $Id: File.php 16 2012-04-23 14:32:49Z kakalong $
  */
 
 require_once 'Yan/Cache/Array.php';
@@ -19,21 +18,21 @@ class Yan_Cache_File extends Yan_Cache_Array
 
 	protected $_options = array(
 		'lifetime' => false,
-		'prefix'   => false,
+		'prefix' => false,
 		'cacheDir' => false,
 		'dirDepth' => false,
-		'fileUmask'=> false,
+		'fileUmask' => false,
 		'dirUmask' => false,
 		'readTest' => false,
 		'testType' => false
 	);
 
 	protected $_config = array(
-		'prefix'   => 'cache',
+		'prefix' => 'cache',
 		'cacheDir' => null,
 		'dirDepth' => 0,
 		'lifetime' => 3600,
-		'fileUmask'=> 0600,
+		'fileUmask' => 0600,
 		'dirUmask' => 0700,
 		'readTest' => true,
 		'testType' => 'crc32'
@@ -42,7 +41,8 @@ class Yan_Cache_File extends Yan_Cache_Array
 	/**
 	 * @see Yan_Cache_Abstract
 	 */
-	public function write($guid, $data, $specificLifetime = null){
+	public function write($guid, $data, $specificLifetime = null)
+	{
 		if (is_string($data)) {
 			$serialization = 0;
 		} else {
@@ -55,10 +55,10 @@ class Yan_Cache_File extends Yan_Cache_Array
 			$head .= sprintf('% 6s', $this->_config['testType']);
 			$head .= $this->_hash($data, $this->_config['testType']);
 		}
-		$data = $head.$data;
+		$data = $head . $data;
 
 		$path = $this->_path($guid, true);
-		if (! is_writable(dirname($path))) {
+		if (!is_writable(dirname($path))) {
 			return false;
 		}
 		$lifetime = $specificLifetime ? $specificLifetime : $this->_config['lifetime'];
@@ -66,7 +66,7 @@ class Yan_Cache_File extends Yan_Cache_Array
 			file_put_contents($path, $data, LOCK_EX);
 			chmod($path, $this->_config['fileUmask']);
 			return touch($path, time() + $lifetime);
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 	}
@@ -74,7 +74,8 @@ class Yan_Cache_File extends Yan_Cache_Array
 	/**
 	 * @see Yan_Cache_Abstract
 	 */
-	public function read($guid){
+	public function read($guid)
+	{
 		$path = $this->_path($guid);
 		if (!is_file($path) || $this->_expired($path)) {
 			return null;
@@ -88,15 +89,15 @@ class Yan_Cache_File extends Yan_Cache_Array
 			}
 			$policy = unpack('vserialization/vreadTest', $policy);
 			if ($policy['readTest']) {
-				$policy['testType'] = trim(fread($f,6));
-				$policy['crc'] = fread($f,32);
+				$policy['testType'] = trim(fread($f, 6));
+				$policy['crc'] = fread($f, 32);
 			}
 			$data = stream_get_contents($f);
 			@flock($f, LOCK_UN);
 			fclose($f);
-			if ( $policy['readTest']
-				&& $this->_hash($data, $policy['testType']) != $policy['crc'] )
-			{
+			if ($policy['readTest']
+				&& $this->_hash($data, $policy['testType']) != $policy['crc']
+			) {
 				// set expired
 				touch($path, time() - 3600);
 				return null;
@@ -117,7 +118,8 @@ class Yan_Cache_File extends Yan_Cache_Array
 	 * @param string $type
 	 * @return string
 	 */
-	protected function _hash($data, $type){
+	protected function _hash($data, $type)
+	{
 		switch ($type) {
 		case 'md5':
 			return md5($data);
