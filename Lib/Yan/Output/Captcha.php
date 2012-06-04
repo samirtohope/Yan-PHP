@@ -72,7 +72,7 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 	{
 		if (null != $this->_captcha) {
 			$this->_response->setHeader('Content-type', $this->_captcha->getContentType());
-			echo $this->_captcha->render();
+			$this->_captcha->render();
 		}
 	}
 }

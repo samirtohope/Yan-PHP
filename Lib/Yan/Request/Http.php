@@ -272,15 +272,15 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	public function setRequestUri($requestUri = null)
 	{
 		if ($requestUri === null) {
-			if (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
+			if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) {
+				$requestUri = $_SERVER['HTTP_X_ORIGINAL_URL'];
+			} elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
 				$requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
-			} elseif (
-				// IIS7 with URL Rewrite: make sure we get the unencoded url (double slash problem)
-				isset($_SERVER['IIS_WasUrlRewritten'])
-				&& $_SERVER['IIS_WasUrlRewritten'] == '1'
-				&& isset($_SERVER['UNENCODED_URL'])
-				&& $_SERVER['UNENCODED_URL'] != ''
-				) {
+			}
+			// IIS7 with URL Rewrite: make sure we get the unencoded url (double slash problem)
+			elseif (isset($_SERVER['IIS_WasUrlRewritten']) && $_SERVER['IIS_WasUrlRewritten'] == '1'
+				&& isset($_SERVER['UNENCODED_URL']) && $_SERVER['UNENCODED_URL'] != '')
+			{
 				$requestUri = $_SERVER['UNENCODED_URL'];
 			} elseif (isset($_SERVER['REQUEST_URI'])) {
 				$requestUri = $_SERVER['REQUEST_URI'];

@@ -269,25 +269,23 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 
 	/**
 	 * output captcha
-	 *
-	 * @return stream output.
+	 * 
+	 * @param boolean $return
+	 * @return stream output if set $return true
 	 */
-	public function render()
+	public function render($return = false)
 	{
 		$this->_generate();
 		$img = $this->_generateImage();
 		$func = 'image'.$this->_format;
-		ob_start();
-		try {
-			$func($img);
-			$content = ob_get_clean();
-			imagedestroy($img);
-		} catch (Exception $e) {
-			ob_end_clean();
-			imagedestroy($img);
-			throw $e;
+		if ($return) {
+			ob_start();
 		}
-		return $content;
+		$func($img);
+		imagedestroy($img);
+		if ($return) {
+			return ob_get_clean();
+		}
 	}
 
 	/**

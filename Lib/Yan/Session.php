@@ -139,9 +139,9 @@ abstract class Yan_Session
 	 */
 	public static function sessionExists()
 	{
-		if (ini_get('session.use_cookies') == '1' && isset($_COOKIE[session_name()])) {
+		if ((bool) ini_get('session.use_cookies') == true && isset($_COOKIE[session_name()])) {
 			return true;
-		} elseif (!empty($_REQUEST[session_name()])) {
+		} elseif ((bool) ini_get('session.use_only_cookies') == false && isset($_REQUEST[session_name()])) {
 			return true;
 		}
 
@@ -219,7 +219,8 @@ abstract class Yan_Session
 	 * @param $id
 	 * @throws Yan_Session_Exception
 	 */
-	public static function setId($id) {
+	public static function setId($id)
+	{
 		if (defined('SID')) {
 			require_once 'Yan/Session/Exception.php';
 			throw new Yan_Session_Exception('The session has already been started.  The session id must be set first.');

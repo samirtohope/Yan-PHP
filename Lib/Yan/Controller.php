@@ -247,15 +247,22 @@ abstract class Yan_Controller
 			require_once 'Yan/Controller/Exception.php';
 			throw new Yan_Controller_Exception("Action '$action' not found.");
 		} else {
+			$obLevel = ob_get_level();
 			ob_start();
 			try {
 				$return = $this->$action();
 			} catch (Exception $e) {
-				ob_end_clean();
+				while (ob_get_level() > $obLevel) {
+                	ob_end_clean();
+                }
 				throw $e;
 			}
 
+			while (ob_get_level() - $obLevel > 1) {
+            	ob_end_flush();
+            }
 			$text = ob_get_clean();
+			
 			switch (true) {
 			case is_int($return):
 				if (100 > $return || 599 < $return) {

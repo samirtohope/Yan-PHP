@@ -111,8 +111,6 @@ class Yan_Table
 	 */
 	protected $_columns = array();
 
-	protected static $_tables = array();
-
 	/**
 	 * Constructor.
 	 *
@@ -147,18 +145,12 @@ class Yan_Table
 	 * Initilized a Yan_Table
 	 *
 	 * @param string $table
-	 * @param string $guid
 	 * @return Yan_Table
 	 */
-	public static function getInstance($table, $guid = null)
+	public static function factory($table)
 	{
-		$instance = null;
-		$guid = strtolower($guid ? $guid : (is_array($table) ? md5(serialize($table)) : $table));
-		if (array_key_exists($guid, self::$_tables)
-			&& ($instance = self::$_tables[$guid])
-			&& $instance instanceof Yan_Table)
-		{
-			return $instance;
+		if (!is_string($table)) {
+			return new Yan_Table($table);
 		}
 		try {
 			$class = $table.'Table';
@@ -167,10 +159,10 @@ class Yan_Table
 			if (! $instance instanceof Yan_Table) {
 				throw new Exception('catch');
 			}
+			return $instance;
 		} catch (Exception $e) {
-			$instance = new Yan_Table($table);
+			return new Yan_Table($table);
 		}
-		return self::$_tables[$guid] = $instance;
 	}
 
 	public function init()

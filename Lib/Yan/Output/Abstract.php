@@ -42,7 +42,7 @@ abstract class Yan_Output_Abstract
 	{
 		foreach ($options as $key=>$value) {
 			$method = 'set' . ucfirst ($key);
-			if (method_exists ($this, $method)) {
+			if (method_exists($this, $method)) {
 				// Setter exists; use it
 				$this->$method($value);
 			}

@@ -477,7 +477,7 @@ class Yan_Application
 		if (! $controller instanceof Yan_Controller) {
 			require_once 'Yan/Application/Exception.php';
 			throw new Yan_Application_Exception(
-				"Controller '$className' is not an instance of Action"
+				"Controller '$className' is not an instance of Yan_Controller"
 			);
 		}
 

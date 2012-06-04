@@ -442,10 +442,10 @@ class Yan_Db_Select
 	}
 
 	protected function _parseTable($table) {
-		if(is_array($table)){
+		if (is_array($table)) {
 			return $table;
 		}
-		if($table instanceof Yan_Table){
+		if ($table instanceof Yan_Table) {
 			$info = $table->info();
 			return array(
 				$info[Yan_Table::NAME],
@@ -454,11 +454,12 @@ class Yan_Db_Select
 			);
 		}
 		$alias = null;
-		if(preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $table, $m)){
+		if (preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $table, $m))
+		{
 			$table = $m[1];
 			$alias = $m[2];
 		}
-		$m = explode('.',$table);
+		$m = explode('.', $table);
 		if (isset($m[1])) {
 			$schema = $m[0];
 			$table = $m[1];
@@ -466,7 +467,7 @@ class Yan_Db_Select
 			$schema = null;
 		}
 		$alias = $this->_uniqueAlias($alias ? $alias : $table);
-		return array($table,$schema,$alias);
+		return array($table, $schema, $alias);
 	}
 
 	protected function _tableCols($correlationName, $columns) {
@@ -512,11 +513,12 @@ class Yan_Db_Select
 	}
 
 	protected function _uniqueAlias($name) {
-		for ($i = 2; array_key_exists($name,$this->_parts[self::FROM]); ++ $i)
+		$c = $name;
+		for ($i = 2; array_key_exists($c, $this->_parts[self::FROM]); ++$i)
 		{
-			$name = $name . '_' . $i;
+			$c = $name . '_' . $i;
 		}
-		return $name;
+		return $c;
 	}
 	/**
 	 * Return a quoted table name

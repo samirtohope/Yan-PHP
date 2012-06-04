@@ -55,7 +55,8 @@ abstract class Yan_Captcha_Abstract
 	/**
 	 * output captcha
 	 *
-	 * @return string output.
+	 * @param boolean $return
+	 * @return string output if set $return true
 	 */
-	abstract public function render();
+	abstract public function render($return = false);
 }

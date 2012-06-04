@@ -83,12 +83,11 @@ function excerpt($file, $line)
  * A quick function to get a Yan_Table Object
  *
  * @param string|array $table
- * @param string $guid
  * @return Yan_Table
  */
-function T($table, $guid = null)
+function T($table)
 {
-	return Yan_Table::getInstance($table, $guid);
+	return Yan_Table::factory($table);
 }
 
 /**
@@ -263,7 +262,9 @@ abstract class Yan
 			require_once 'Yan/Log.php';
 			Yan_Log::log("{$errstr} in {$errfile}:{$errline}", Yan_Log::ERROR);
 		} catch (Exception $e){}
-		ob_end_clean();
+		while (ob_get_level() > 0) {
+			ob_end_clean();
+		}
 		require_once 'Yan/Assets/exception.phtml';
 		exit;
 	}

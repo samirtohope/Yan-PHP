@@ -24,13 +24,6 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 	protected $_fileName = null;
 
 	/**
-	 * charset of file name
-	 *
-	 * @var string
-	 */
-	protected $_fileNameCharset = 'utf-8';
-
-	/**
 	 * file stream mimetype, try detect if null given
 	 *
 	 * @var string
@@ -81,18 +74,6 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 	}
 
 	/**
-	 * set charset of file name
-	 *
-	 * @param string $charset
-	 * @return Yan_Output_Attachment
-	 */
-	public function setFileNameCharset($charset)
-	{
-		$this->_fileNameCharset = $charset;
-		return $this;
-	}
-
-	/**
 	 * set the filename to output
 	 *
 	 * @param string $fileName
@@ -126,21 +107,17 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 		if (null === $this->_fileName) {
 			$this->_fileName = basename($this->_file);
 		}
-		$fileName = htmlspecialchars($this->_fileName);
 
 		if (null === $this->_mimeType) {
 			$ext = pathinfo($fileName, PATHINFO_EXTENSION);
 			$this->_mimeType = $this->_getMimeType($ext);
 		}
 
-		
-		if (preg_match("/MSIE/", $_SERVER["HTTP_USER_AGENT"])) {
-			$disposition = 'attachment; filename="'.rawurlencode($fileName).'"';
-		} else {
-			$disposition = "attachment; filename=\"{$fileName}\"; charset={$this->_fileNameCharset}";
-		}
+		$fileName = strstr($_SERVER["HTTP_USER_AGENT"], 'MSIE')
+			? rawurlencode($this->_fileName) : htmlspecialchars($this->_fileName);
+
 		$this->_response->setHeader('Content-Type', $this->_mimeType)
-			 ->setHeader('Content-Disposition', $disposition)
+			 ->setHeader('Content-Disposition', 'attachment; filename="'.$fileName.'"')
 			 ->setHeader('Content-Length', $fileSize);
 
 		if ($this->_XSendFile

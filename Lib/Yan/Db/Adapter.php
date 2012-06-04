@@ -251,7 +251,7 @@ abstract class Yan_Db_Adapter
 	 * @param  mixed  $sql  The SQL statement with placeholders.
 	 *                      May be a string or Db_Select.
 	 * @param  mixed  $bind An array of data to bind to the placeholders.
-	 * @return PDOStatement
+	 * @return int
 	 */
 	public function exec($statement)
 	{
@@ -260,16 +260,18 @@ abstract class Yan_Db_Adapter
 		}
 		try {
 			$this->_connect();
-			$affected = $this->_connection->exec($statement);
+			$stmt = $this->prepare($statement);
+			$stmt->execute();
+			$affected = $stmt->rowCount();
 
 			if ($affected === false) {
-				$errorInfo = $this->_connection->errorInfo();
+				$errorInfo = $stmt->errorInfo();
 				require_once 'Yan/Db/Adapter/Exception.php';
 				throw new Yan_Db_Adapter_Exception($errorInfo[2]);
 			}
 
 			return $affected;
-		} catch (PDOException $e) {
+		} catch (Yan_Db_Statement_Exception $e) {
 			require_once 'Yan/Db/Adapter/Exception.php';
 			throw new Yan_Db_Adapter_Exception($e->getMessage(), $e->getCode(), $e);
 		}
@@ -281,7 +283,7 @@ abstract class Yan_Db_Adapter
 	 * @param  mixed  $sql  The SQL statement with placeholders.
 	 *                      May be a string or Db_Select.
 	 * @param  mixed  $bind An array of data to bind to the placeholders.
-	 * @return PDOStatement
+	 * @return Yan_Db_Statement
 	 */
 	public function query($sql, $bind = array())
 	{
@@ -300,7 +302,7 @@ abstract class Yan_Db_Adapter
 		// make sure $bind to an array;
 		if (is_array($bind)) {
 			foreach ($bind as $name => $value) {
-				if (!is_int($name) && !preg_match('/^:/', $name)) {
+				if (!is_int($name) && $name{0} != ':') {
 					$newName = ":$name";
 					unset($bind[$name]);
 					$bind[$newName] = $value;
@@ -898,11 +900,11 @@ abstract class Yan_Db_Adapter
 	 * Prepare a statement and return a PDOStatement-like object.
 	 *
 	 * @param  string  $sql  SQL query
-	 * @return PDOStatement
+	 * @return Yan_Db_Statement
 	 */
 	public function prepare($sql)
 	{
-		$stmt = $this->getConnection()->prepare($sql);
+		$stmt = new Yan_Db_Statement($this, $sql);
 		$stmt->setFetchMode($this->_fetchMode);
 		return $stmt;
 	}
