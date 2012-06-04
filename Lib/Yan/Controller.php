@@ -14,8 +14,6 @@
  */
 abstract class Yan_Controller
 {
-	const NONE = 0;
-
 	/**
 	 * suffix of template file
 	 *
@@ -260,17 +258,18 @@ abstract class Yan_Controller
 			$text = ob_get_clean();
 			switch (true) {
 			case is_int($return):
-				if (100 > $return || 500 < $return) {
-					$this->_response->setHttpResponseCode($return);
-				} else {
-					$this->_response->setBody($return === self::NONE ? '' : $return);
+				if (100 > $return || 599 < $return) {
+					$return = 200;
 				}
+				$this->_response->setHttpResponseCode($return);
+				$this->_response->setBody($text);
 				break;
 			case is_string($return):
 				$this->_response->setBody($return);
 				break;
 			case is_array($return):
-				$this->_response->setBody(json_encode($return));
+				$return = json_encode($return);
+				$this->_response->setBody(empty($_GET['jsoncallback']) ? $return : "{$_GET['jsoncallback']}($return)");
 				break;
 			case $this->_output instanceof Yan_Output_Abstract:
 				$this->_response->setBody($this->_output->getBody());
@@ -284,9 +283,6 @@ abstract class Yan_Controller
 			case $this->_hasDefaultView():
 				$this->_setView();
 				$this->_response->setBody($this->_output->getBody());
-				break;
-			default:
-				$this->_response->setBody('');
 				break;
 			}
 		}
