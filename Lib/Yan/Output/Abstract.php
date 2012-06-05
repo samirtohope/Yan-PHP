@@ -25,7 +25,7 @@ abstract class Yan_Output_Abstract
 	 * @param Yan_Response_Abstract $response
 	 * @param array $options
 	 */
-	final public function __construct(Yan_Response_Abstract $response, array $options = array())
+	public function __construct(Yan_Response_Abstract $response, array $options = array())
 	{
 		$this->_response = $response;
 		$this->setOptions($options);
