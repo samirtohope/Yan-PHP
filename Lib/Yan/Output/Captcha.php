@@ -16,6 +16,13 @@ require_once 'Yan/Output/Abstract.php';
 class Yan_Output_Captcha extends Yan_Output_Abstract
 {
 	/**
+	 * Response object
+	 *
+	 * @var Yan_Response_Http
+	 */
+	protected $_response;
+
+	/**
 	 * the captcha render engine
 	 *
 	 * @var Yan_Captcha_Abstract
@@ -44,7 +51,7 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 			Yan::loadClass($class);
 			$captcha = new $class($captcha);
 		}
-		if (!$captcha instanceof Yan_Captcha) {
+		if (!$captcha instanceof Yan_Captcha_Abstract) {
 			require_once 'Yan/Output/Exception.php';
 			throw new Yan_Output_Exception('Not valid type of captcha instance.');
 		}
@@ -70,7 +77,7 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 	public function outputBody()
 	{
 		if (null != $this->_captcha) {
-			$this->_response->setHeader('Content-type', $this->_captcha->getContentType());
+			$this->_response->setHeader('Content-Type', $this->_captcha->getContentType())->header();
 			$this->_captcha->render();
 		}
 	}
