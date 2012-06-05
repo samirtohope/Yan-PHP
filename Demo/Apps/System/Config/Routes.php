@@ -1,9 +1,5 @@
 <?php
 return array(
-	'default' => array(
-		'rule' => '/:c/:a/*',
-		'type' => 'Yan_Route_Route'
-	),
 	array(
 		'rule' => '/:c/*',
 		'type' => 'Yan_Route_Route',
@@ -11,5 +7,9 @@ return array(
 			'a' => 'index'
 		),
 		'reqs' => array('c' => '\w+')
+	),
+	'normal' => array(
+		'rule' => '/:c/:a/*',
+		'type' => 'Yan_Route_Route'
 	)
 );
