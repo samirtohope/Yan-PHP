@@ -16,6 +16,13 @@ require_once 'Yan/Output/Abstract.php';
 class Yan_Output_Attachment extends Yan_Output_Abstract
 {
 	/**
+	 * Response object
+	 *
+	 * @var Yan_Response_Http
+	 */
+	protected $_response;
+
+	/**
 	 * file name of attachment output
 	 *
 	 * @var string
@@ -37,11 +44,23 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 	protected $_file = null;
 
 	/**
-	 * use X-SendFile module
+	 * weather use X-SendFile module
 	 *
 	 * @var boolean
 	 */
 	protected $_XSendFile = false;
+
+	/**
+	 * @param Yan_Response_Http $response
+	 * @param array $options
+	 */
+	public function __construct(Yan_Response_Http $response, array $options = array())
+	{
+		parent::__construct($response, $options);
+		if (function_exists('apache_get_modules') && in_array('mod_xsendfile', apache_get_modules())) {
+			$this->setXSendFile(true);
+		}
+	}
 
 	/**
 	 * set the file to output
@@ -84,9 +103,15 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 		return $this;
 	}
 
-	public function setXSendFile()
+	/**
+	 * set use X-SendFile module
+	 *
+	 * @param boolean $flag
+	 * @return Yan_Output_Attachment
+	 */
+	public function setXSendFile($flag)
 	{
-		$this->_XSendFile = true;
+		$this->_XSendFile = (bool)$flag;
 		return $this;
 	}
 
@@ -108,7 +133,7 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 		}
 
 		if (null === $this->_mimeType) {
-			$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+			$ext = pathinfo($this->_fileName, PATHINFO_EXTENSION);
 			$this->_mimeType = $this->_getMimeType($ext);
 		}
 
@@ -119,11 +144,10 @@ class Yan_Output_Attachment extends Yan_Output_Abstract
 			->setHeader('Content-Disposition', 'attachment; filename="' . $fileName . '"')
 			->setHeader('Content-Length', $fileSize);
 
-		if ($this->_XSendFile
-			|| (function_exists('apache_get_modules') && in_array('mod_xsendfile', apache_get_modules()))
-		) {
-			$this->_response->setHeader('X-Sendfile', realpath($this->_file));
+		if ($this->_XSendFile) {
+			$this->_response->setHeader('X-Sendfile', realpath($this->_file))->header();
 		} else {
+			$this->_response->header();
 			readfile($this->_file);
 		}
 	}
