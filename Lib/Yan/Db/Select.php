@@ -464,7 +464,7 @@ class Yan_Db_Select
 			);
 		}
 		$alias = null;
-		if (preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $table, $m)) {
+		if (preg_match('/^(.+)\s+(?:' . self::SQL_AS . '\s+)?(.+)$/i', $table, $m)) {
 			$table = $m[1];
 			$alias = $m[2];
 		}
@@ -581,7 +581,7 @@ class Yan_Db_Select
 			}
 		}
 
-		return $sql .= ' ' . implode(', ', $columns);
+		return $sql . ' ' . implode(', ', $columns);
 	}
 
 	/**

@@ -46,7 +46,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	/**
 	 * Table columns defined in db
 	 *
-	 * @var unknown_type
+	 * @var array
 	 */
 	protected $_columns = null;
 
@@ -216,7 +216,7 @@ class Yan_Table_Record implements ArrayAccess, IteratorAggregate
 	 */
 	public function offsetUnset($offset)
 	{
-		return $this->__unset($offset);
+		$this->__unset($offset);
 	}
 
 	/**

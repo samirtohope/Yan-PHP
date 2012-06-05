@@ -86,6 +86,8 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * IDENTITY        => integer; true if column isautoIncrement
 	 *
 	 * @param string $table
+	 * @param string $schema
+	 * @param bool $hasQuoted
 	 *
 	 * @return array
 	 */
@@ -190,7 +192,7 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * Creates a connection to the database.
 	 *
 	 * @return void
-	 * @throws Yan_Db_Adapter_Mysqli_Exception
+	 * @throws Yan_Db_Adapter_Exception
 	 */
 	protected function _connect()
 	{
@@ -212,6 +214,7 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * @param string $sql
 	 * @param int $count
 	 * @param int $offset OPTIONAL
+	 * @throws Yan_Db_Adapter_Exception
 	 * @return string
 	 */
 	public function limit($sql, $count, $offset = 0)
@@ -294,15 +297,5 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 			array_pop($this->_savedPoints);
 		}
 		return true;
-	}
-
-	/**
-	 * Checks if a transaction is currently active within the driver.
-	 *
-	 * @return bool
-	 */
-	public function inTransaction()
-	{
-		return $this->_transCount > 0;
 	}
 }

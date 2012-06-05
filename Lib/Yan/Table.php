@@ -83,6 +83,11 @@ class Yan_Table
 	protected $_identity = 1;
 
 	/**
+	 * @var string
+	 */
+	protected $_sequence = null;
+
+	/**
 	 * Information provided by the adapter's metaTable() method.
 	 *
 	 * @var array
@@ -189,7 +194,8 @@ class Yan_Table
 	 * You can elect to return only a part of this information by supplying its key name,
 	 * otherwise all information is returned as an array.
 	 *
-	 * @param  $key The specific info part to return OPTIONAL
+	 * @param string|null $key The specific info part to return OPTIONAL
+	 * @throws Yan_Table_Exception
 	 * @return mixed
 	 */
 	public function info($key = null)
@@ -222,11 +228,14 @@ class Yan_Table
 
 	public function insert(array $data)
 	{
-
 		$primary = $this->_primary;
 		$pkI = $primary[(int)$this->_identity];
 
 		$data = array_intersect_key($data, array_flip($this->_columns));
+
+		if (!isset($data[$pkI])) {
+			$data[$pkI] = $this->_adapter->lastSequenceId($this->_sequence);
+		}
 
 		// filter null primary value
 		if (array_key_exists($pkI, $data) &&
@@ -239,7 +248,7 @@ class Yan_Table
 		$this->_adapter->insert($this->_quotedName, $data, true);
 
 		if (!isset($data[$pkI])) {
-			$data[$pkI] = $this->_adapter->lastInsertId($this->_quotedName, $pkI);
+			$data[$pkI] = $this->_adapter->lastInsertId();
 		}
 
 		$pkData = array_intersect_key($data, array_flip($primary));
@@ -304,7 +313,8 @@ class Yan_Table
 	 * The find() method always returns a Rowset object, even if only one row
 	 * was found.
 	 *
-	 * @param  mixed $key The value(s) of the primary keys.
+	 * @throws Yan_Table_Exception
+	 * @internal param mixed $key The value(s) of the primary keys.
 	 * @return Yan_Table_Rowset
 	 */
 	public function find()
@@ -564,5 +574,9 @@ class Yan_Table
 				. implode(',', $this->_columns)
 				. ")");
 		}
+
+		$primary = (array) $this->_primary;
+		$pkI = $primary[(int) $this->_identity];
+		$this->_sequence = ($this->_schema ? "$this->_schema." : '') . "{$this->_name}_{$pkI}_seq";
 	}
 }

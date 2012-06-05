@@ -32,7 +32,7 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Database connection
 	 *
-	 * @var object|resource|null
+	 * @var PDO
 	 */
 	protected $_connection = null;
 
@@ -183,7 +183,7 @@ abstract class Yan_Db_Adapter
 		// check the PDO driver is available
 		if (!in_array($this->_driver, PDO::getAvailableDrivers())) {
 			require_once 'Yan/Db/Adapter/Exception.php';
-			throw new Yan_Db_Adapter_Exception('The ' . $this->_pdoType . ' driver is not currently installed');
+			throw new Yan_Db_Adapter_Exception('The ' . $this->_driver . ' driver is not currently installed');
 		}
 
 		// add the persistence flag if we find it in our config array
@@ -207,7 +207,7 @@ abstract class Yan_Db_Adapter
 
 		} catch (PDOException $e) {
 			require_once 'Yan/Db/Adapter/Exception.php';
-			throw new Yan_Db_Adapter_Exception($e->getMessage(), $e->getCode(), $e);
+			throw new Yan_Db_Adapter_Exception($e->getMessage(), $e->getCode());
 		}
 	}
 
@@ -215,7 +215,7 @@ abstract class Yan_Db_Adapter
 	 * Returns the underlying database connection object or resource.
 	 * If not presently connected, this initiates the connection.
 	 *
-	 * @return object|resource|null
+	 * @return PDO|null
 	 */
 	public function getConnection()
 	{
@@ -246,9 +246,8 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Prepares and executes an SQL statement with bound data.
 	 *
-	 * @param  mixed  $sql  The SQL statement with placeholders.
-	 *                      May be a string or Db_Select.
-	 * @param  mixed  $bind An array of data to bind to the placeholders.
+	 * @param $statement
+	 * @throws Yan_Db_Adapter_Exception
 	 * @return int
 	 */
 	public function exec($statement)
@@ -271,7 +270,7 @@ abstract class Yan_Db_Adapter
 			return $affected;
 		} catch (Yan_Db_Statement_Exception $e) {
 			require_once 'Yan/Db/Adapter/Exception.php';
-			throw new Yan_Db_Adapter_Exception($e->getMessage(), $e->getCode(), $e);
+			throw new Yan_Db_Adapter_Exception($e->getMessage(), $e->getCode());
 		}
 	}
 
@@ -507,10 +506,11 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Updates table rows with specified data based on a WHERE clause.
 	 *
-	 * @param  mixed        $table The table to update.
-	 * @param  array        $bind  Column-value pairs.
-	 * @param  mixed        $where UPDATE WHERE clause(s).
-	 * @return int          The number of affected rows.
+	 * @param  mixed $table The table to update.
+	 * @param  array $bind  Column-value pairs.
+	 * @param  mixed $where UPDATE WHERE clause(s).
+	 * @param  bool $hasQuoted
+	 * @return int The number of affected rows.
 	 */
 	public function update($table, array $bind, $where = '', $hasQuoted = false)
 	{
@@ -548,9 +548,10 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Deletes table rows based on a WHERE clause.
 	 *
-	 * @param  mixed        $table The table to update.
-	 * @param  mixed        $where DELETE WHERE clause(s).
-	 * @return int          The number of affected rows.
+	 * @param  mixed  $table The table to update.
+	 * @param  mixed  $where DELETE WHERE clause(s).
+	 * @param bool    $hasQuoted
+	 * @return int    The number of affected rows.
 	 */
 	public function delete($table, $where = '', $hasQuoted = false)
 	{
@@ -795,6 +796,20 @@ abstract class Yan_Db_Adapter
 	 */
 	public function quoteTableAs($ident, $alias = null, $auto = false)
 	{
+		return $this->_quoteTableAs($ident, $alias, $auto);
+	}
+
+	/**
+	 * Quote a table identifier and alias.
+	 *
+	 * @param string|array|Yan_Db_Expr $ident The identifier or expression.
+	 * @param string $alias An alias for the table.
+	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param string $as The string to add between the identifier/expression and the alias.
+	 * @return string The quoted identifier and alias.
+	 */
+	protected function _quoteTableAs($ident, $alias = null, $auto = false, $as = ' AS ')
+	{
 		if ($ident instanceof Yan_Db_Expr) {
 			$quoted = $ident->__toString();
 		} else {
@@ -809,7 +824,7 @@ abstract class Yan_Db_Adapter
 			}
 			$quoted = '';
 			if ($schema) {
-				$quoted = $this->quoteIdentifier($schema, true) . '.';
+				$quoted = $this->_quoteIdentifier($schema, $auto) . '.';
 			}
 			if ($table instanceof Yan_Db_Expr) {
 				$quoted .= $table->__toString();
@@ -822,7 +837,7 @@ abstract class Yan_Db_Adapter
 			}
 		}
 		if ($alias !== null) {
-			$quoted .= ' AS ' . $this->_quoteIdentifier($alias, $auto);
+			$quoted .= $as . $this->_quoteIdentifier($alias, $auto);
 		}
 		return $quoted;
 	}
@@ -830,9 +845,8 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Quote an identifier and an optional alias.
 	 *
-	 * @param string|array|Yan_Db_Expr $ident The identifier or expression.
+	 * @param string|array|Yan_Db_Expr|Yan_Db_Select $ident The identifier or expression.
 	 * @param string $alias An optional alias.
-	 * @param string $as The string to add between the identifier/expression and the alias.
 	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
 	 * @return string The quoted identifier and alias.
 	 */
@@ -919,6 +933,19 @@ abstract class Yan_Db_Adapter
 	}
 
 	/**
+	 * Return the most recent value from the specified sequence in the database.
+	 * This is supported only on RDBMS brands that support sequences
+	 * (e.g. Oracle, PostgreSQL, DB2).  Other RDBMS brands return null.
+	 *
+	 * @param string $sequenceName
+	 * @return string
+	 */
+	public function lastSequenceId($sequenceName)
+	{
+		return null;
+	}
+
+	/**
 	 * Gets the last ID generated automatically by an IDENTITY/AUTOINCREMENT column.
 	 *
 	 * As a convention, on RDBMS brands that support sequences
@@ -928,11 +955,9 @@ abstract class Yan_Db_Adapter
 	 * returns the last value generated for such a column, and the table name
 	 * argument is disregarded.
 	 *
-	 * @param string $tableName   OPTIONAL Name of table.
-	 * @param string $primaryKey  OPTIONAL Name of primary key column.
 	 * @return string
 	 */
-	public function lastInsertId($tableName = null, $primaryKey = null)
+	public function lastInsertId()
 	{
 		$this->_connect();
 		return $this->_connection->lastInsertId();
@@ -1006,7 +1031,9 @@ abstract class Yan_Db_Adapter
 	 * PRIMARY_POS    => integer; position of column in primary key
 	 * IDENTITY        => integer; true if column isautoIncrement
 	 *
-	 * @param string $quotedTable
+	 * @param string $table
+	 * @param string $schema
+	 * @param bool $hasQuoted
 	 *
 	 * @return array
 	 */
