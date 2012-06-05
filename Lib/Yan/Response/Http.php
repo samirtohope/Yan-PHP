@@ -246,7 +246,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	public function header()
 	{
 		// Do not send 200 code
-		$httpCodeNeedSent = 200 == $this->_httpResponseCode;
+		$httpCodeNeedSent = 200 != $this->_httpResponseCode;
 
 		// Only check if we can send headers if we have headers to send
 		if (count($this->_headersRaw) || count($this->_headers) || $httpCodeNeedSent) {
