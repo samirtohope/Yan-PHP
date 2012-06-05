@@ -61,13 +61,6 @@ class Yan_Application
 	protected $_response = null;
 
 	/**
-	 * If use Router
-	 *
-	 * @var boolean
-	 */
-	protected $_useRouter = true;
-
-	/**
 	 * The router
 	 *
 	 * @var Yan_Router
@@ -303,6 +296,13 @@ class Yan_Application
 		return $this;
 	}
 
+	/**
+	 * set Yan_Request_Abstract object
+	 *
+	 * @param string|Yan_Request_Abstract $request
+	 * @return Yan_Application
+	 * @throws Yan_Application_Exception
+	 */
 	public function setRequest($request)
 	{
 		if (is_string($request)) {
@@ -319,6 +319,11 @@ class Yan_Application
 		return $this;
 	}
 
+	/**
+	 * retrieve Yan_Request_Abstract object
+	 *
+	 * @return Yan_Request_Abstract
+	 */
 	public function getRequest()
 	{
 		if (null == $this->_request) {
@@ -330,6 +335,13 @@ class Yan_Application
 		return $this->_request;
 	}
 
+	/**
+	 * set Yan_Response_Abstract object
+	 *
+	 * @param string|Yan_Response_Abstract $response
+	 * @return Yan_Application
+	 * @throws Yan_Application_Exception
+	 */
 	public function setResponse($response)
 	{
 		if (is_string($response)) {
@@ -346,6 +358,11 @@ class Yan_Application
 		return $this;
 	}
 
+	/**
+	 * retrieve Yan_Response_Abstract object
+	 *
+	 * @return Yan_Response_Abstract
+	 */
 	public function getResponse()
 	{
 		if (null == $this->_response) {
@@ -355,26 +372,25 @@ class Yan_Application
 		return $this->_response;
 	}
 
-	public function setUseRouter($flag)
-	{
-		$this->_useRouter = (bool)$flag;
-	}
-
+	/**
+	 * set Yan_Router object
+	 *
+	 * @param Yan_Router $router
+	 * @return Yan_Application
+	 */
 	public function setRouter(Yan_Router $router)
 	{
 		$this->_router = $router;
 		return $this;
 	}
 
+	/**
+	 * retrieve Yan_Router object
+	 *
+	 * @return null|Yan_Router
+	 */
 	public function getRouter()
 	{
-		if (null == $this->_router) {
-			$this->_router = new Yan_Router();
-			$this->_router->addRoute('normal', array(
-				'rule' => "/:{$this->_controllerKey}/:{$this->_actionKey}/*"
-			));
-		}
-
 		return $this->_router;
 	}
 
@@ -423,7 +439,7 @@ class Yan_Application
 		$optional = array(
 			'php', 'includePaths', 'exceptionHandler', 'log',
 			'db', 'session', 'controllerSuffix', 'controllerKey',
-			'actionKey', 'defaultController', 'defaultAction', 'useRouter'
+			'actionKey', 'defaultController', 'defaultAction'
 		);
 		foreach ($optional as $key) {
 			if (isset($options[$key])) {
@@ -459,8 +475,7 @@ class Yan_Application
 		/**
 		 * Initialize router
 		 */
-		if ($this->_useRouter) {
-			$router = $this->getRouter();
+		if ($router = $this->getRouter()) {
 			$router->route($request);
 		}
 

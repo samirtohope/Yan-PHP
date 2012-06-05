@@ -23,7 +23,7 @@ interface Yan_Route_Interface
 	 * match request(Yan_Request_Abstract) to this route
 	 *
 	 * @param Yan_Request_Abstract $request
-	 * @return bool
+	 * @return array|bool
 	 */
 	public function match(Yan_Request_Abstract $request);
 

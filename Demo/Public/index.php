@@ -14,7 +14,7 @@ $request = new Yan_Request_Http();
 
 $path = explode('/', $request->getPathInfo());
 if (empty($path)) {
-	$appname = $_REQUEST['APP'];
+	$appname = $_REQUEST['app'];
 } else {
 	$appname = array_splice($path, 1, 1);
 	$appname = current($appname);

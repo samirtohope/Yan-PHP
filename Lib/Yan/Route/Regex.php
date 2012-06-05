@@ -15,11 +15,24 @@ require_once 'Yan/Route/Interface.php';
  */
 class Yan_Route_Regex implements Yan_Route_Interface
 {
+	/**
+	 * @var string regexp of rule
+	 */
 	protected $_regex = null;
+
+	/**
+	 * @var array default values
+	 */
 	protected $_defaults = array();
-	protected $_reverse = null;
+
+	/**
+	 * @var array map of matched keys to real keys
+	 */
 	protected $_map = array();
-	protected $_values = array();
+
+	/**
+	 * @var bool need prefix httphost to uri
+	 */
 	protected $_hashost;
 
 	public function __construct(array $config)
@@ -29,14 +42,19 @@ class Yan_Route_Regex implements Yan_Route_Interface
 			throw new Yan_Route_Exception('Yan_Route_Regex need options "rule"');
 		}
 		$this->_regex = (string)$config['rule'];
-		$this->_defaults = isset($config['defaults'])
-			? $this->_getMappedValues((array)$config['defaults'])
-			: array();
 		$this->_map = isset($config['map']) ? (array)$config['map'] : array();
-		$this->_reverse = isset($config['reverse']) ? $config['reverse'] : null;
+		$this->_defaults = isset($config['defaults'])
+			? $this->_getMappedValues((array) $config['defaults'])
+			: array();
 		$this->_hashost = !empty($config['hashost']);
 	}
 
+	/**
+	 * match request(Yan_Request_Abstract) to this route
+	 *
+	 * @param Yan_Request_Abstract $request
+	 * @return array|bool
+	 */
 	public function match(Yan_Request_Abstract $request)
 	{
 		if ($this->_hashost) {

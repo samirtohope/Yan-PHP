@@ -22,17 +22,10 @@ class Yan_Router
 	protected $_routes = array();
 
 	/**
-	 * the last matched route
-	 *
-	 * @var Yan_Route_Abstract
-	 */
-	protected $_matchedRoute = null;
-
-	/**
 	 * add a single route of type Yan_Router
 	 *
 	 * @param string $name
-	 * @param Yan_Route_Abstract|array $route
+	 * @param Yan_Route_Interface|array $route
 	 * @return Yan_Router fluent interface
 	 */
 	public function addRoute($name, $route = null)
@@ -42,11 +35,11 @@ class Yan_Router
 				$this->addRoute($key, $route);
 			}
 		} elseif ($route instanceof Yan_Route_Interface) {
-			$this->_routes[$name] = $route;
+			$this->_routes[] = $route;
 		} else {
 			$class = isset($route['type']) ? $route['type'] : 'Yan_Route_Route';
 			Yan::loadClass($class);
-			$this->_routes[$name] = new $class($route);
+			$this->_routes[] = new $class($route);
 		}
 		return $this;
 	}
@@ -59,10 +52,9 @@ class Yan_Router
 	 */
 	public function route(Yan_Request_Abstract $request)
 	{
-		foreach (array_reverse($this->_routes) as $name => $route) {
+		foreach (array_reverse($this->_routes) as $route) {
 			if (($params = $route->match($request)) != false) {
 				$request->setParams($params);
-				$this->_matchedRoute = $name;
 				break;
 			}
 		}
