@@ -20,6 +20,13 @@ class Yan_Output_View extends Yan_Output_Abstract
 	const COMPRESS_DEFLATE = 'deflate';
 
 	/**
+	 * Response object
+	 *
+	 * @var Yan_Response_Http
+	 */
+	protected $_response;
+
+	/**
 	 * method of compress, 0 is no compress
 	 *
 	 * @var string
@@ -226,8 +233,8 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 */
 	public function outputBody()
 	{
-		$this->_response->setHeader('Content-type',
-			"{$this->_contentType}; Charset={$this->_charset};");
+		$this->_response->setHeader('Content-Type',
+			"{$this->_contentType}; Charset={$this->_charset};")->header();
 		if ($this->_body === '' && null != $this->_view) {
 			$this->_body = $this->_view->render();
 		}
