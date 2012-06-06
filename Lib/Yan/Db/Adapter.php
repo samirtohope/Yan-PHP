@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -70,20 +70,20 @@ abstract class Yan_Db_Adapter
 	 * @var array Associative array of datatypes to values 0, 1, or 2.
 	 */
 	protected $_numericDataTypes = array(
-		Yan_Db::INT_TYPE => Yan_Db::INT_TYPE,
+		Yan_Db::INT_TYPE    => Yan_Db::INT_TYPE,
 		Yan_Db::BIGINT_TYPE => Yan_Db::BIGINT_TYPE,
-		Yan_Db::FLOAT_TYPE => Yan_Db::FLOAT_TYPE
+		Yan_Db::FLOAT_TYPE  => Yan_Db::FLOAT_TYPE
 	);
 
 	protected $_options = array(
-		'host' => true,
-		'port' => false,
-		'password' => true,
-		'username' => true,
-		'charset' => false,
-		'dbname' => true,
-		'prefix' => false,
-		'persistent' => false,
+		'host'           => true,
+		'port'           => false,
+		'password'       => true,
+		'username'       => true,
+		'charset'        => false,
+		'dbname'         => true,
+		'prefix'         => false,
+		'persistent'     => false,
 		'driver_options' => false
 	);
 
@@ -109,6 +109,7 @@ abstract class Yan_Db_Adapter
 	 * prefix         => (string) prefix of table name
 	 *
 	 * @param  mixed $config
+	 *
 	 * @throws Yan_Db_Adapter_Exception
 	 */
 	public function __construct($config)
@@ -246,7 +247,8 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Prepares and executes an SQL statement with bound data.
 	 *
-	 * @param $statement
+	 * @param string|Yan_Db_Select $statement
+	 *
 	 * @throws Yan_Db_Adapter_Exception
 	 * @return int
 	 */
@@ -277,9 +279,10 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Prepares and executes an SQL statement with bound data.
 	 *
-	 * @param  mixed  $sql  The SQL statement with placeholders.
-	 *                      May be a string or Db_Select.
-	 * @param  mixed  $bind An array of data to bind to the placeholders.
+	 * @param  string|Yan_Db_Select $sql  The SQL statement with placeholders.
+	 *                                             May be a string or Db_Select.
+	 * @param  null|array           $bind An array of data to bind to the placeholders.
+	 *
 	 * @return Yan_Db_Statement
 	 */
 	public function query($sql, $bind = array())
@@ -366,9 +369,10 @@ abstract class Yan_Db_Adapter
 	 * Fetches all SQL result rows as a sequential array.
 	 * Uses the current fetchMode for the adapter.
 	 *
-	 * @param string|Yan_Db_Select $sql  An SQL SELECT statement.
-	 * @param mixed                 $bind Data to bind into SELECT placeholders.
+	 * @param string|Yan_Db_Select  $sql       An SQL SELECT statement.
+	 * @param mixed                 $bind      Data to bind into SELECT placeholders.
 	 * @param mixed                 $fetchMode Override current fetch mode.
+	 *
 	 * @return array
 	 */
 	public function fetchAll($sql, $bind = array(), $fetchMode = null)
@@ -385,9 +389,10 @@ abstract class Yan_Db_Adapter
 	 * Fetches the first row of the SQL result.
 	 * Uses the current fetchMode for the adapter.
 	 *
-	 * @param string|Yan_Db_Select $sql An SQL SELECT statement.
-	 * @param mixed $bind Data to bind into SELECT placeholders.
+	 * @param string|Yan_Db_Select  $sql       An SQL SELECT statement.
+	 * @param mixed                 $bind      Data to bind into SELECT placeholders.
 	 * @param mixed                 $fetchMode Override current fetch mode.
+	 *
 	 * @return array
 	 */
 	public function fetchRow($sql, $bind = array(), $fetchMode = null)
@@ -409,8 +414,9 @@ abstract class Yan_Db_Adapter
 	 * rows with duplicate values in the first column will
 	 * overwrite previous data.
 	 *
-	 * @param string|Yan_Db_Select $sql An SQL SELECT statement.
-	 * @param mixed $bind Data to bind into SELECT placeholders.
+	 * @param string|Yan_Db_Select $sql  An SQL SELECT statement.
+	 * @param mixed                $bind Data to bind into SELECT placeholders.
+	 *
 	 * @return string
 	 */
 	public function fetchAssoc($sql, $bind = array())
@@ -429,8 +435,9 @@ abstract class Yan_Db_Adapter
 	 *
 	 * The first column in each row is used as the array key.
 	 *
-	 * @param string|Yan_Db_Select $sql An SQL SELECT statement.
-	 * @param mixed $bind Data to bind into SELECT placeholders.
+	 * @param string|Yan_Db_Select $sql  An SQL SELECT statement.
+	 * @param mixed                $bind Data to bind into SELECT placeholders.
+	 *
 	 * @return array
 	 */
 	public function fetchCol($sql, $bind = array())
@@ -446,8 +453,9 @@ abstract class Yan_Db_Adapter
 	 * The first column is the key, the second column is the
 	 * value.
 	 *
-	 * @param string|Yan_Db_Select $sql An SQL SELECT statement.
-	 * @param mixed $bind Data to bind into SELECT placeholders.
+	 * @param string|Yan_Db_Select $sql  An SQL SELECT statement.
+	 * @param mixed                $bind Data to bind into SELECT placeholders.
+	 *
 	 * @return string
 	 */
 	public function fetchPairs($sql, $bind = array())
@@ -463,8 +471,9 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Fetches the first column of the first row of the SQL result.
 	 *
-	 * @param string|Yan_Db_Select $sql An SQL SELECT statement.
-	 * @param mixed $bind Data to bind into SELECT placeholders.
+	 * @param string|Yan_Db_Select $sql  An SQL SELECT statement.
+	 * @param mixed                $bind Data to bind into SELECT placeholders.
+	 *
 	 * @return string
 	 */
 	public function fetchOne($sql, $bind = array())
@@ -509,7 +518,8 @@ abstract class Yan_Db_Adapter
 	 * @param  mixed $table The table to update.
 	 * @param  array $bind  Column-value pairs.
 	 * @param  mixed $where UPDATE WHERE clause(s).
-	 * @param  bool $hasQuoted
+	 * @param  bool  $hasQuoted
+	 *
 	 * @return int The number of affected rows.
 	 */
 	public function update($table, array $bind, $where = '', $hasQuoted = false)
@@ -551,6 +561,7 @@ abstract class Yan_Db_Adapter
 	 * @param  mixed  $table The table to update.
 	 * @param  mixed  $where DELETE WHERE clause(s).
 	 * @param bool    $hasQuoted
+	 *
 	 * @return int    The number of affected rows.
 	 */
 	public function delete($table, $where = '', $hasQuoted = false)
@@ -610,7 +621,9 @@ abstract class Yan_Db_Adapter
 					$val = $this->quote($value[$i], $type);
 					$expr = substr_replace($expr, $val, $pos, 1);
 					$pos = strpos($expr, '?', $pos + strlen($val));
-					if (!$pos) break;
+					if (!$pos) {
+						break;
+					}
 				}
 				return $expr;
 			} else {
@@ -640,6 +653,7 @@ abstract class Yan_Db_Adapter
 	 * Quote a raw string.
 	 *
 	 * @param string $value     Raw string
+	 *
 	 * @return string           Quoted string
 	 */
 	protected function _quote($value)
@@ -657,8 +671,9 @@ abstract class Yan_Db_Adapter
 	 * If an array is passed as the value, the array values are quoted
 	 * and then returned as a comma-separated string.
 	 *
-	 * @param mixed $value The value to quote.
+	 * @param mixed|Yan_Db_Select|Yan_Db_Expr $value The value to quote.
 	 * @param mixed $type  OPTIONAL the SQL datatype name, or constant, or null.
+	 *
 	 * @return mixed An SQL-safe quoted value (or string of separated values).
 	 */
 	public function quote($value, $type = null)
@@ -729,6 +744,7 @@ abstract class Yan_Db_Adapter
 	 * @param mixed   $value The value to quote.
 	 * @param string  $type  OPTIONAL SQL datatype
 	 * @param integer $count OPTIONAL count of placeholders to replace
+	 *
 	 * @return string An SQL-safe quoted value placed into the original text.
 	 */
 	public function quoteInto($text, $value, $type = null, $count = null)
@@ -765,7 +781,8 @@ abstract class Yan_Db_Adapter
 	 * the adapter.
 	 *
 	 * @param string|array|Yan_Db_Expr $ident The identifier.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param boolean                  $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 *
 	 * @return string The quoted identifier.
 	 */
 	public function quoteIdentifier($ident, $auto = false)
@@ -777,8 +794,9 @@ abstract class Yan_Db_Adapter
 	 * Quote a column identifier and alias.
 	 *
 	 * @param string|array|Yan_Db_Expr $ident The identifier or expression.
-	 * @param string $alias An alias for the column.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param string                   $alias An alias for the column.
+	 * @param boolean                  $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 *
 	 * @return string The quoted identifier and alias.
 	 */
 	public function quoteColumnAs($ident, $alias, $auto = false)
@@ -790,8 +808,9 @@ abstract class Yan_Db_Adapter
 	 * Quote a table identifier and alias.
 	 *
 	 * @param string|array|Yan_Db_Expr $ident The identifier or expression.
-	 * @param string $alias An alias for the table.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param string                   $alias An alias for the table.
+	 * @param boolean                  $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 *
 	 * @return string The quoted identifier and alias.
 	 */
 	public function quoteTableAs($ident, $alias = null, $auto = false)
@@ -803,9 +822,10 @@ abstract class Yan_Db_Adapter
 	 * Quote a table identifier and alias.
 	 *
 	 * @param string|array|Yan_Db_Expr $ident The identifier or expression.
-	 * @param string $alias An alias for the table.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
-	 * @param string $as The string to add between the identifier/expression and the alias.
+	 * @param string                   $alias An alias for the table.
+	 * @param boolean                  $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param string                   $as    The string to add between the identifier/expression and the alias.
+	 *
 	 * @return string The quoted identifier and alias.
 	 */
 	protected function _quoteTableAs($ident, $alias = null, $auto = false, $as = ' AS ')
@@ -846,8 +866,9 @@ abstract class Yan_Db_Adapter
 	 * Quote an identifier and an optional alias.
 	 *
 	 * @param string|array|Yan_Db_Expr|Yan_Db_Select $ident The identifier or expression.
-	 * @param string $alias An optional alias.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param string                                 $alias An optional alias.
+	 * @param boolean                                $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 *
 	 * @return string The quoted identifier and alias.
 	 */
 	protected function _quoteIdentifierAs($ident, $alias = null, $auto = false)
@@ -887,7 +908,8 @@ abstract class Yan_Db_Adapter
 	 * Quote an identifier.
 	 *
 	 * @param  string $value The identifier or expression.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param boolean $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 *
 	 * @return string        The quoted identifier and alias.
 	 */
 	protected function _quoteIdentifier($value, $auto = false)
@@ -913,6 +935,7 @@ abstract class Yan_Db_Adapter
 	 * Prepare a statement and return a PDOStatement-like object.
 	 *
 	 * @param  string  $sql  SQL query
+	 *
 	 * @return Yan_Db_Statement
 	 */
 	public function prepare($sql)
@@ -938,6 +961,7 @@ abstract class Yan_Db_Adapter
 	 * (e.g. Oracle, PostgreSQL, DB2).  Other RDBMS brands return null.
 	 *
 	 * @param string $sequenceName
+	 *
 	 * @return string
 	 */
 	public function lastSequenceId($sequenceName)
@@ -967,6 +991,7 @@ abstract class Yan_Db_Adapter
 	 * Set the fetch mode.
 	 *
 	 * @param integer $mode
+	 *
 	 * @return void
 	 * @throws Yan_Db_Adapter_Exception
 	 */
@@ -1033,7 +1058,7 @@ abstract class Yan_Db_Adapter
 	 *
 	 * @param string $table
 	 * @param string $schema
-	 * @param bool $hasQuoted
+	 * @param bool   $hasQuoted
 	 *
 	 * @return array
 	 */
@@ -1042,9 +1067,10 @@ abstract class Yan_Db_Adapter
 	/**
 	 * Adds an adapter-specific LIMIT clause to the SELECT statement.
 	 *
-	 * @param mixed $sql
+	 * @param mixed   $sql
 	 * @param integer $count
 	 * @param integer $offset
+	 *
 	 * @return string
 	 */
 	abstract public function limit($sql, $count, $offset = 0);

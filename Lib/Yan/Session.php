@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -44,30 +44,30 @@ abstract class Yan_Session
 	 * @var array
 	 */
 	protected static $_defaultOptions = array(
-		'save_path' => null,
-		'name' => null, /* this should be set to a unique value for each application */
-		'save_handler' => null,
-		//'auto_start'                => null, /* intentionally excluded (see manual) */
-		'gc_probability' => null,
-		'gc_divisor' => null,
-		'gc_maxlifetime' => null,
-		'serialize_handler' => null,
-		'cookie_lifetime' => null,
-		'cookie_path' => null,
-		'cookie_domain' => null,
-		'cookie_secure' => null,
-		'cookie_httponly' => null,
-		'use_cookies' => null,
-		'use_only_cookies' => 'on',
-		'referer_check' => null,
-		'entropy_file' => null,
-		'entropy_length' => null,
-		'cache_limiter' => null,
-		'cache_expire' => null,
-		'use_trans_sid' => null,
-		'bug_compat_42' => null,
-		'bug_compat_warn' => null,
-		'hash_function' => null,
+		'save_path'               => null,
+		'name'                    => null, /* this should be set to a unique value for each application */
+		'save_handler'            => null,
+		//'auto_start'            => null, /* intentionally excluded (see manual) */
+		'gc_probability'          => null,
+		'gc_divisor'              => null,
+		'gc_maxlifetime'          => null,
+		'serialize_handler'       => null,
+		'cookie_lifetime'         => null,
+		'cookie_path'             => null,
+		'cookie_domain'           => null,
+		'cookie_secure'           => null,
+		'cookie_httponly'         => null,
+		'use_cookies'             => null,
+		'use_only_cookies'        => 'on',
+		'referer_check'           => null,
+		'entropy_file'            => null,
+		'entropy_length'          => null,
+		'cache_limiter'           => null,
+		'cache_expire'            => null,
+		'use_trans_sid'           => null,
+		'bug_compat_42'           => null,
+		'bug_compat_warn'         => null,
+		'hash_function'           => null,
 		'hash_bits_per_character' => null
 	);
 
@@ -113,6 +113,11 @@ abstract class Yan_Session
 		}
 	}
 
+	/**
+	 * set a saveHandler for storage
+	 *
+	 * @param Yan_Session_SaveHandler $saveHandler
+	 */
 	public static function setSaveHandler(Yan_Session_SaveHandler $saveHandler)
 	{
 		session_set_save_handler(
@@ -126,6 +131,11 @@ abstract class Yan_Session
 		self::$_saveHandler = $saveHandler;
 	}
 
+	/**
+	 * get saveHandler
+	 *
+	 * @return Yan_Session_SaveHandler
+	 */
 	public static function getSaveHandler()
 	{
 		return self::$_saveHandler;
@@ -161,6 +171,7 @@ abstract class Yan_Session
 	 * start session
 	 *
 	 * @param bool $options
+	 *
 	 * @throws Yan_Session_Exception
 	 */
 	public static function start($options = false)
@@ -216,6 +227,7 @@ abstract class Yan_Session
 	 * reset sessid
 	 *
 	 * @param $id
+	 *
 	 * @throws Yan_Session_Exception
 	 */
 	public static function setId($id)
@@ -244,7 +256,7 @@ abstract class Yan_Session
 	 * destroy() - This is used to destroy session data, and optionally, the session cookie itself
 	 *
 	 * @param bool $remove_cookie - OPTIONAL remove session id cookie, defaults to true (remove cookie)
-	 * @param bool $readonly - OPTIONAL remove write access (i.e. throw error if Zend_Session's attempt writes)
+	 *
 	 * @return void
 	 */
 	public static function destroy($remove_cookie = true)

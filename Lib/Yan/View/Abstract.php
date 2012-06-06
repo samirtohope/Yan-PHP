@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -36,6 +36,7 @@ abstract class Yan_View_Abstract
 	 * setOptions
 	 *
 	 * @param array $options
+	 *
 	 * @return Yan_View_Abstract
 	 */
 	public function setOptions(array $options)
@@ -57,7 +58,7 @@ abstract class Yan_View_Abstract
 	 * phplib, etc, return the template engine object. Useful for calling
 	 * methods on these objects, such as for setting filters, modifiers, etc.
 	 *
-	 * @return engine object
+	 * @return object
 	 */
 	public function getEngine()
 	{
@@ -68,7 +69,8 @@ abstract class Yan_View_Abstract
 	 * Assign a variable to the view
 	 *
 	 * @param string $key The variable name.
-	 * @param mixed $val The variable value.
+	 * @param mixed  $val The variable value.
+	 *
 	 * @return void
 	 */
 	public function __set($key, $val)
@@ -80,6 +82,7 @@ abstract class Yan_View_Abstract
 	 * Allows testing with empty() and isset() to work
 	 *
 	 * @param string $key
+	 *
 	 * @return boolean
 	 */
 	public function __isset($key)
@@ -91,6 +94,7 @@ abstract class Yan_View_Abstract
 	 * Allows unset() on object properties to work
 	 *
 	 * @param string $key
+	 *
 	 * @return void
 	 */
 	public function __unset($key)
@@ -101,10 +105,12 @@ abstract class Yan_View_Abstract
 	/**
 	 * Assign variables to the view script via differing strategies.
 	 *
-	 * @param string|array $spec The assignment strategy to use (key or array of key
+	 * @param string|array $spec  The assignment strategy to use (key or array of key
 	 * => value pairs)
-	 * @param mixed $value (Optional) If assigning a named variable, use this
-	 * as the value.
+	 * @param mixed        $value (Optional) If assigning a named variable, use this
+	 *                            as the value.
+	 *
+	 * @throws Yan_View_Exception
 	 * @return Yan_View_Abstract
 	 */
 	public function assign($spec, $value = null)
@@ -138,6 +144,7 @@ abstract class Yan_View_Abstract
 	 * $path is relative to templatebase or compliledbase
 	 *
 	 * @param string $path
+	 *
 	 * @return Yan_View_Abstract
 	 */
 	abstract public function setScript($path);
@@ -146,6 +153,7 @@ abstract class Yan_View_Abstract
 	 * set Compiled template file base directory
 	 *
 	 * @param string $dir
+	 *
 	 * @return Yan_View_Abstract
 	 */
 	abstract public function setCompiledBase($dir);
@@ -153,7 +161,8 @@ abstract class Yan_View_Abstract
 	/**
 	 * set Template file base directory
 	 *
-	 * @param sting $dir
+	 * @param string $dir
+	 *
 	 * @return Yan_View_Abstract
 	 */
 	abstract public function setTemplateBase($dir);

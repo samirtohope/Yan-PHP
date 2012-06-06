@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Log/Writer.php';
@@ -18,15 +18,17 @@ class Yan_Log_Writer_Stream extends Yan_Log_Writer
 {
 	/**
 	 * Holds the PHP stream to log to.
-	 * @var null|stream
+	 * @var resource|string
 	 */
 	protected $_stream = null;
 
 	/**
 	 * Class Constructor
 	 *
-	 * @param  streamOrUrl     Stream or URL to open as a stream
-	 * @param  mode            Mode, only applicable if a URL is given
+	 * @param resource|string $streamOrUrl or URL to open as a stream
+	 * @param string          $mode        only applicable if a URL is given
+	 *
+	 * @throws Yan_Log_Writer_Exception
 	 */
 	public function __construct($streamOrUrl, $mode = 'a')
 	{
@@ -51,6 +53,7 @@ class Yan_Log_Writer_Stream extends Yan_Log_Writer
 	 * format a message and add to the log.
 	 *
 	 * @param  array  $event  log data event
+	 *
 	 * @return void
 	 */
 	public function append($event)
@@ -62,6 +65,11 @@ class Yan_Log_Writer_Stream extends Yan_Log_Writer
 		$this->_log[] = $line . PHP_EOL;
 	}
 
+	/**
+	 * write cached array to log file and shutdown
+	 *
+	 * @return void
+	 */
 	public function write()
 	{
 		$string = implode('', $this->_log);

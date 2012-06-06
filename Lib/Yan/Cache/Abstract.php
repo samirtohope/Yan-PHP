@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -16,11 +16,11 @@ abstract class Yan_Cache_Abstract
 
 	protected $_options = array(
 		'lifetime' => false,
-		'prefix' => false
+		'prefix'   => false
 	);
 
 	protected $_config = array(
-		'prefix' => 'cache',
+		'prefix'   => 'cache',
 		'lifetime' => 3600
 	);
 
@@ -69,6 +69,7 @@ abstract class Yan_Cache_Abstract
 	 * 'old'            => remove too old cache entries
 	 *
 	 * @param string $mode clean mode
+	 *
 	 * @return boolean true if no problem
 	 */
 	abstract public function clean($mode = Yan_Cache::CLEANING_ALL);
@@ -77,7 +78,10 @@ abstract class Yan_Cache_Abstract
 	 * Write value for a key into cache
 	 *
 	 * @param string $guid Identifier for the data
-	 * @param mixed $data Data to be cached
+	 * @param mixed  $data Data to be cached
+	 *
+	 * @param int    $specificLifetime
+	 *
 	 * @return boolean True if the data was succesfully cached, false on failure
 	 */
 	abstract public function write($guid, $data, $specificLifetime = null);
@@ -86,6 +90,7 @@ abstract class Yan_Cache_Abstract
 	 * Read a key from the cache
 	 *
 	 * @param string $guid Identifier for the data
+	 *
 	 * @return mixed The cached data, or false if the data doesn't exist, has expired, or if there was an error fetching it
 	 */
 	abstract public function read($guid);
@@ -94,6 +99,7 @@ abstract class Yan_Cache_Abstract
 	 * Delete a key from the cache
 	 *
 	 * @param string $guid Identifier for the data
+	 *
 	 * @return boolean True if the value was succesfully deleted, false if it didn't exist or couldn't be removed
 	 */
 	abstract public function delete($guid);
@@ -101,8 +107,9 @@ abstract class Yan_Cache_Abstract
 	/**
 	 * set a new lifetime to the given cache id
 	 *
-	 * @param string $id cache id
-	 * @param int $extraLifetime
+	 * @param string $guid cache id
+	 * @param int    $lifetime
+	 *
 	 * @return boolean true if ok
 	 */
 	abstract public function touch($guid, $lifetime);

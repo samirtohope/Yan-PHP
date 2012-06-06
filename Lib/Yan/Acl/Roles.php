@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -122,7 +122,7 @@ class Yan_Acl_Roles implements SeekableIterator, Countable, ArrayAccess
 	/**
 	 * Required by the ArrayAccess implementation
 	 *
-	 * @return Yan_Acl_Role
+	 * @return Yan_Acl_Role_Abstract
 	 */
 	public function offsetGet($offset)
 	{

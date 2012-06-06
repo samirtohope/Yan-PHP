@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Db/Adapter.php';
@@ -29,22 +29,22 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * @var array Associative array of datatypes to values 0, 1, or 2.
 	 */
 	protected $_numericDataTypes = array(
-		Yan_Db::INT_TYPE => Yan_Db::INT_TYPE,
+		Yan_Db::INT_TYPE    => Yan_Db::INT_TYPE,
 		Yan_Db::BIGINT_TYPE => Yan_Db::BIGINT_TYPE,
-		Yan_Db::FLOAT_TYPE => Yan_Db::FLOAT_TYPE,
-		'INT' => Yan_Db::INT_TYPE,
-		'INTEGER' => Yan_Db::INT_TYPE,
-		'MEDIUMINT' => Yan_Db::INT_TYPE,
-		'SMALLINT' => Yan_Db::INT_TYPE,
-		'TINYINT' => Yan_Db::INT_TYPE,
-		'BIGINT' => Yan_Db::BIGINT_TYPE,
-		'SERIAL' => Yan_Db::BIGINT_TYPE,
-		'DEC' => Yan_Db::FLOAT_TYPE,
-		'DECIMAL' => Yan_Db::FLOAT_TYPE,
-		'DOUBLE' => Yan_Db::FLOAT_TYPE,
-		'DOUBLE PRECISION' => Yan_Db::FLOAT_TYPE,
-		'FIXED' => Yan_Db::FLOAT_TYPE,
-		'FLOAT' => Yan_Db::FLOAT_TYPE
+		Yan_Db::FLOAT_TYPE  => Yan_Db::FLOAT_TYPE,
+		'INT'               => Yan_Db::INT_TYPE,
+		'INTEGER'           => Yan_Db::INT_TYPE,
+		'MEDIUMINT'         => Yan_Db::INT_TYPE,
+		'SMALLINT'          => Yan_Db::INT_TYPE,
+		'TINYINT'           => Yan_Db::INT_TYPE,
+		'BIGINT'            => Yan_Db::BIGINT_TYPE,
+		'SERIAL'            => Yan_Db::BIGINT_TYPE,
+		'DEC'               => Yan_Db::FLOAT_TYPE,
+		'DECIMAL'           => Yan_Db::FLOAT_TYPE,
+		'DOUBLE'            => Yan_Db::FLOAT_TYPE,
+		'DOUBLE PRECISION'  => Yan_Db::FLOAT_TYPE,
+		'FIXED'             => Yan_Db::FLOAT_TYPE,
+		'FLOAT'             => Yan_Db::FLOAT_TYPE
 	);
 
 	protected $_driver = 'mysql';
@@ -75,19 +75,19 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * with the following keys:
 	 *
 	 * COLUMN_NAME    => string; column name
-	 * COLUMN_POS    => number; ordinal position of column in table
-	 * DATA_TYPE    => string; SQL datatype name of column
+	 * COLUMN_POS     => number; ordinal position of column in table
+	 * DATA_TYPE      => string; SQL datatype name of column
 	 * DEFAULT        => string; default expression of column, null if none
-	 * NULLABLE        => boolean; true if column can have nulls
-	 * LENGTH        => number; length of CHAR/VARCHAR
-	 * UNSIGNED        => boolean; unsigned property of an integer type
+	 * NULLABLE       => boolean; true if column can have nulls
+	 * LENGTH         => number; length of CHAR/VARCHAR
+	 * UNSIGNED       => boolean; unsigned property of an integer type
 	 * PRIMARY        => boolean; true if column is part of the primary key
 	 * PRIMARY_POS    => integer; position of column in primary key
-	 * IDENTITY        => integer; true if column isautoIncrement
+	 * IDENTITY       => integer; true if column isautoIncrement
 	 *
 	 * @param string $table
 	 * @param string $schema
-	 * @param bool $hasQuoted
+	 * @param bool   $hasQuoted
 	 *
 	 * @return array
 	 */
@@ -119,12 +119,16 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 			if (preg_match('/^((?:var)?char)\((\d+)\)/', $row[$type], $matches)) {
 				$row[$type] = $matches[1];
 				$length = $matches[2];
-			} else if (preg_match('/^(decimal|float)/', $row[$type], $matches)) {
-				$row[$type] = $matches[1];
-			} else if (preg_match('/^((?:big|medium|small|tiny)?int)\(\d+\)/',
-				$row[$type], $matches)
-			) {
-				$row[$type] = $matches[1];
+			} else {
+				if (preg_match('/^(decimal|float)/', $row[$type], $matches)) {
+					$row[$type] = $matches[1];
+				} else {
+					if (preg_match('/^((?:big|medium|small|tiny)?int)\(\d+\)/',
+						$row[$type], $matches)
+					) {
+						$row[$type] = $matches[1];
+					}
+				}
 			}
 			if (strtoupper($row[$key]) == 'PRI') {
 				$primary = true;
@@ -139,15 +143,15 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 			$columnName = $row[$field];
 			$desc[$columnName] = array(
 				'COLUMN_NAME' => $columnName,
-				'COLUMN_POS' => $i,
-				'DATA_TYPE' => $row[$type],
-				'DEFAULT' => $row[$default],
-				'NULLABLE' => (bool)($row[$null] == 'YES'),
-				'LENGTH' => $length,
-				'UNSIGNED' => $unsigned,
-				'PRIMARY' => $primary,
+				'COLUMN_POS'  => $i,
+				'DATA_TYPE'   => $row[$type],
+				'DEFAULT'     => $row[$default],
+				'NULLABLE'    => (bool)($row[$null] == 'YES'),
+				'LENGTH'      => $length,
+				'UNSIGNED'    => $unsigned,
+				'PRIMARY'     => $primary,
 				'PRIMARY_POS' => $primaryPos,
-				'IDENTITY' => $identity
+				'IDENTITY'    => $identity
 			);
 			++$i;
 		}
@@ -212,8 +216,9 @@ class Yan_Db_Adapter_Mysql extends Yan_Db_Adapter
 	 * Adds an adapter-specific LIMIT clause to the SELECT statement.
 	 *
 	 * @param string $sql
-	 * @param int $count
-	 * @param int $offset OPTIONAL
+	 * @param int    $count
+	 * @param int    $offset OPTIONAL
+	 *
 	 * @throws Yan_Db_Adapter_Exception
 	 * @return string
 	 */

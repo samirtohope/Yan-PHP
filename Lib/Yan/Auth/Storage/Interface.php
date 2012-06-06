@@ -2,14 +2,14 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
  * Yan_Auth_Storage_Interface
  *
- * @category  Yan
- * @package   Yan_Auth
+ * @category   Yan
+ * @package    Yan_Auth
  * @subpackage Storage
  */
 Interface Yan_Auth_Storage_Interface
@@ -34,6 +34,7 @@ Interface Yan_Auth_Storage_Interface
 	 * Writes $contents to storage
 	 *
 	 * @param  mixed $contents
+	 *
 	 * @return void
 	 */
 	public function write($contents);

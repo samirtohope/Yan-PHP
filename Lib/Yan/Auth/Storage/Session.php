@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Auth/Storage/Interface.php';
@@ -12,8 +12,8 @@ require_once 'Yan/Session.php';
 /**
  * Yan_Auth_Storage_Session
  *
- * @category  Yan
- * @package   Yan_Auth
+ * @category   Yan
+ * @package    Yan_Auth
  * @subpackage Storage
  */
 class Yan_Auth_Storage_Session implements Yan_Auth_Storage_Interface
@@ -61,6 +61,7 @@ class Yan_Auth_Storage_Session implements Yan_Auth_Storage_Interface
 	 * Defined by Yan_Auth_Storage_Interface
 	 *
 	 * @param  mixed $contents
+	 *
 	 * @return void
 	 */
 	public function write($contents)

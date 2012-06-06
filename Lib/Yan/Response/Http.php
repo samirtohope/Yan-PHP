@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Response/Abstract.php';
@@ -45,6 +45,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * Normalizes a header name to X-Capitalized-Names
 	 *
 	 * @param  string $name
+	 *
 	 * @return string
 	 */
 	protected function _normalizeHeader($name)
@@ -61,9 +62,10 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * If $replace is true, replaces any headers already defined with that
 	 * $name.
 	 *
-	 * @param string $name
-	 * @param string $value
+	 * @param string  $name
+	 * @param string  $value
 	 * @param boolean $replace
+	 *
 	 * @return Yan_Response_Http
 	 */
 	public function setHeader($name, $value, $replace = false)
@@ -81,8 +83,8 @@ class Yan_Response_Http extends Yan_Response_Abstract
 		}
 
 		$this->_headers[] = array(
-			'name' => $name,
-			'value' => $value,
+			'name'    => $name,
+			'value'   => $value,
 			'replace' => $replace
 		);
 
@@ -91,6 +93,14 @@ class Yan_Response_Http extends Yan_Response_Abstract
 
 	/**
 	 * Set a cookie
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @param int    $expire
+	 * @param string $path
+	 * @param string $domain
+	 * @param bool   $secure
+	 * @param bool   $httponly
 	 *
 	 * @return Yan_Response_Http
 	 */
@@ -124,7 +134,8 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * redirects.
 	 *
 	 * @param string $url
-	 * @param int $code
+	 * @param int    $code
+	 *
 	 * @return Yan_Response_Http
 	 */
 	public function setRedirect($url, $code = 302)
@@ -164,6 +175,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * Allows setting non key => value headers, such as status codes
 	 *
 	 * @param string $value
+	 *
 	 * @return Yan_Response_Http
 	 */
 	public function setRawHeader($value)
@@ -201,6 +213,8 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * Set HTTP response code to use with headers
 	 *
 	 * @param int $code
+	 *
+	 * @throws Yan_Response_Exception
 	 * @return Yan_Response_Http
 	 */
 	public function setHttpResponseCode($code)
@@ -223,6 +237,7 @@ class Yan_Response_Http extends Yan_Response_Abstract
 	 * Can we send headers
 	 *
 	 * @param boolean $throw Whether or not to throw an exception if headers have been sent; defaults to false
+	 *
 	 * @return boolean
 	 * @throws Yan_Response_Exception
 	 */

@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -80,7 +80,7 @@ class Yan_Table
 	 *
 	 * @var integer
 	 */
-	protected $_identity = 1;
+	protected $_identity = null;
 
 	/**
 	 * @var string
@@ -116,10 +116,7 @@ class Yan_Table
 	protected $_columns = array();
 
 	/**
-	 * Constructor.
-	 *
 	 * @param  mixed $config Array of user-specified config options, or just the Db Adapter.
-	 * @return void
 	 */
 	public function __construct($config = array())
 	{
@@ -142,13 +139,14 @@ class Yan_Table
 			}
 		}
 		$this->_setup();
-		$this->init();
+		$this->_init();
 	}
 
 	/**
 	 * Initilized a Yan_Table
 	 *
 	 * @param string $table
+	 *
 	 * @return Yan_Table
 	 */
 	public static function factory($table)
@@ -169,20 +167,40 @@ class Yan_Table
 		}
 	}
 
-	public function init()
+	/**
+	 * Init the table
+	 *
+	 * @return void
+	 */
+	protected function _init()
 	{
 	}
 
+	/**
+	 * get description of this table
+	 *
+	 * @return string
+	 */
 	public function __toString()
 	{
 		return get_class($this);
 	}
 
+	/**
+	 * get Yan_Db_Adapter object the table use
+	 *
+	 * @return Yan_Db_Adapter
+	 */
 	public function getAdapter()
 	{
 		return $this->_adapter;
 	}
 
+	/**
+	 * the table meta data
+	 *
+	 * @return array
+	 */
 	public function getMetadata()
 	{
 		return $this->_metadata;
@@ -195,18 +213,19 @@ class Yan_Table
 	 * otherwise all information is returned as an array.
 	 *
 	 * @param string|null $key The specific info part to return OPTIONAL
+	 *
 	 * @throws Yan_Table_Exception
 	 * @return mixed
 	 */
 	public function info($key = null)
 	{
 		$info = array(
-			self::SCHEMA => $this->_schema,
-			self::NAME => $this->_name,
-			self::QUOTED_NAME => $this->_quotedName,
-			self::ALIAS_NAME => $this->_aliasName,
-			self::COLUMNS => $this->_columns,
-			self::PRIMARY => $this->_primary,
+			self::SCHEMA       => $this->_schema,
+			self::NAME         => $this->_name,
+			self::QUOTED_NAME  => $this->_quotedName,
+			self::ALIAS_NAME   => $this->_aliasName,
+			self::COLUMNS      => $this->_columns,
+			self::PRIMARY      => $this->_primary,
 			self::RECORD_CLASS => $this->_recordClass
 		);
 
@@ -221,11 +240,25 @@ class Yan_Table
 		return $info[$key];
 	}
 
+	/**
+	 * test the $column is identity
+	 *
+	 * @param $column
+	 *
+	 * @return bool
+	 */
 	public function isIdentity($column)
 	{
 		return !empty($this->_metadata[$column]['IDENTITY']);
 	}
 
+	/**
+	 * insert a row to database
+	 *
+	 * @param array $data
+	 *
+	 * @return array|int
+	 */
 	public function insert(array $data)
 	{
 		$primary = $this->_primary;
@@ -233,7 +266,7 @@ class Yan_Table
 
 		$data = array_intersect_key($data, array_flip($this->_columns));
 
-		if (!isset($data[$pkI])) {
+		if (is_string($this->_sequence) && !isset($data[$pkI])) {
 			$data[$pkI] = $this->_adapter->lastSequenceId($this->_sequence);
 		}
 
@@ -259,12 +292,27 @@ class Yan_Table
 		return $pkData;
 	}
 
+	/**
+	 * update a row
+	 *
+	 * @param array $data
+	 * @param       $where
+	 *
+	 * @return int affect rows
+	 */
 	public function update(array $data, $where)
 	{
 		$data = array_intersect_key($data, array_flip($this->_columns));
 		return $this->_adapter->update($this->_quotedName, $data, $where, true);
 	}
 
+	/**
+	 * insert a row
+	 *
+	 * @param $where
+	 *
+	 * @return int affect rows
+	 */
 	public function delete($where)
 	{
 		return $this->_adapter->delete($this->_quotedName, $where, true);
@@ -274,6 +322,7 @@ class Yan_Table
 	 * create primary key where sequence, internal use only
 	 *
 	 * @param array $pkData
+	 *
 	 * @return string
 	 */
 	public function _pkWhere(array $pkData)
@@ -336,8 +385,10 @@ class Yan_Table
 			}
 			if (!$termc) {
 				$termc = count($arg);
-			} else if (count($arg) != $termc) {
-				throw new Yan_Table_Exception('Missing value(s) for the primary key');
+			} else {
+				if (count($arg) != $termc) {
+					throw new Yan_Table_Exception('Missing value(s) for the primary key');
+				}
 			}
 			for ($i = 0; $i < $termc; $i++) {
 				$pkValues[$i][$primary[$pos]] = $arg[$i];
@@ -356,9 +407,10 @@ class Yan_Table
 	 * Fetch a Yan_Table_Rowset object
 	 *
 	 * @param Yan_Table_Select|string $where
-	 * @param string $order
-	 * @param int $count
-	 * @param int $offset
+	 * @param string                  $order
+	 * @param int                     $count
+	 * @param int                     $offset
+	 *
 	 * @return Yan_Table_Rowset
 	 */
 	public function fetchRowset($where = null, $order = null, $count = null, $offset = null)
@@ -375,8 +427,9 @@ class Yan_Table
 	 * Fetch a Yan_Table_Record object
 	 *
 	 * @param Yan_Table_Select|string $where
-	 * @param string $order
-	 * @param int $offset
+	 * @param string                  $order
+	 * @param int                     $offset
+	 *
 	 * @return Yan_Table_Record
 	 */
 	public function fetchRecord($where = null, $order = null, $offset = null)
@@ -392,8 +445,9 @@ class Yan_Table
 	 * Get a row in raw array
 	 *
 	 * @param Yan_Table_Select|string $where
-	 * @param string $order
-	 * @param int $offset
+	 * @param string                  $order
+	 * @param int                     $offset
+	 *
 	 * @return array
 	 */
 	public function get($where = null, $order = null, $offset = null)
@@ -410,20 +464,21 @@ class Yan_Table
 	 *
 	 * @param string $where
 	 * @param string $order
-	 * @param int $page
-	 * @param int $size
+	 * @param int    $page
+	 * @param int    $size
+	 *
 	 * @return array with pagination:Yan_Table_Paginator & rowset:Yan_Table_Rowset
 	 */
 	public function page($where, $order = null, $page = 1, $size = 20)
 	{
 		$pagination = new Yan_Table_Paginator(array(
-			'pageSize' => $size,
-			'currentPage' => $page
-		));
+												   'pageSize'    => $size,
+												   'currentPage' => $page
+											  ));
 		$data = $this->select()->page($pagination)->fetchAll($this->_where($where), $order);
 		return array(
 			'pagination' => $pagination,
-			'rowset' => new Yan_Table_Rowset($this, $data)
+			'rowset'     => new Yan_Table_Rowset($this, $data)
 		);
 	}
 
@@ -433,8 +488,8 @@ class Yan_Table
 			reset($this->_primary);
 			$pk = current($this->_primary);
 			return $this->_pkWhere(array(
-				$pk => $where
-			));
+										$pk => $where
+								   ));
 		}
 		return $where;
 	}
@@ -443,6 +498,7 @@ class Yan_Table
 	 * Create a blank record
 	 *
 	 * @param array $data
+	 *
 	 * @return Yan_Table_Record
 	 */
 	public function create(array $data = array())
@@ -561,11 +617,15 @@ class Yan_Table
 				throw new Yan_Table_Exception(
 					'A table must have a primary key, but none was found');
 			}
-		} else if (!is_array($this->_primary)) {
-			$this->_primary = array(1 => $this->_primary);
-		} else if (isset($this->_primary[0])) {
-			array_unshift($this->_primary, null);
-			unset($this->_primary[0]);
+		} else {
+			if (!is_array($this->_primary)) {
+				$this->_primary = array(1 => $this->_primary);
+			} else {
+				if (isset($this->_primary[0])) {
+					array_unshift($this->_primary, null);
+					unset($this->_primary[0]);
+				}
+			}
 		}
 		if (!array_intersect((array)$this->_primary, $this->_columns) == (array)$this->_primary) {
 			throw new Yan_Table_Exception("Primary key column(s) ("
@@ -575,8 +635,11 @@ class Yan_Table
 				. ")");
 		}
 
-		$primary = (array) $this->_primary;
-		$pkI = $primary[(int) $this->_identity];
-		$this->_sequence = ($this->_schema ? "$this->_schema." : '') . "{$this->_name}_{$pkI}_seq";
+		if (!$this->_identity) {
+			$this->_identity = 1;
+			$primary = (array)$this->_primary;
+			$pkI = $primary[1];
+			$this->_sequence = ($this->_schema ? "$this->_schema." : '') . "{$this->_name}_{$pkI}_seq";
+		}
 	}
 }

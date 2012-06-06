@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -23,6 +23,7 @@ interface Yan_Route_Interface
 	 * match request(Yan_Request_Abstract) to this route
 	 *
 	 * @param Yan_Request_Abstract $request
+	 *
 	 * @return array|bool
 	 */
 	public function match(Yan_Request_Abstract $request);
@@ -31,7 +32,6 @@ interface Yan_Route_Interface
 	 * constructor
 	 *
 	 * @param array $config
-	 * @return void
 	 */
 	public function __construct(array $config);
 }

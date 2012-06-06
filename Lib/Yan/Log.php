@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -24,11 +24,11 @@ class Yan_Log
 	 * @var array of log priorities
 	 */
 	protected $_type = array(
-		self::WARN => 'WARN',
-		self::LOG => 'LOG',
-		self::ERROR => 'ERROR',
-		self::ALERT => 'ALERT',
-		self::DEBUG => 'DEBUG',
+		self::WARN   => 'WARN',
+		self::LOG    => 'LOG',
+		self::ERROR  => 'ERROR',
+		self::ALERT  => 'ALERT',
+		self::DEBUG  => 'DEBUG',
 		self::NOTICE => 'NOTICE'
 	);
 
@@ -72,6 +72,7 @@ class Yan_Log
 	 * message and writing it out to storage.
 	 *
 	 * @param  Yan_Log_Writer $writer
+	 *
 	 * @return void
 	 */
 	public function addWriter(Yan_Log_Writer $writer)
@@ -87,15 +88,17 @@ class Yan_Log
 	 *
 	 * @param string $message
 	 * @param string $priority
+	 *
+	 * @throws Yan_Log_Exception
 	 */
-	public function append($msg, $priority)
+	public function append($message, $priority)
 	{
 		if (!isset($this->_type[$priority])) {
 			require_once 'Yan/Log/Exception.php';
 			throw new Yan_Log_Exception('Bad log priority');
 		}
 
-		$event = $this->_event($msg, $priority);
+		$event = $this->_event($message, $priority);
 
 		// send to each writer
 		foreach ($this->_writers as $writer) {
@@ -106,12 +109,15 @@ class Yan_Log
 	/**
 	 * format a event
 	 *
+	 * @param $message
+	 * @param $priority
+	 *
 	 * @return array
 	 */
-	protected function _event($msg, $priority)
+	protected function _event($message, $priority)
 	{
 		$priorityName = $this->_type[$priority];
-		return array(time(), $msg, $priority, $priorityName);
+		return array(time(), $message, $priority, $priorityName);
 	}
 
 	/**

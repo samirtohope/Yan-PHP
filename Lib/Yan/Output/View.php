@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Output/Abstract.php';
@@ -79,6 +79,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * set object of view engine
 	 *
 	 * @param string|array|Yan_View_Abstract $view
+	 *
 	 * @return Yan_Output_View
 	 * @throws Yan_Output_Exception
 	 */
@@ -119,6 +120,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * set content type of output
 	 *
 	 * @param string $contentType
+	 *
 	 * @return Yan_Output_View
 	 */
 	public function setContentType($contentType)
@@ -131,6 +133,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * set charset of output
 	 *
 	 * @param string $charset
+	 *
 	 * @return Yan_Output_View
 	 */
 	public function setCharset($charset)
@@ -143,6 +146,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * set compress method
 	 *
 	 * @param string $type
+	 *
 	 * @return Yan_Output_View
 	 */
 	public function setCompress($type = self::COMPRESS_ANY)
@@ -171,6 +175,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * set sever cache adapter
 	 *
 	 * @param string|array|Yan_Cache_Abstract $cacher
+	 *
 	 * @return Yan_Output_View
 	 * @throws Yan_Output_Exception
 	 */
@@ -206,6 +211,7 @@ class Yan_Output_View extends Yan_Output_Abstract
 	 * turn on client cache
 	 *
 	 * @param int $cacheLife
+	 *
 	 * @return Yan_Output_View
 	 */
 	public function setClientCache($cacheLife = null)

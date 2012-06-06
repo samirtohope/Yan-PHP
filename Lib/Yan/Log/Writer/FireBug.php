@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Log/Writer.php';
@@ -23,12 +23,12 @@ class Yan_Log_Writer_FireBug extends Yan_Log_Writer
 	 */
 	protected $_type = array(
 		LOG_WARNING => FirePHP::WARN,
-		LOG_NOTICE => FirePHP::INFO,
-		LOG_INFO => FirePHP::INFO,
-		LOG_DEBUG => FirePHP::LOG,
-		LOG_ERR => FirePHP::ERROR,
-		LOG_ALERT => FirePHP::ERROR,
-		LOG_EMERG => FirePHP::ERROR
+		LOG_NOTICE  => FirePHP::INFO,
+		LOG_INFO    => FirePHP::INFO,
+		LOG_DEBUG   => FirePHP::LOG,
+		LOG_ERR     => FirePHP::ERROR,
+		LOG_ALERT   => FirePHP::ERROR,
+		LOG_EMERG   => FirePHP::ERROR
 	);
 	/**
 	 * firephp instance
@@ -42,6 +42,13 @@ class Yan_Log_Writer_FireBug extends Yan_Log_Writer
 		$this->_fb = FirePHP::getInstance(true);
 	}
 
+	/**
+	 *  format a message and add to the log.
+	 *
+	 * @param  array  $event  log data event
+	 *
+	 * @return void
+	 */
 	public function append($event)
 	{
 		list($timestamp, $message, $priority, $priorityName) = $event;

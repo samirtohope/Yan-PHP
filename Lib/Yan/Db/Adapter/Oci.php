@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Db/Adapter.php';
@@ -29,12 +29,12 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 	 * @var array Associative array of datatypes to values 0, 1, or 2.
 	 */
 	protected $_numericDataTypes = array(
-		Yan_Db::INT_TYPE => Yan_Db::INT_TYPE,
+		Yan_Db::INT_TYPE    => Yan_Db::INT_TYPE,
 		Yan_Db::BIGINT_TYPE => Yan_Db::BIGINT_TYPE,
-		Yan_Db::FLOAT_TYPE => Yan_Db::FLOAT_TYPE,
-		'BINARY_DOUBLE' => Yan_Db::FLOAT_TYPE,
-		'BINARY_FLOAT' => Yan_Db::FLOAT_TYPE,
-		'NUMBER' => Yan_Db::FLOAT_TYPE
+		Yan_Db::FLOAT_TYPE  => Yan_Db::FLOAT_TYPE,
+		'BINARY_DOUBLE'     => Yan_Db::FLOAT_TYPE,
+		'BINARY_FLOAT'      => Yan_Db::FLOAT_TYPE,
+		'NUMBER'            => Yan_Db::FLOAT_TYPE
 	);
 
 	protected $_driver = 'oci';
@@ -74,6 +74,7 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 	 * Quote a raw string.
 	 *
 	 * @param string $value     Raw string
+	 *
 	 * @return string           Quoted string
 	 */
 	protected function _quote($value)
@@ -89,8 +90,9 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 	 * Quote a table identifier and alias.
 	 *
 	 * @param string|array|Yan_Db_Expr $ident The identifier or expression.
-	 * @param string $alias An alias for the table.
-	 * @param boolean $auto If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 * @param string                   $alias An alias for the table.
+	 * @param boolean                  $auto  If true, heed the AUTO_QUOTE_IDENTIFIERS config option.
+	 *
 	 * @return string The quoted identifier and alias.
 	 */
 	public function quoteTableAs($ident, $alias = null, $auto = false)
@@ -117,7 +119,7 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 	 *
 	 * @param string $table
 	 * @param string $schema
-	 * @param bool $hasQuoted
+	 * @param bool   $hasQuoted
 	 *
 	 * @return array
 	 */
@@ -164,15 +166,15 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 			$columnName = $row[$field];
 			$desc[$columnName] = array(
 				'COLUMN_NAME' => $columnName,
-				'COLUMN_POS' => $row[$columnid],
-				'DATA_TYPE' => $row[$type],
-				'DEFAULT' => $row[$default],
-				'NULLABLE' => (bool)($row[$null] == 'Y'),
-				'LENGTH' => $row[$length],
-				'UNSIGNED' => null,
-				'PRIMARY' => $primary,
+				'COLUMN_POS'  => $row[$columnid],
+				'DATA_TYPE'   => $row[$type],
+				'DEFAULT'     => $row[$default],
+				'NULLABLE'    => (bool)($row[$null] == 'Y'),
+				'LENGTH'      => $row[$length],
+				'UNSIGNED'    => null,
+				'PRIMARY'     => $primary,
 				'PRIMARY_POS' => $primaryPos,
-				'IDENTITY' => false
+				'IDENTITY'    => false
 			);
 		}
 		switch ($this->_caseFolding) {
@@ -192,21 +194,22 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 	 * (e.g. Oracle, PostgreSQL, DB2).  Other RDBMS brands return null.
 	 *
 	 * @param string $sequenceName
-	 * @return integer
+	 *
+	 * @return int
 	 */
 	public function lastSequenceId($sequenceName)
 	{
 		$this->_connect();
-		$value = $this->fetchOne('SELECT ' . $this->quoteIdentifier($sequenceName, true) . '.CURRVAL FROM dual');
-		return $value;
+		return $this->fetchOne('SELECT ' . $this->quoteIdentifier($sequenceName, true) . '.CURRVAL FROM dual');
 	}
 
 	/**
 	 * Adds an adapter-specific LIMIT clause to the SELECT statement.
 	 *
-	 * @param mixed $sql
+	 * @param mixed   $sql
 	 * @param integer $count
 	 * @param integer $offset
+	 *
 	 * @throws Yan_Db_Adapter_Exception
 	 * @return string
 	 */
@@ -253,7 +256,7 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 			$conn->exec('START TRANSACTION');
 		} else {
 			$point = 'POINT_' . $this->_transCount;
-			$conn->exec('SAVEPOINT '.$this->_quoteIdentifier($point));
+			$conn->exec('SAVEPOINT ' . $this->_quoteIdentifier($point));
 			array_push($this->_savedPoints, $point);
 		}
 		++$this->_transCount;
@@ -276,7 +279,7 @@ class Yan_Db_Adapter_Oci extends Yan_Db_Adapter
 			$conn->exec('ROLLBACK');
 		} else {
 			$point = array_pop($this->_savedPoints);
-			$conn->exec('ROLLBACK TO SAVEPOINT '.$this->_quoteIdentifier($point));
+			$conn->exec('ROLLBACK TO SAVEPOINT ' . $this->_quoteIdentifier($point));
 		}
 		return true;
 	}

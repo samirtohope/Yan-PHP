@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2011-2012 kakalong CHINA (http://yanbingbing.com)
  */
 
 /*  remember framework start time  */
@@ -18,8 +18,9 @@ defined('E_DEPRECATED') or define('E_DEPRECATED', 8192);
  * dump a var
  *
  * @param mixed $var
- * @param null $label
- * @param bool $return use return instead output
+ * @param null  $label
+ * @param bool  $return use return instead output
+ *
  * @return string
  */
 function dump($var, $label = null, $return = false)
@@ -81,6 +82,7 @@ function excerpt($file, $line)
  * A quick function to get a Yan_Table Object
  *
  * @param string|array $table
+ *
  * @return Yan_Table
  */
 function T($table)
@@ -92,6 +94,7 @@ function T($table)
  * A quick function to make a Yan_Db_Expr
  *
  * @param string $expr
+ *
  * @return Yan_Db_Expr
  */
 function E($expr)
@@ -114,7 +117,11 @@ abstract class Yan
 	/**
 	 * 载入class
 	 *
-	 * @param  $name String
+	 * @param string $name
+	 *
+	 * @param null   $dirs
+	 *
+	 * @throws Yan_Exception
 	 * @return string
 	 */
 	public static function loadClass($name, $dirs = null)
@@ -160,6 +167,7 @@ abstract class Yan
 	 * get a global value
 	 *
 	 * @param $index
+	 *
 	 * @return mixed
 	 * @throws Yan_Exception
 	 */
@@ -176,6 +184,7 @@ abstract class Yan
 	 * check a global value exists
 	 *
 	 * @param $index
+	 *
 	 * @return bool
 	 */
 	public static function exists($index)

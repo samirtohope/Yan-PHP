@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Db/Select.php';
@@ -69,6 +69,7 @@ class Yan_Table_Select extends Yan_Db_Select
 	 * page query
 	 *
 	 * @param Yan_Table_Paginator $pagination
+	 *
 	 * @return Yan_Table_Select
 	 */
 	public function page(Yan_Table_Paginator $pagination)
@@ -121,6 +122,11 @@ class Yan_Table_Select extends Yan_Db_Select
 	/**
 	 * query data
 	 *
+	 * @param int|string|array|Yan_Db_Expr $where
+	 * @param string|array                 $order
+	 * @param null|int                     $count
+	 * @param null|int                     $offset
+	 *
 	 * @return array
 	 */
 	public function fetchAll($where = null, $order = null, $count = null, $offset = null)
@@ -140,6 +146,10 @@ class Yan_Table_Select extends Yan_Db_Select
 
 	/**
 	 * query data
+	 *
+	 * @param int|string|array|Yan_Db_Expr $where
+	 * @param string|array                 $order
+	 * @param null|int                     $offset
 	 *
 	 * @return array
 	 */

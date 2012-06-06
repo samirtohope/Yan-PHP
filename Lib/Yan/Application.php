@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Controller.php';
@@ -146,6 +146,8 @@ class Yan_Application
 	 * set Log writers for logging
 	 *
 	 * @param array $writers
+	 *
+	 * @throws Yan_Application_Exception
 	 * @return Yan_Application
 	 */
 	public function setLog(array $writers)
@@ -202,6 +204,8 @@ class Yan_Application
 	 * set Session settings
 	 *
 	 * @param array $options
+	 *
+	 * @throws Yan_Application_Exception
 	 * @return Yan_Application
 	 */
 	public function setSession(array $options)
@@ -238,6 +242,8 @@ class Yan_Application
 	 * set controller suffix
 	 *
 	 * @param string $suffix
+	 *
+	 * @throws Yan_Application_Exception
 	 */
 	public function setControllerSuffix($suffix)
 	{
@@ -452,6 +458,10 @@ class Yan_Application
 	/**
 	 * run application
 	 *
+	 * @param null|Yan_Request_Abstract  $request
+	 * @param null|Yan_Response_Abstract $response
+	 *
+	 * @throws Yan_Application_Exception
 	 * @return void
 	 */
 	public function run(Yan_Request_Abstract $request = null, Yan_Response_Abstract $response = null)

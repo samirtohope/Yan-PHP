@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -114,7 +114,7 @@ class Yan_Uri
 	public function __get($key)
 	{
 		$prop = '_' . strtolower($key);
-		if (!property_exists($prop, $this)) {
+		if (!property_exists($this, $prop)) {
 			require_once 'Yan/Uri/Exception.php';
 			throw new Yan_Uri_Exception("Undefined key '{$key}'");
 		}

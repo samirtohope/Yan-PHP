@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Route/Interface.php';
@@ -44,7 +44,7 @@ class Yan_Route_Regex implements Yan_Route_Interface
 		$this->_regex = (string)$config['rule'];
 		$this->_map = isset($config['map']) ? (array)$config['map'] : array();
 		$this->_defaults = isset($config['defaults'])
-			? $this->_getMappedValues((array) $config['defaults'])
+			? $this->_getMappedValues((array)$config['defaults'])
 			: array();
 		$this->_hashost = !empty($config['hashost']);
 	}
@@ -53,6 +53,7 @@ class Yan_Route_Regex implements Yan_Route_Interface
 	 * match request(Yan_Request_Abstract) to this route
 	 *
 	 * @param Yan_Request_Abstract $request
+	 *
 	 * @return array|bool
 	 */
 	public function match(Yan_Request_Abstract $request)

@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -21,7 +21,7 @@ abstract class Yan_Captcha_Abstract
 	{
 		if (is_array($options)) {
 			$this->setOptions($options);
-		} else if ($options instanceof Yan_Config) {
+		} elseif ($options instanceof Yan_Config) {
 			$this->setOptions($options->toArray());
 		}
 	}
@@ -30,6 +30,7 @@ abstract class Yan_Captcha_Abstract
 	 * init captcha options
 	 *
 	 * @param array $options
+	 *
 	 * @return Yan_Captcha_Abstract
 	 */
 	public function setOptions(array $options)
@@ -55,6 +56,7 @@ abstract class Yan_Captcha_Abstract
 	 * output captcha
 	 *
 	 * @param boolean $return
+	 *
 	 * @return string output if set $return true
 	 */
 	abstract public function render($return = false);

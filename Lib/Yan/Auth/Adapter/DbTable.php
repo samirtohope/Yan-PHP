@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Auth/Adapter/Interface.php';
@@ -12,8 +12,8 @@ require_once 'Yan/Auth/Result.php';
 /**
  * Yan_Auth_Adapter_DbTable
  *
- * @category  Yan
- * @package   Yan_Auth
+ * @category   Yan
+ * @package    Yan_Auth
  * @subpackage Adapter
  */
 class Yan_Auth_Adapter_DbTable implements Yan_Auth_Adapter_Interface
@@ -24,6 +24,7 @@ class Yan_Auth_Adapter_DbTable implements Yan_Auth_Adapter_Interface
 	 * @var Yan_Db_Adapter
 	 */
 	protected $_db;
+
 	/**
 	 * $_tableName - the table name to check
 	 *

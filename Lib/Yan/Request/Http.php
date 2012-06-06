@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Request/Abstract.php';
@@ -41,7 +41,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 
 	/**
 	 * Raw request body
-	 * @var string|false
+	 * @var string
 	 */
 	protected $_rawBody;
 
@@ -66,6 +66,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Check to see if a property is set
 	 *
 	 * @param string $key
+	 *
 	 * @return boolean
 	 */
 	public function __isset($key)
@@ -93,7 +94,9 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Order of precedence: 1. GET, 2. POST, 3. COOKIE, 4. SERVER, 5. ENV
 	 *
 	 * @see http://msdn.microsoft.com/en-us/library/system.web.httprequest.item.aspx
+	 *
 	 * @param string $key
+	 *
 	 * @return mixed
 	 */
 	public function __get($key)
@@ -126,7 +129,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * If no $key is passed, returns the entire $_GET array.
 	 *
 	 * @param string $key
-	 * @param mixed $default Default value to use if key not found
+	 * @param mixed  $default Default value to use if key not found
+	 *
 	 * @return mixed Returns null if key does not exist
 	 */
 	public function getQuery($key = null, $default = null)
@@ -141,7 +145,9 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Set GET values
 	 *
 	 * @param  string|array $spec
-	 * @param  null|mixed $value
+	 * @param  null|mixed   $value
+	 *
+	 * @throws Yan_Request_Exception
 	 * @return Yan_Request_Http
 	 */
 	public function setQuery($spec, $value = null)
@@ -166,7 +172,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * If no $key is passed, returns the entire $_POST array.
 	 *
 	 * @param string $key
-	 * @param mixed $default Default value to use if key not found
+	 * @param mixed  $default Default value to use if key not found
+	 *
 	 * @return mixed Returns null if key does not exist
 	 */
 	public function getPost($key = null, $default = null)
@@ -181,7 +188,9 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Set POST values
 	 *
 	 * @param  string|array $spec
-	 * @param  null|mixed $value
+	 * @param  null|mixed   $value
+	 *
+	 * @throws Yan_Request_Exception
 	 * @return Yan_Request_Http
 	 */
 	public function setPost($spec, $value = null)
@@ -206,7 +215,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * If no $key is passed, returns the entire $_COOKIE array.
 	 *
 	 * @param string $key
-	 * @param mixed $default Default value to use if key not found
+	 * @param mixed  $default Default value to use if key not found
+	 *
 	 * @return mixed Returns null if key does not exist
 	 */
 	public function getCookie($key = null, $default = null)
@@ -223,7 +233,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * If no $key is passed, returns the entire $_SESSION array.
 	 *
 	 * @param string $key
-	 * @param mixed $default Default value to use if key not found
+	 * @param mixed  $default Default value to use if key not found
+	 *
 	 * @return mixed Returns null if key does not exist
 	 */
 	public function getSession($key = null, $default = null)
@@ -240,7 +251,8 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * If no $key is passed, returns the entire $_SERVER array.
 	 *
 	 * @param string $key
-	 * @param mixed $default Default value to use if key not found
+	 * @param mixed  $default Default value to use if key not found
+	 *
 	 * @return mixed Returns null if key does not exist
 	 */
 	public function getServer($key = null, $default = null)
@@ -266,6 +278,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Set the REQUEST_URI on which the instance operates
 	 *
 	 * @param string $requestUri
+	 *
 	 * @return Yan_Request_Http
 	 */
 	public function setRequestUri($requestUri = null)
@@ -331,6 +344,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Set the base path for the URL
 	 *
 	 * @param string|null $basePath
+	 *
 	 * @return Yan_Request_Http
 	 */
 	public function setBasePath($basePath = null)
@@ -375,6 +389,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Set the base URL of the request
 	 *
 	 * @param mixed $baseUrl
+	 *
 	 * @return Yan_Request_Http
 	 */
 	public function setBaseUrl($baseUrl = null)
@@ -470,6 +485,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Set the PATH_INFO string
 	 *
 	 * @param string|null $pathInfo
+	 *
 	 * @return Yan_Request_Http
 	 */
 	public function setPathInfo($pathInfo = null)
@@ -514,6 +530,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	 * Accept header, 'Accept-Encoding' to get the Accept-Encoding header.
 	 *
 	 * @param string $header HTTP header name
+	 *
 	 * @return string|null HTTP header value, or null if not found
 	 */
 	public function getHeader($header)
@@ -539,7 +556,7 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	/**
 	 * Return the raw body of the request, if present
 	 *
-	 * @return string|false Raw body, or false if not present
+	 * @return string Raw body, or false if not present
 	 */
 	public function getRawBody()
 	{
@@ -599,7 +616,6 @@ class Yan_Request_Http extends Yan_Request_Abstract
 	/**
 	 * Get the client's IP addres
 	 *
-	 * @param  boolean $checkProxy
 	 * @return string
 	 */
 	public function getClientIp()

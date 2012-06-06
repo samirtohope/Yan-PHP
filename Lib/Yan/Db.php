@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -126,7 +126,9 @@ abstract class Yan_Db
 	 * Factory for Yan_Db_Adapter classes.
 	 *
 	 * @param string $adapter
-	 * @param array $config
+	 * @param array  $config
+	 *
+	 * @throws Yan_Db_Exception
 	 * @return Yan_Db_Adapter
 	 */
 	public static function factory($adapter, $config = array())
@@ -192,6 +194,7 @@ abstract class Yan_Db
 	 * set default db adapter
 	 *
 	 * @param Yan_Db_Adapter|string $db
+	 *
 	 * @return Yan_Db_Adapter
 	 * @throws Yan_Db_Exception
 	 */
@@ -228,6 +231,7 @@ abstract class Yan_Db
 	 * set default cache adapter
 	 *
 	 * @param Yan_Cache_Abstract|string $cache
+	 *
 	 * @return Yan_Cache_Abstract
 	 * @throws Yan_Db_Exception
 	 */

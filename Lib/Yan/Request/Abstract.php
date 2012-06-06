@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -49,6 +49,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * magic method
 	 *
 	 * @param string $key
+	 *
 	 * @return bool
 	 */
 	public function __isset($key)
@@ -60,18 +61,20 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * unset a key from param
 	 *
 	 * @param string $key
+	 *
 	 * @return void
 	 */
 	public function __unset($key)
 	{
-		unset($this->_params[$param]);
+		unset($this->_params[$key]);
 	}
 
 	/**
 	 * set a key-value into param
 	 *
 	 * @param string $key
-	 * @param mixed $val
+	 * @param mixed  $val
+	 *
 	 * @return void
 	 */
 	public function __set($key, $val)
@@ -83,7 +86,8 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * Alias to __set()
 	 *
 	 * @param string $key
-	 * @param mixed $value
+	 * @param mixed  $val
+	 *
 	 * @return void
 	 */
 	public function set($key, $val)
@@ -96,7 +100,9 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * Order of precedence: 1. GET, 2. POST, 3. COOKIE, 4. SERVER, 5. ENV
 	 *
 	 * @see http://msdn.microsoft.com/en-us/library/system.web.httprequest.item.aspx
+	 *
 	 * @param string $key
+	 *
 	 * @return mixed
 	 */
 	public function __get($key)
@@ -108,6 +114,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * Alias to __get
 	 *
 	 * @param string $key
+	 *
 	 * @return mixed
 	 */
 	public function get($key)
@@ -119,6 +126,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * defined by ArrayAccess
 	 *
 	 * @param string $key
+	 *
 	 * @return bool
 	 */
 	public function offsetExists($key)
@@ -130,7 +138,8 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * defined by ArrayAccess
 	 *
 	 * @param string $key
-	 * @param mixed $val
+	 * @param mixed  $val
+	 *
 	 * @return void
 	 */
 	public function offsetSet($key, $val)
@@ -142,6 +151,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * defined by ArrayAccess
 	 *
 	 * @param string $key
+	 *
 	 * @return mixed
 	 */
 	public function offsetGet($key)
@@ -153,11 +163,10 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * defined by ArrayAccess
 	 *
 	 * @param string $key
-	 * @return void
 	 */
 	public function offsetUnset($key)
 	{
-		return $this->__unset($key);
+		$this->__unset($key);
 	}
 
 	/**
@@ -178,7 +187,6 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	public function setActionKey($key)
 	{
 		$this->_actionKey = (string)$key;
-		return $this;
 	}
 
 	/**
@@ -232,7 +240,8 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * Retrieving a member of the param
 	 *
 	 * @param string $key
-	 * @param mixed $default
+	 * @param mixed  $default
+	 *
 	 * @return mixed
 	 */
 	public function getParam($key = null, $default = null)
@@ -247,6 +256,7 @@ abstract class Yan_Request_Abstract implements ArrayAccess
 	 * Set params to request
 	 *
 	 * @param array $array
+	 *
 	 * @return Yan_Request_Abstract
 	 */
 	public function setParams(array $array)

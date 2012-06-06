@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -24,8 +24,9 @@ class Yan_Router
 	/**
 	 * add a single route of type Yan_Router
 	 *
-	 * @param string $name
-	 * @param Yan_Route_Interface|array $route
+	 * @param string|array                   $name
+	 * @param Yan_Route_Interface|array|null $route
+	 *
 	 * @return Yan_Router fluent interface
 	 */
 	public function addRoute($name, $route = null)
@@ -48,6 +49,7 @@ class Yan_Router
 	 * routing... match request(Yan_Request_Abstract) to all routes, parsing and get param data
 	 *
 	 * @param Yan_Request_Abstract $request
+	 *
 	 * @return void
 	 */
 	public function route(Yan_Request_Abstract $request)

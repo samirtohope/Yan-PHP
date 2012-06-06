@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -51,7 +51,9 @@ class Yan_Config implements ArrayAccess
 
 	/**
 	 * interface defined by ArrayAccess
+	 *
 	 * @param $index
+	 * @return bool
 	 */
 	public function offsetExists($index)
 	{
@@ -60,6 +62,7 @@ class Yan_Config implements ArrayAccess
 
 	/**
 	 * interface defined by ArrayAccess
+	 *
 	 * @param $index
 	 * @param $value
 	 */
@@ -70,8 +73,10 @@ class Yan_Config implements ArrayAccess
 
 	/**
 	 * interface defined by ArrayAccess
-	 * @param $index
-	 * @return $mixed
+	 *
+	 * @param mixed $index
+	 *
+	 * @return mixed $mixed
 	 */
 	public function offsetGet($index)
 	{
@@ -80,6 +85,7 @@ class Yan_Config implements ArrayAccess
 
 	/**
 	 * interface defined by ArrayAccess
+	 *
 	 * @param $index
 	 */
 	public function offsetUnset($index)
@@ -101,6 +107,7 @@ class Yan_Config implements ArrayAccess
 	 * load config from file
 	 *
 	 * @param $filename
+	 *
 	 * @return Yan_Config
 	 * @throws Yan_Config_Exception
 	 */
@@ -128,6 +135,7 @@ class Yan_Config implements ArrayAccess
 	 * parse data to array
 	 *
 	 * @param $filename
+	 *
 	 * @return array
 	 */
 	public static function parse($filename)
@@ -139,6 +147,7 @@ class Yan_Config implements ArrayAccess
 	 * merge config to array
 	 *
 	 * @param $array
+	 *
 	 * @return Yan_Config
 	 * @throws Yan_Config_Exception
 	 */

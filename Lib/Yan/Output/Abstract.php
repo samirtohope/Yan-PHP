@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -23,7 +23,7 @@ abstract class Yan_Output_Abstract
 
 	/**
 	 * @param Yan_Response_Abstract $response
-	 * @param array $options
+	 * @param array                 $options
 	 */
 	public function __construct(Yan_Response_Abstract $response, array $options = array())
 	{
@@ -35,6 +35,7 @@ abstract class Yan_Output_Abstract
 	 * init the options
 	 *
 	 * @param array $options
+	 *
 	 * @return Yan_Output_Abstract
 	 */
 	public function setOptions(array $options)

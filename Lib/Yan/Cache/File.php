@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Cache/Array.php';
@@ -17,25 +17,25 @@ class Yan_Cache_File extends Yan_Cache_Array
 {
 
 	protected $_options = array(
-		'lifetime' => false,
-		'prefix' => false,
-		'cacheDir' => false,
-		'dirDepth' => false,
+		'lifetime'  => false,
+		'prefix'    => false,
+		'cacheDir'  => false,
+		'dirDepth'  => false,
 		'fileUmask' => false,
-		'dirUmask' => false,
-		'readTest' => false,
-		'testType' => false
+		'dirUmask'  => false,
+		'readTest'  => false,
+		'testType'  => false
 	);
 
 	protected $_config = array(
-		'prefix' => 'cache',
-		'cacheDir' => null,
-		'dirDepth' => 0,
-		'lifetime' => 3600,
+		'prefix'    => 'cache',
+		'cacheDir'  => null,
+		'dirDepth'  => 0,
+		'lifetime'  => 3600,
 		'fileUmask' => 0600,
-		'dirUmask' => 0700,
-		'readTest' => true,
-		'testType' => 'crc32'
+		'dirUmask'  => 0700,
+		'readTest'  => true,
+		'testType'  => 'crc32'
 	);
 
 	/**
@@ -116,6 +116,7 @@ class Yan_Cache_File extends Yan_Cache_Array
 	 *
 	 * @param string $data
 	 * @param string $type
+	 *
 	 * @return string
 	 */
 	protected function _hash($data, $type)

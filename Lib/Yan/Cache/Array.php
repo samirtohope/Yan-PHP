@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Cache/Abstract.php';
@@ -16,20 +16,20 @@ require_once 'Yan/Cache/Abstract.php';
 class Yan_Cache_Array extends Yan_Cache_Abstract
 {
 	protected $_options = array(
-		'lifetime' => false,
-		'prefix' => false,
-		'cacheDir' => false,
-		'dirDepth' => false,
+		'lifetime'  => false,
+		'prefix'    => false,
+		'cacheDir'  => false,
+		'dirDepth'  => false,
 		'fileUmask' => false,
-		'dirUmask' => false
+		'dirUmask'  => false
 	);
 
 	protected $_config = array(
-		'prefix' => 'cache',
-		'dirDepth' => 0,
-		'lifetime' => 3600,
+		'prefix'    => 'cache',
+		'dirDepth'  => 0,
+		'lifetime'  => 3600,
 		'fileUmask' => 0600,
-		'dirUmask' => 0700
+		'dirUmask'  => 0700
 	);
 
 	protected function _init()

@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -25,6 +25,7 @@ abstract class Yan_Log_Writer
 	 *  format a message and add to the log.
 	 *
 	 * @param  array  $event  log data event
+	 *
 	 * @return void
 	 */
 	public function append($event)

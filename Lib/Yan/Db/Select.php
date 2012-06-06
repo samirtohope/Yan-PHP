@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Db/Adapter.php';
@@ -63,17 +63,17 @@ class Yan_Db_Select
 	 * @var array
 	 */
 	protected static $_partsInit = array(
-		self::DISTINCT => false,
-		self::COLUMNS => array(),
-		self::UNION => array(),
-		self::FROM => array(),
-		self::WHERE => array(),
-		self::GROUP => array(),
-		self::HAVING => array(),
-		self::ORDER => array(),
-		self::LIMIT_COUNT => null,
+		self::DISTINCT     => false,
+		self::COLUMNS      => array(),
+		self::UNION        => array(),
+		self::FROM         => array(),
+		self::WHERE        => array(),
+		self::GROUP        => array(),
+		self::HAVING       => array(),
+		self::ORDER        => array(),
+		self::LIMIT_COUNT  => null,
 		self::LIMIT_OFFSET => null,
-		self::FOR_UPDATE => false
+		self::FOR_UPDATE   => false
 	);
 
 	/**
@@ -82,11 +82,11 @@ class Yan_Db_Select
 	 * @var array
 	 */
 	protected static $_joinTypes = array(
-		self::INNER_JOIN => true,
-		self::LEFT_JOIN => true,
-		self::RIGHT_JOIN => true,
-		self::FULL_JOIN => true,
-		self::CROSS_JOIN => true,
+		self::INNER_JOIN   => true,
+		self::LEFT_JOIN    => true,
+		self::RIGHT_JOIN   => true,
+		self::FULL_JOIN    => true,
+		self::CROSS_JOIN   => true,
 		self::NATURAL_JOIN => true
 	);
 
@@ -132,14 +132,17 @@ class Yan_Db_Select
 	 * Clear parts of the Select object, or an individual part.
 	 *
 	 * @param string $part OPTIONAL
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function reset($part = null)
 	{
 		if ($part == null) {
 			$this->_parts = self::$_partsInit;
-		} else if (array_key_exists($part, self::$_partsInit)) {
-			$this->_parts[$part] = self::$_partsInit[$part];
+		} else {
+			if (array_key_exists($part, self::$_partsInit)) {
+				$this->_parts[$part] = self::$_partsInit[$part];
+			}
 		}
 		return $this;
 	}
@@ -158,6 +161,7 @@ class Yan_Db_Select
 	 * Set bind variables
 	 *
 	 * @param mixed $bind
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function bind($bind)
@@ -182,8 +186,9 @@ class Yan_Db_Select
 	 * Executes the current select object and returns the result
 	 *
 	 * @param integer $fetchMode OPTIONAL
-	 * @param  mixed  $bind An array of data to bind to the placeholders.
-	 * @return PDOStatement
+	 * @param  mixed  $bind      An array of data to bind to the placeholders.
+	 *
+	 * @return Yan_Db_Statement
 	 */
 	public function query($bind = array(), $fetchMode = null)
 	{
@@ -202,7 +207,8 @@ class Yan_Db_Select
 	 * Prepare the current select object
 	 *
 	 * @param integer $fetchMode OPTIONAL
-	 * @return PDOStatement
+	 *
+	 * @return Yan_Db_Statement
 	 */
 	public function prepare($fetchMode = null)
 	{
@@ -217,6 +223,7 @@ class Yan_Db_Select
 	 * Get part of the structured information for the currect query.
 	 *
 	 * @param string $part
+	 *
 	 * @return mixed
 	 * @throws Yan_Db_Exception
 	 */
@@ -262,6 +269,9 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param        $table
+	 * @param string $cols
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function from($table, $cols = '*')
@@ -270,6 +280,10 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param string $cols
+	 * @param null   $correlationName
+	 *
+	 * @throws Yan_Db_Exception
 	 * @return Yan_Db_Select
 	 */
 	public function columns($cols = '*', $correlationName = null)
@@ -290,6 +304,12 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param        $type
+	 * @param        $table
+	 * @param        $on
+	 * @param string $columns
+	 *
+	 * @throws Yan_Db_Exception
 	 * @return Yan_Db_Select
 	 */
 	public function join($type, $table, $on, $columns = '*')
@@ -301,10 +321,10 @@ class Yan_Db_Select
 		list($table, $schema, $alias) = $this->_parseTable($table);
 		if (!empty($alias)) {
 			$this->_parts[self::FROM][$alias] = array(
-				'joinType' => $type,
+				'joinType'  => $type,
 				'tableName' => $table,
-				'schema' => $schema,
-				'joinCond' => $on
+				'schema'    => $schema,
+				'joinCond'  => $on
 			);
 		}
 		$this->_tableCols($alias, $columns);
@@ -312,6 +332,9 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param int $count
+	 * @param int $offset
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function limit($count = 30, $offset = 0)
@@ -322,6 +345,8 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param int $length
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function top($length = 30)
@@ -330,6 +355,8 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param $spec
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function group($spec)
@@ -349,6 +376,10 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param string $cond
+	 * @param null   $val
+	 * @param bool   $or
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function having($cond, $val = null, $or = false)
@@ -364,6 +395,8 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param $expr
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function order($expr)
@@ -395,6 +428,10 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param      $where
+	 * @param null $value
+	 * @param null $type
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function where($where, $value = null, $type = null)
@@ -404,6 +441,10 @@ class Yan_Db_Select
 	}
 
 	/**
+	 * @param      $where
+	 * @param null $value
+	 * @param null $type
+	 *
 	 * @return Yan_Db_Select
 	 */
 	public function orWhere($where, $value = null, $type = null)
@@ -418,7 +459,9 @@ class Yan_Db_Select
 			$condition = array();
 			foreach ($where as $expr => $v) {
 				$c = $this->_adapter->cond($expr, $v, $type);
-				if (strlen($c)) $condition[] = $c;
+				if (strlen($c)) {
+					$condition[] = $c;
+				}
 			}
 			$condition = implode(' ' . self::SQL_AND . ' ', $condition);
 		} else {
@@ -534,8 +577,9 @@ class Yan_Db_Select
 	/**
 	 * Return a quoted table name
 	 *
-	 * @param string   $tableName        The table name
+	 * @param string   $table            The table name
 	 * @param string   $correlationName  The correlation name OPTIONAL
+	 *
 	 * @return string
 	 */
 	protected function _getQuotedTable($table, $correlationName = null)
@@ -547,6 +591,7 @@ class Yan_Db_Select
 	 * Render DISTINCT clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderDistinct($sql)
@@ -588,6 +633,7 @@ class Yan_Db_Select
 	 * Render FROM clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderFrom($sql)
@@ -629,6 +675,7 @@ class Yan_Db_Select
 	 * Render WHERE clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderWhere($sql)
@@ -644,6 +691,7 @@ class Yan_Db_Select
 	 * Render GROUP clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderGroup($sql)
@@ -663,6 +711,7 @@ class Yan_Db_Select
 	 * Render HAVING clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderHaving($sql)
@@ -678,6 +727,7 @@ class Yan_Db_Select
 	 * Render ORDER clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderOrder($sql)
@@ -701,6 +751,7 @@ class Yan_Db_Select
 	 * Render LIMIT OFFSET clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderLimitoffset($sql)
@@ -732,6 +783,7 @@ class Yan_Db_Select
 	 * Render FOR UPDATE clause
 	 *
 	 * @param string   $sql SQL query
+	 *
 	 * @return string
 	 */
 	protected function _renderForupdate($sql)

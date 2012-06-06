@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -66,7 +66,9 @@ abstract class Yan_Controller
 	 * Init a output object
 	 *
 	 * @param Yan_Output_Abstract|string $output
-	 * @param array $options
+	 * @param array                      $options
+	 *
+	 * @throws Yan_Controller_Exception
 	 * @return Yan_Output_Abstract
 	 */
 	protected function _setOutput($output, array $options = array())
@@ -122,6 +124,8 @@ abstract class Yan_Controller
 	 * initilized the view object
 	 *
 	 * @param Yan_View_Abstract|string|array $view
+	 *
+	 * @throws Yan_Controller_Exception
 	 */
 	protected function _setView($view = null)
 	{
@@ -134,9 +138,9 @@ abstract class Yan_Controller
 			$options['view'] = $view;
 		} else {
 			$options['view'] = array(
-				'class' => 'Yan_View_Simple',
+				'class'        => 'Yan_View_Simple',
 				'templateBase' => APP_PATH . '/View',
-				'script' => $this->_getViewScript(
+				'script'       => $this->_getViewScript(
 					$this->_request->getActionName(),
 					$this->_request->getControllerName())
 			);
@@ -169,7 +173,8 @@ abstract class Yan_Controller
 	 * assign variablea to view
 	 *
 	 * @param string|array $spec
-	 * @param mixed $value
+	 * @param mixed        $value
+	 *
 	 * @return Yan_View_Abstract
 	 */
 	protected function assign($spec, $value = null)
@@ -211,6 +216,7 @@ abstract class Yan_Controller
 	 *
 	 * @param string $name
 	 * @param string $dir
+	 *
 	 * @return string
 	 */
 	protected function _getViewScript($name, $dir)
@@ -225,6 +231,7 @@ abstract class Yan_Controller
 	 * transform action name map
 	 *
 	 * @param string $action
+	 *
 	 * @return string
 	 */
 	protected function _transformAction($action)
@@ -236,6 +243,8 @@ abstract class Yan_Controller
 	 * For internal use, dispatch the action
 	 *
 	 * @param string $action
+	 *
+	 * @throws Yan_Controller_Exception
 	 */
 	public function _dispatch($action)
 	{

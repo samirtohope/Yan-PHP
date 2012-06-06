@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Route/Interface.php';
@@ -65,13 +65,13 @@ class Yan_Route_Route implements Yan_Route_Interface
 				}
 			}
 		}
-		console($this->_parts);
 	}
 
 	/**
 	 * match request(Yan_Request_Abstract) to this route
 	 *
 	 * @param Yan_Request_Abstract $request
+	 *
 	 * @return array|bool
 	 */
 	public function match(Yan_Request_Abstract $request)

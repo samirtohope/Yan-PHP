@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -129,8 +129,9 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 	 * Required by interface SeekableIterator.
 	 *
 	 * @param int $position
-	 * @return Yan_Table_Rowset
+	 *
 	 * @throws Yan_Table_Rowset_Exception
+	 * @return Yan_Table_Rowset
 	 */
 	public function seek($position)
 	{
@@ -147,6 +148,7 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 	 * Required by the interface ArrayAccess
 	 *
 	 * @param $offset
+	 *
 	 * @return bool
 	 */
 	public function offsetExists($offset)
@@ -156,6 +158,8 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 
 	/**
 	 * Required by the interface ArrayAccess
+	 *
+	 * @param int $offset
 	 *
 	 * @return Yan_Table_Record
 	 */
@@ -184,6 +188,7 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 	 * export plain array
 	 *
 	 * @param bool $useGet
+	 *
 	 * @return array
 	 */
 	public function toArray($useGet = false)
@@ -201,6 +206,14 @@ class Yan_Table_Rowset implements SeekableIterator, Countable, ArrayAccess
 		return $data;
 	}
 
+	/**
+	 * retrieve Yan_Table_Record as $pos
+	 *
+	 * @param int $pos
+	 *
+	 * @return Yan_Table_Record
+	 * @throws Yan_Table_Rowset_Exception
+	 */
 	protected function _initRow($pos)
 	{
 		if (!isset($this->_data[$pos])) {

@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -10,11 +10,14 @@
  *
  * @category Yan
  * @package  Yan_Table
+ * @subpackage Validator
  */
 Interface Yan_Table_Validator_Interface
 {
 	/**
 	 * Check if valid
+	 *
+	 * @param mixed $value
 	 *
 	 * @return bool
 	 */

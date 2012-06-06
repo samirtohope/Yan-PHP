@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -39,7 +39,7 @@ interface Yan_Session_SaveHandler
 	 * Write Session - commit data to resource
 	 *
 	 * @param string $id
-	 * @param mixed $data
+	 * @param mixed  $data
 	 */
 	public function write($id, $data);
 

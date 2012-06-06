@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Output/Abstract.php';
@@ -33,6 +33,7 @@ class Yan_Output_Captcha extends Yan_Output_Abstract
 	 * set captcha of render engine
 	 *
 	 * @param string|array|Yan_Captcha_Abstract $captcha
+	 *
 	 * @return Yan_Output_Captcha
 	 * @throws Yan_Output_Exception
 	 */

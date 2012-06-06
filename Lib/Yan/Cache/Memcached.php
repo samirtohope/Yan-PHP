@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Cache/Abstract.php';
@@ -16,22 +16,22 @@ require_once 'Yan/Cache/Abstract.php';
 class Yan_Cache_Memcached extends Yan_Cache_Abstract
 {
 
+	/**
+	 * @var Memcache
+	 */
 	protected $_memcache;
 
 	protected $_options = array(
-		'lifetime' => false,
-		'servers' => false,
+		'lifetime'    => false,
+		'servers'     => false,
 		'compression' => false,
 	);
 
 	protected $_config = array(
-		'lifetime' => 3600,
-		'servers' => array(
+		'lifetime'    => 3600,
+		'servers'     => array(
 			'127.0.0.1:11211'
 		),
-		/**
-		 * 是否压缩缓存数据
-		 */
 		'compression' => false
 	);
 

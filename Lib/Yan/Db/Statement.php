@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -33,7 +33,9 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * Constructor for a statement.
 	 *
 	 * @param Yan_Db_Adapter $adapter
-	 * @param string $sql
+	 * @param string         $sql
+	 *
+	 * @throws Yan_Db_Statement_Exception
 	 */
 	public function __construct($adapter, $sql)
 	{
@@ -52,6 +54,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 *                       position or by name.
 	 * @param mixed  $param  Reference to the PHP variable containing the value.
 	 * @param mixed  $type   OPTIONAL
+	 *
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -77,6 +80,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * @param mixed $type      OPTIONAL Datatype of SQL parameter.
 	 * @param mixed $length    OPTIONAL Length of SQL parameter.
 	 * @param mixed $options   OPTIONAL Other options.
+	 *
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -107,6 +111,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * @param mixed $parameter Name the parameter, either integer or string.
 	 * @param mixed $value     Scalar value to bind to the parameter.
 	 * @param mixed $type      OPTIONAL Datatype of the parameter.
+	 *
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -115,8 +120,6 @@ class Yan_Db_Statement implements IteratorAggregate
 		if (is_string($parameter) && $parameter[0] != ':') {
 			$parameter = ":$parameter";
 		}
-
-		$this->_bindParam[$parameter] = $value;
 
 		try {
 			if ($type === null) {
@@ -201,6 +204,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * Executes a prepared statement.
 	 *
 	 * @param array $params OPTIONAL Values to bind to parameter placeholders.
+	 *
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -224,6 +228,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * @param int $style  OPTIONAL Fetch mode for this fetch operation.
 	 * @param int $cursor OPTIONAL Absolute, relative, or other.
 	 * @param int $offset OPTIONAL Number for absolute or relative cursors.
+	 *
 	 * @return mixed Array, object, or scalar depending on fetch mode.
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -243,7 +248,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	/**
 	 * Required by IteratorAggregate interface
 	 *
-	 * @return IteratorIterator
+	 * @return IteratorIterator|Traversable
 	 */
 	public function getIterator()
 	{
@@ -255,6 +260,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 *
 	 * @param int $style OPTIONAL Fetch mode.
 	 * @param int $col   OPTIONAL Column number, if fetch mode is by column.
+	 *
 	 * @return array Collection of rows, each in a format by the fetch mode.
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -282,6 +288,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * Returns a single column from the next row of a result set.
 	 *
 	 * @param int $col OPTIONAL Position of the column to fetch.
+	 *
 	 * @return string
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -300,6 +307,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 *
 	 * @param string $class  OPTIONAL Name of the class to create.
 	 * @param array  $config OPTIONAL Constructor arguments for the class.
+	 *
 	 * @return mixed One object instance of the specified class.
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -317,6 +325,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * Retrieve a statement attribute.
 	 *
 	 * @param integer $key Attribute name.
+	 *
 	 * @return mixed  Attribute value.
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -334,6 +343,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * Returns metadata for a column in a result set.
 	 *
 	 * @param int $column
+	 *
 	 * @return mixed
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -388,6 +398,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 *
 	 * @param string $key Attribute name.
 	 * @param mixed  $val Attribute value.
+	 *
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */
@@ -405,6 +416,7 @@ class Yan_Db_Statement implements IteratorAggregate
 	 * Set the default fetch mode for this statement.
 	 *
 	 * @param int   $mode The fetch mode.
+	 *
 	 * @return bool
 	 * @throws Yan_Db_Statement_Exception
 	 */

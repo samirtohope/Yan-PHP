@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/View/Abstract.php';
@@ -30,8 +30,11 @@ class Yan_View_Simple extends Yan_View_Abstract
 	protected $_scriptPath = '';
 
 	/**
-	 * @see Yan_View_Abstract
-	 * @return Yan_View_Simple
+	 * set Script file
+	 *
+	 * @param string $path
+	 *
+	 * @return Yan_View_Abstract|Yan_View_Simple
 	 */
 	public function setScript($path)
 	{
@@ -40,8 +43,11 @@ class Yan_View_Simple extends Yan_View_Abstract
 	}
 
 	/**
-	 * @see Yan_View_Abstract
-	 * @return Yan_View_Simple
+	 * set Compiled template file base directory
+	 *
+	 * @param string $dir
+	 *
+	 * @return Yan_View_Abstract|Yan_View_Simple
 	 */
 	public function setCompiledBase($dir)
 	{
@@ -49,8 +55,11 @@ class Yan_View_Simple extends Yan_View_Abstract
 	}
 
 	/**
-	 * @see Yan_View_Abstract
-	 * @return Yan_View_Simple
+	 * set Template file base directory
+	 *
+	 * @param string $dir
+	 *
+	 * @return Yan_View_Abstract|Yan_View_Simple
 	 */
 	public function setTemplateBase($dir)
 	{
@@ -61,6 +70,7 @@ class Yan_View_Simple extends Yan_View_Abstract
 	/**
 	 * assign variables, render template
 	 *
+	 * @throws Yan_View_Exception
 	 * @return string
 	 */
 	public function render()

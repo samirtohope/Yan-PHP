@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 /**
@@ -73,6 +73,7 @@ class Yan_Auth
 	 * Authenticates against the supplied adapter
 	 *
 	 * @param  Yan_Auth_Adapter_Interface $adapter
+	 *
 	 * @return Yan_Auth_Result
 	 */
 	public function authenticate(Yan_Auth_Adapter_Interface $adapter)

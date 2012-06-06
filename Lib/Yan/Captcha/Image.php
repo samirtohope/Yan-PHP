@@ -2,7 +2,7 @@
 /**
  * Yan Framework
  *
- * @copyright Copyright (c) 2011-2012 kakalong (http://yanbingbing.com)
+ * @copyright Copyright (c) 2009-2012 Kakalong CHINA (http://yanbingbing.com)
  */
 
 require_once 'Yan/Captcha/Abstract.php';
@@ -17,7 +17,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 {
 	protected static $VN = array("a", "e", "i", "o", "u", "y", "2", "3", "4", "5", "6", "7", "8", "9");
 	protected static $CN = array("b", "c", "d", "f", "g", "h", "j", "k", "m", "n", "p", "q", "r",
-		"s", "t", "u", "v", "w", "x", "z", "2", "3", "4", "5", "6", "7", "8", "9");
+								 "s", "t", "u", "v", "w", "x", "z", "2", "3", "4", "5", "6", "7", "8", "9");
 
 	/**
 	 * Session
@@ -131,7 +131,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * Set word length of captcha
 	 *
 	 * @param integer $wordlen
-	 * @return this
+	 *
+	 * @return Yan_Captcha_Image
 	 */
 	public function setWordlen($wordlen)
 	{
@@ -142,7 +143,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	/**
 	 * add font config to random font
 	 *
-	 * $parram $font array('spacing' => -3, 'minSize' => 27, 'maxSize' => 30, 'file' => 'AntykwaBold.ttf')
+	 * @param array $font array('spacing' => -3, 'minSize' => 27, 'maxSize' => 30, 'file' => 'AntykwaBold.ttf')
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function addFont(array $font)
@@ -161,6 +163,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * add a color to random Foreground colors
 	 *
 	 * @param $color array RGB (red,green,blue)
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function addFgColor($color)
@@ -173,6 +176,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * set background color
 	 *
 	 * @param $color array RGB (red,green,blue)
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function setBgColor($color)
@@ -185,6 +189,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * set shadow color
 	 *
 	 * @param $color array RGB (red,green,blue) or #ffffff
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function setShadowColor($color)
@@ -208,7 +213,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	/**
 	 * set wave effect
 	 *
-	 * $param $wave array('x'=>array('period'=>int,'amplitude'=>int),y=>array('period'=>int,'amplitude'=>int))
+	 * @param array $wave array('x'=>array('period'=>int,'amplitude'=>int),y=>array('period'=>int,'amplitude'=>int))
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function setWave(array $wave)
@@ -226,6 +232,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * enable or disable blur effect
 	 *
 	 * @param $flag boolean
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function setBlur($flag = true)
@@ -242,8 +249,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 		if (($auto || $format == 'png') && ($supported & IMG_PNG)) {
 			$this->_format = 'png';
 			$this->_contentType = 'image/png';
-		}
-		elseif (($auto || $format == 'jpeg' || $format == 'jpg') && ($supported & IMG_JPG)) {
+		} elseif (($auto || $format == 'jpeg' || $format == 'jpg') && ($supported & IMG_JPG)) {
 			$this->_format = 'jpeg';
 			$this->_contentType = 'image/jpeg';
 		}
@@ -258,6 +264,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * Set captcha image height
 	 *
 	 * @param  int $height
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function setHeight($height)
@@ -270,6 +277,7 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * Set captcha image width
 	 *
 	 * @param  int $width
+	 *
 	 * @return Yan_Captcha_Image
 	 */
 	public function setWidth($width)
@@ -282,7 +290,8 @@ class Yan_Captcha_Image extends Yan_Captcha_Abstract
 	 * output captcha
 	 *
 	 * @param boolean $return
-	 * @return stream output if set $return true
+	 *
+	 * @return void|string output if set $return true
 	 */
 	public function render($return = false)
 	{
